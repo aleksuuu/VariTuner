@@ -7,18 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		117AD57728BFDB9A00F04CC8 /* Scala_EditorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117AD57628BFDB9A00F04CC8 /* Scala_EditorApp.swift */; };
-		117AD57928BFDB9A00F04CC8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117AD57828BFDB9A00F04CC8 /* ContentView.swift */; };
+		111A2E5428BFF86C00E04DC1 /* UtilityExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A2E5328BFF86C00E04DC1 /* UtilityExtensions.swift */; };
+		117AD57728BFDB9A00F04CC8 /* ScalaEditorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117AD57628BFDB9A00F04CC8 /* ScalaEditorApp.swift */; };
+		117AD57928BFDB9A00F04CC8 /* ScaleEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117AD57828BFDB9A00F04CC8 /* ScaleEditor.swift */; };
 		117AD57B28BFDB9B00F04CC8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 117AD57A28BFDB9B00F04CC8 /* Assets.xcassets */; };
 		117AD57E28BFDB9B00F04CC8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 117AD57D28BFDB9B00F04CC8 /* Preview Assets.xcassets */; };
+		117AD58528BFDC0900F04CC8 /* ScaleStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117AD58428BFDC0900F04CC8 /* ScaleStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		117AD57328BFDB9A00F04CC8 /* Scala Editor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Scala Editor.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		117AD57628BFDB9A00F04CC8 /* Scala_EditorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scala_EditorApp.swift; sourceTree = "<group>"; };
-		117AD57828BFDB9A00F04CC8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		111A2E5328BFF86C00E04DC1 /* UtilityExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityExtensions.swift; sourceTree = "<group>"; };
+		117AD57328BFDB9A00F04CC8 /* ScalaEditor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScalaEditor.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		117AD57628BFDB9A00F04CC8 /* ScalaEditorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScalaEditorApp.swift; sourceTree = "<group>"; };
+		117AD57828BFDB9A00F04CC8 /* ScaleEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleEditor.swift; sourceTree = "<group>"; };
 		117AD57A28BFDB9B00F04CC8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		117AD57D28BFDB9B00F04CC8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		117AD58428BFDC0900F04CC8 /* ScaleStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,7 +39,7 @@
 		117AD56A28BFDB9A00F04CC8 = {
 			isa = PBXGroup;
 			children = (
-				117AD57528BFDB9A00F04CC8 /* Scala Editor */,
+				117AD57528BFDB9A00F04CC8 /* ScalaEditor */,
 				117AD57428BFDB9A00F04CC8 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -43,20 +47,22 @@
 		117AD57428BFDB9A00F04CC8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				117AD57328BFDB9A00F04CC8 /* Scala Editor.app */,
+				117AD57328BFDB9A00F04CC8 /* ScalaEditor.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		117AD57528BFDB9A00F04CC8 /* Scala Editor */ = {
+		117AD57528BFDB9A00F04CC8 /* ScalaEditor */ = {
 			isa = PBXGroup;
 			children = (
-				117AD57628BFDB9A00F04CC8 /* Scala_EditorApp.swift */,
-				117AD57828BFDB9A00F04CC8 /* ContentView.swift */,
+				117AD57628BFDB9A00F04CC8 /* ScalaEditorApp.swift */,
+				117AD57828BFDB9A00F04CC8 /* ScaleEditor.swift */,
+				117AD58428BFDC0900F04CC8 /* ScaleStore.swift */,
+				111A2E5328BFF86C00E04DC1 /* UtilityExtensions.swift */,
 				117AD57A28BFDB9B00F04CC8 /* Assets.xcassets */,
 				117AD57C28BFDB9B00F04CC8 /* Preview Content */,
 			);
-			path = "Scala Editor";
+			path = ScalaEditor;
 			sourceTree = "<group>";
 		};
 		117AD57C28BFDB9B00F04CC8 /* Preview Content */ = {
@@ -70,9 +76,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		117AD57228BFDB9A00F04CC8 /* Scala Editor */ = {
+		117AD57228BFDB9A00F04CC8 /* ScalaEditor */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 117AD58128BFDB9B00F04CC8 /* Build configuration list for PBXNativeTarget "Scala Editor" */;
+			buildConfigurationList = 117AD58128BFDB9B00F04CC8 /* Build configuration list for PBXNativeTarget "ScalaEditor" */;
 			buildPhases = (
 				117AD56F28BFDB9A00F04CC8 /* Sources */,
 				117AD57028BFDB9A00F04CC8 /* Frameworks */,
@@ -82,9 +88,9 @@
 			);
 			dependencies = (
 			);
-			name = "Scala Editor";
+			name = ScalaEditor;
 			productName = "Scala Editor";
-			productReference = 117AD57328BFDB9A00F04CC8 /* Scala Editor.app */;
+			productReference = 117AD57328BFDB9A00F04CC8 /* ScalaEditor.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -102,7 +108,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 117AD56E28BFDB9A00F04CC8 /* Build configuration list for PBXProject "Scala Editor" */;
+			buildConfigurationList = 117AD56E28BFDB9A00F04CC8 /* Build configuration list for PBXProject "ScalaEditor" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -115,7 +121,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				117AD57228BFDB9A00F04CC8 /* Scala Editor */,
+				117AD57228BFDB9A00F04CC8 /* ScalaEditor */,
 			);
 		};
 /* End PBXProject section */
@@ -137,8 +143,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				117AD57928BFDB9A00F04CC8 /* ContentView.swift in Sources */,
-				117AD57728BFDB9A00F04CC8 /* Scala_EditorApp.swift in Sources */,
+				117AD57928BFDB9A00F04CC8 /* ScaleEditor.swift in Sources */,
+				117AD57728BFDB9A00F04CC8 /* ScalaEditorApp.swift in Sources */,
+				111A2E5428BFF86C00E04DC1 /* UtilityExtensions.swift in Sources */,
+				117AD58528BFDC0900F04CC8 /* ScaleStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,7 +274,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Scala Editor/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"ScalaEditor/Preview Content\"";
 				DEVELOPMENT_TEAM = 6UNM6WLCBV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -295,7 +303,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Scala Editor/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"ScalaEditor/Preview Content\"";
 				DEVELOPMENT_TEAM = 6UNM6WLCBV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -320,7 +328,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		117AD56E28BFDB9A00F04CC8 /* Build configuration list for PBXProject "Scala Editor" */ = {
+		117AD56E28BFDB9A00F04CC8 /* Build configuration list for PBXProject "ScalaEditor" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				117AD57F28BFDB9B00F04CC8 /* Debug */,
@@ -329,7 +337,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		117AD58128BFDB9B00F04CC8 /* Build configuration list for PBXNativeTarget "Scala Editor" */ = {
+		117AD58128BFDB9B00F04CC8 /* Build configuration list for PBXNativeTarget "ScalaEditor" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				117AD58228BFDB9B00F04CC8 /* Debug */,
