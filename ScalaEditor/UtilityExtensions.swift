@@ -22,74 +22,75 @@ extension Collection where Element: Identifiable {
     }
 }
 
-class NumbersOnly: ObservableObject {
-    @Published var value = "" {
-        didSet {
-            let filtered = value.filter { $0.isAsciiNumber }
-            if value != filtered {
-                value = filtered
+
+//class NumbersOnly: ObservableObject {
+//    @Published var value = "" {
+//        didSet {
+//            let filtered = value.filter { $0.isAsciiNumber }
+//            if value != filtered {
+//                value = filtered
+//            }
+//        }
+//    }
+//}
+
+//extension String {
+//    func convertToDouble() -> Double {
+//        var tmp = self
+//        while tmp.filter({ $0 == "." }).count > 1 {
+//            tmp.remove(at: tmp.lastIndex(of: ".")!)
+//        }
+//        if let result = Double(tmp) {
+//            return abs(result)
+//        }
+//        return 0
+//    }
+//}
+//
+//extension Character {
+//    var isAsciiNumber: Bool { // 56 is the decimal point
+//        if let value = asciiValue, (value == 56 || (value >= 48 && value <= 57)) {
+//            return true
+//        }
+//        return false
+//    }
+//}
+
+// we could do the same thing when it comes to removing an element
+// but we have to add that to a different protocol
+// because Collection works for immutable collections of things
+// the "mutable" one is RangeReplaceableCollection
+// not only could we add remove
+// but we could add a subscript which takes a copy of one of the elements
+// and uses its Identifiable-ness to subscript into the Collection
+// this is an awesome way to create Bindings into an Array in a ViewModel
+// (since any Published var in an ObservableObject can be bound to via $)
+// (even vars on that Published var or subscripts on that var)
+// (or subscripts on vars on that var, etc.)
+
+extension RangeReplaceableCollection where Element: Identifiable {
+    mutating func remove(_ element: Element) {
+        if let index = index(matching: element) {
+            remove(at: index)
+        }
+    }
+
+    subscript(_ element: Element) -> Element {
+        get {
+            if let index = index(matching: element) {
+                return self[index]
+            } else {
+                return element
+            }
+        }
+        set {
+            if let index = index(matching: element) {
+                replaceSubrange(index...index, with: [newValue])
             }
         }
     }
 }
 
-extension String {
-    func convertToDouble() -> Double {
-        var tmp = self
-        while tmp.filter({ $0 == "." }).count > 1 {
-            tmp.remove(at: tmp.lastIndex(of: ".")!)
-        }
-        if let result = Double(tmp) {
-            return abs(result)
-        }
-        return 0
-    }
-}
-
-extension Character {
-    var isAsciiNumber: Bool { // 56 is the decimal point
-        if let value = asciiValue, (value == 56 || (value >= 48 && value <= 57)) {
-            return true
-        }
-        return false
-    }
-}
-
-//// we could do the same thing when it comes to removing an element
-//// but we have to add that to a different protocol
-//// because Collection works for immutable collections of things
-//// the "mutable" one is RangeReplaceableCollection
-//// not only could we add remove
-//// but we could add a subscript which takes a copy of one of the elements
-//// and uses its Identifiable-ness to subscript into the Collection
-//// this is an awesome way to create Bindings into an Array in a ViewModel
-//// (since any Published var in an ObservableObject can be bound to via $)
-//// (even vars on that Published var or subscripts on that var)
-//// (or subscripts on vars on that var, etc.)
-//
-//extension RangeReplaceableCollection where Element: Identifiable {
-//    mutating func remove(_ element: Element) {
-//        if let index = index(matching: element) {
-//            remove(at: index)
-//        }
-//    }
-//
-//    subscript(_ element: Element) -> Element {
-//        get {
-//            if let index = index(matching: element) {
-//                return self[index]
-//            } else {
-//                return element
-//            }
-//        }
-//        set {
-//            if let index = index(matching: element) {
-//                replaceSubrange(index...index, with: [newValue])
-//            }
-//        }
-//    }
-//}
-//
 //// if you use a Set to represent the selection of emoji in HW5
 //// then you might find this syntactic sugar function to be of use
 //

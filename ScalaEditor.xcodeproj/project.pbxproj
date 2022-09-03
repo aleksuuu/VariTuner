@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		111A2E5428BFF86C00E04DC1 /* UtilityExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A2E5328BFF86C00E04DC1 /* UtilityExtensions.swift */; };
+		1122966628C2B8A700BD48CC /* ScalesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1122966528C2B8A700BD48CC /* ScalesView.swift */; };
+		115AC17128C4012300D8224F /* UtilityViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115AC17028C4012300D8224F /* UtilityViews.swift */; };
 		117AD57728BFDB9A00F04CC8 /* ScalaEditorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117AD57628BFDB9A00F04CC8 /* ScalaEditorApp.swift */; };
 		117AD57928BFDB9A00F04CC8 /* ScaleEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117AD57828BFDB9A00F04CC8 /* ScaleEditor.swift */; };
 		117AD57B28BFDB9B00F04CC8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 117AD57A28BFDB9B00F04CC8 /* Assets.xcassets */; };
@@ -17,6 +19,8 @@
 
 /* Begin PBXFileReference section */
 		111A2E5328BFF86C00E04DC1 /* UtilityExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityExtensions.swift; sourceTree = "<group>"; };
+		1122966528C2B8A700BD48CC /* ScalesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScalesView.swift; sourceTree = "<group>"; };
+		115AC17028C4012300D8224F /* UtilityViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityViews.swift; sourceTree = "<group>"; };
 		117AD57328BFDB9A00F04CC8 /* ScalaEditor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScalaEditor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		117AD57628BFDB9A00F04CC8 /* ScalaEditorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScalaEditorApp.swift; sourceTree = "<group>"; };
 		117AD57828BFDB9A00F04CC8 /* ScaleEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleEditor.swift; sourceTree = "<group>"; };
@@ -58,7 +62,9 @@
 				117AD57628BFDB9A00F04CC8 /* ScalaEditorApp.swift */,
 				117AD57828BFDB9A00F04CC8 /* ScaleEditor.swift */,
 				117AD58428BFDC0900F04CC8 /* ScaleStore.swift */,
+				1122966528C2B8A700BD48CC /* ScalesView.swift */,
 				111A2E5328BFF86C00E04DC1 /* UtilityExtensions.swift */,
+				115AC17028C4012300D8224F /* UtilityViews.swift */,
 				117AD57A28BFDB9B00F04CC8 /* Assets.xcassets */,
 				117AD57C28BFDB9B00F04CC8 /* Preview Content */,
 			);
@@ -144,9 +150,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				117AD57928BFDB9A00F04CC8 /* ScaleEditor.swift in Sources */,
+				1122966628C2B8A700BD48CC /* ScalesView.swift in Sources */,
 				117AD57728BFDB9A00F04CC8 /* ScalaEditorApp.swift in Sources */,
 				111A2E5428BFF86C00E04DC1 /* UtilityExtensions.swift in Sources */,
 				117AD58528BFDC0900F04CC8 /* ScaleStore.swift in Sources */,
+				115AC17128C4012300D8224F /* UtilityViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -12,41 +12,28 @@ enum RatioError: Error {
     case negativeRatio
 }
 
-struct Scale {
+struct Scale: Identifiable, Hashable {
     
-    // TODO: make it so that the array of notes always goes from the lowest to the highest
-    struct Note: Hashable {
+    // TODO: make it so that the array of notes always goes from the lowest to the highest and add checks for
+    struct Note: Hashable, Comparable, Identifiable {
+        static func < (lhs: Scale.Note, rhs: Scale.Note) -> Bool {
+            lhs.cents < rhs.cents
+        }
+        
         var name: String
         var cents: Double
-        fileprivate init(name: String = "", cents: Double) {
+        var id: Int
+        fileprivate init(name: String = "", cents: Double, id: Int) {
             self.name = name
             self.cents = cents
+            self.id = id
         }
         
-        var centsString: String { // TODO: use a formatter instead
-            get {
-                print(self.cents)
-                return String(cents)
-            }
-            set { self.cents = newValue.convertToDouble() }
-        }
-        
-//        var ratioString: (String, String) {
-//            get {
-//                self.cents.convertToRatio()
-//            }
-//        }
-        
-        fileprivate init(name: String = "", cents: String) {
-            self.name = name
-            self.cents = cents.convertToDouble()
-        }
-        
-        fileprivate init(name: String = "", ratio: Ratio) throws {
+        fileprivate init(name: String = "", ratio: Ratio, id: Int) throws {
             self.name = name
             self.cents = try ratio.convertToCents()
+            self.id = id
         }
-        
         struct Ratio {
             var numerator: Int
             var denominator: Int
@@ -62,19 +49,6 @@ struct Scale {
             }
         }
     }
-//    private func ratioToCents(_ ratio: String) -> Double? {
-//        if var division = ratio.firstIndex(of: "/") {
-//            let numerator = Double(ratio[..<division])
-//            if numerator != nil {
-//                division = ratio.index(division, offsetBy: 1)
-//                let denominator = Double(ratio[division...])
-//                if denominator != nil {
-//                    return numerator! / denominator!
-//                }
-//            }
-//        }
-//        return 0
-//    }
     
     var name: String
     var description: String
@@ -87,6 +61,19 @@ struct Scale {
         self.id = id
         self.notes = notes
     }
+    
+    // MARK: - Intent(s)
+    
+    mutating func addPlaceholderNote() {
+        let unique = (notes.max(by: { $0.id < $1.id })?.id ?? 0) + 1
+        notes.insert(Note(name: "", cents: 0, id: unique), at: notes.endIndex)
+    }
+    
+//    private mutating func createNote(named name: String, cents: Double) {
+//        let unique = (notes.max(by: { $0.id < $1.id })?.id ?? 0) + 1
+//        let index = notes.firstIndex(where: { $0.cents > cents }) ?? notes.endIndex
+//        notes.insert(Note(name: name, cents: cents, id: unique), at: index)
+//    }
 }
 
 class ScaleStore: ObservableObject {
@@ -97,27 +84,40 @@ class ScaleStore: ObservableObject {
             insertScale(
                 named: "12-12_sharps",
                 description: "12 out of 12-tET, the most boring tuning (preferring sharps)",
-                notes: [
-                    Scale.Note(name: "C", cents: 0),
-                    Scale.Note(name: "C#", cents: 100),
-                    Scale.Note(name: "D", cents: 200),
-                    Scale.Note(name: "D#", cents: 300),
-                    Scale.Note(name: "E", cents: 400),
-                    Scale.Note(name: "F", cents: 500),
-                    Scale.Note(name: "F#", cents: 600),
-                    Scale.Note(name: "G", cents: 700),
-                    Scale.Note(name: "G#", cents: 800),
-                    Scale.Note(name: "A", cents: 900),
-                    Scale.Note(name: "A#", cents: 1000),
-                    Scale.Note(name: "B", cents: 1100),
-                    Scale.Note(name: "C", cents: 1200),
-                ])
+                notes: createNotes(nameCentsArray:[
+                    ("C", 0),
+                    ("C#", 100),
+                    ("D", 200),
+                    ("D#", 300),
+                    ("E", 400),
+                    ("F", 500),
+                    ("F#", 600),
+                    ("G", 700),
+                    ("G#", 800),
+                    ("A", 900),
+                    ("A#", 1000),
+                    ("B", 1100),
+                    ("C", 1200)
+                    ])
+                )
         }
     }
+    
+    private func createNotes(nameCentsArray: [(String, Double)]) -> [Scale.Note] {
+        var notesArray: [Scale.Note] = []
+        for nameCents in nameCentsArray {
+            let unique = (notesArray.max(by: { $0.id < $1.id })?.id ?? 0) + 1
+            let index = notesArray.firstIndex(where: { $0.cents > nameCents.1 }) ?? notesArray.endIndex
+            notesArray.insert(Scale.Note(name: nameCents.0, cents: nameCents.1, id: unique), at: index)
+        }
+        return notesArray
+    }
+    
     
     private func insertScale(named name: String, description: String = "", notes: [Scale.Note], at index: Int = 0) {
         let unique = (scales.max(by: { $0.id < $1.id })?.id ?? 0) + 1
         let safeIndex = min(max(index, 0), scales.count)
         scales.insert(Scale(name: name, description: description, id: unique, notes: notes), at: safeIndex)
     }
+    
 }

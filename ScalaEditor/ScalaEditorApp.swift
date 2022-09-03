@@ -12,7 +12,8 @@ struct ScalaEditorApp: App {
     @StateObject var scaleStore = ScaleStore(named: "Default")
     var body: some Scene {
         WindowGroup {
-            ScaleEditor(scale: .constant(ScaleStore(named: "Preview").scales[0]))
+//            ScaleEditor(scale: .constant(scaleStore.scales[0]))
+            ScalesView()
                 .environmentObject(scaleStore)
         }
     }
