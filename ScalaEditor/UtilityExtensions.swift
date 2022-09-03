@@ -22,6 +22,12 @@ extension Collection where Element: Identifiable {
     }
 }
 
+extension Scale {
+    var sclString: String {
+        return ""
+    }
+}
+
 
 //class NumbersOnly: ObservableObject {
 //    @Published var value = "" {

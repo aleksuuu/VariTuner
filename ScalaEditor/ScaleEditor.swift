@@ -10,25 +10,14 @@ import SwiftUI
 struct ScaleEditor: View {
         
     @Binding var scale: Scale
-    //@Environment(\.horizontalSizeClass) private var horizontalSizeClass
-//    @ObservedObject var cents = NumbersOnly()
     
 
     enum Field: Hashable {
-        case noteName(Int)
-        case pitchValue(Int)
+        case noteName(UUID)
+        case pitchValue(UUID)
     }
     
     @FocusState private var focusField: Field?
-    
-//    @State private var editMode: EditMode = .inactive
-    
-    
-//     static let screenWidth = UIScreen.main.bounds.width
-//
-//    static let screenWidth: CGFloat {
-//        if
-//    }
     
     
     private let numberFormatter: NumberFormatter = {
