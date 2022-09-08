@@ -21,36 +21,36 @@ import SwiftUI
 //    }
 //}
 //
-//// syntactic sugar
-//// lots of times we want a simple button
-//// with just text or a label or a systemImage
-//// but we want the action it performs to be animated
-//// (i.e. withAnimation)
-//// this just makes it easy to create such a button
-//// and thus cleans up our code
-//
-//struct AnimatedActionButton: View {
-//    var title: String? = nil
-//    var systemImage: String? = nil
-//    let action: () -> Void
-//
-//    var body: some View {
-//        Button {
-//            withAnimation {
-//                action()
-//            }
-//        } label: {
-//            if title != nil && systemImage != nil {
-//                Label(title!, systemImage: systemImage!)
-//            } else if title != nil {
-//                Text(title!)
-//            } else if systemImage != nil {
-//                Image(systemName: systemImage!)
-//            }
-//        }
-//    }
-//}
-//
+// syntactic sugar
+// lots of times we want a simple button
+// with just text or a label or a systemImage
+// but we want the action it performs to be animated
+// (i.e. withAnimation)
+// this just makes it easy to create such a button
+// and thus cleans up our code
+
+struct AnimatedActionButton: View {
+    var title: String? = nil
+    var systemImage: String? = nil
+    let action: () -> Void
+
+    var body: some View {
+        Button {
+            withAnimation {
+                action()
+            }
+        } label: {
+            if title != nil && systemImage != nil {
+                Label(title!, systemImage: systemImage!)
+            } else if title != nil {
+                Text(title!)
+            } else if systemImage != nil {
+                Image(systemName: systemImage!)
+            }
+        }
+    }
+}
+
 //// simple struct to make it easier to show configurable Alerts
 //// just an Identifiable struct that can create an Alert on demand
 //// use .alert(item: $alertToShow) { theIdentifiableAlert in ... }

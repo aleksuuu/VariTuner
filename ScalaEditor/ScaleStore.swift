@@ -7,11 +7,6 @@
 
 import Foundation
 
-enum RatioError: Error {
-    case zeroDenominator
-    case negativeRatio
-}
-
 class ScaleStore: ObservableObject {
     @Published var scales = [Scale]()
     

@@ -1,12 +1,13 @@
 //
-//  ScaleConvertor.swift
+//  ScaleDocument.swift
 //  ScalaEditor
 //
 //  Created by Alexander on 9/3/22.
 //
 
-import Foundation
+import SwiftUI
 
-struct ScaleConvertor {
+
+class ScaleDocument {
     
 }

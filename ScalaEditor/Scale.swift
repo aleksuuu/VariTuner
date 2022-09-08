@@ -6,37 +6,72 @@
 //
 
 import Foundation
+import SwiftUI
+
+enum RatioError: Error {
+    case zeroDenominator
+    case negativeRatio
+    case invalidString
+}
 
 struct Scale: Identifiable, Hashable {
     struct Note: Hashable, Comparable, Identifiable {
+        static func == (lhs: Scale.Note, rhs: Scale.Note) -> Bool {
+            lhs.id == rhs.id
+        }
+        
         static func < (lhs: Scale.Note, rhs: Scale.Note) -> Bool {
             lhs.cents < rhs.cents
         }
         
+        var ratioMode = false
+        var inputRatioIsValid = true
         var name: String
         var cents: Double
+        var numerator = ""
+        var denominator = ""
+        var ratio: Ratio? {
+            try? Ratio(numerator: numerator, denominator: denominator)
+        }
         let id = UUID()
+        
         init(name: String = "", cents: Double) {
             self.name = name
             self.cents = cents
         }
-        
         init(name: String = "", ratio: Ratio) throws {
             self.name = name
-            self.cents = try ratio.convertToCents()
+            self.cents = ratio.cents
+            self.numerator = String(ratio.numerator)
+            self.denominator = String(ratio.denominator)
+            self.ratioMode = true
         }
-        struct Ratio {
+        
+        
+        struct Ratio: Hashable {
             var numerator: Int
             var denominator: Int
-            func convertToCents() throws -> Double {
+            
+            init(numerator: Int, denominator: Int) throws {
                 if denominator == 0 {
                     throw RatioError.zeroDenominator
                 }
-                let cents = Double(numerator) / Double(denominator)
-                if cents < 0 {
+                if Double(numerator) / Double(denominator) <= 1 {
                     throw RatioError.negativeRatio
                 }
-                return cents
+                self.numerator = numerator
+                self.denominator = denominator
+            }
+            
+            init(numerator: String, denominator: String) throws {
+                if let num = Int(numerator), let denom = Int(denominator) {
+                    self = try Ratio(numerator: num, denominator: denom)
+                } else {
+                    throw RatioError.invalidString
+                }
+            }
+            var cents: Double {
+                1200 * log2(Double(numerator) / Double(denominator))
             }
         }
     }

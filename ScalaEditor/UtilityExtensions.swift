@@ -23,8 +23,95 @@ extension Collection where Element: Identifiable {
 }
 
 extension Scale {
+    var notesString: String {
+        var str = ""
+        for note in notes {
+            if !note.numerator.isEmpty && !note.denominator.isEmpty {
+                str += " \(note.numerator)/\(note.denominator)\n"
+            } else {
+                str += " \(note.cents)\n"
+            }
+        }
+        return str
+    }
     var sclString: String {
-        return ""
+        """
+! \(name).scl
+!
+\(description)
+ \(notes.count)
+!
+\(notesString)
+"""
+    }
+}
+
+extension String {
+    var scale: Scale? {
+        let arrayByLine = components(separatedBy: "\n")
+
+        var name = ""
+        var description: String? // optional so that whether the description line has been scanned or not can be known even if the description line is empty
+        var notes: [Scale.Note] = []
+        var numOfNotesHasBeenSet = false
+        
+        for line in arrayByLine {
+            if !numOfNotesHasBeenSet {
+                if notes.isEmpty {
+                    if description == nil  { // only look for a name and description when description and notes are both not set yet
+                        if name == "", let n = line.sclName {
+                            name = n
+                            continue
+                        } else if line.isSclDescription { // description is neither a cent/ratio nor a comment
+                            description = line.trimmingCharacters(in: .whitespaces)
+                            continue
+                        }
+                    } else {
+                        numOfNotesHasBeenSet = true
+                    }
+                }
+            } else { // if the number of notes has been set, that means we're in the pitch values section
+                let ratioNumbers = line.components(separatedBy: "/")
+                if ratioNumbers.count == 2 { // if a ratio exists on this line
+                    if let ratio = try? Scale.Note.Ratio(numerator: ratioNumbers[0].trimmingCharacters(in: .whitespaces), denominator: ratioNumbers[1].trimmingCharacters(in: .whitespaces)) {
+                        if let note = try? Scale.Note(ratio: ratio) {
+                            let index = notes.firstIndex(where: { $0.cents > note.cents }) ?? notes.endIndex
+                            notes.insert(note, at: index)
+                        }
+                    }
+                } else {
+                    if let cents = line.sclCents {
+                        let index = notes.firstIndex(where: { $0.cents > cents }) ?? notes.endIndex
+                        notes.insert(Scale.Note(cents: cents), at: index)
+                    }
+                }
+            }
+        }
+        return Scale(name: name, description: description ?? "", notes: notes)
+    }
+    
+    var sclName: String? {
+        let namePattern = #"\!.+\.scl"#
+        if let range = range(of: namePattern, options: .regularExpression) {
+            return String(self[range].dropFirst().dropLast(4)).trimmingCharacters(in: .whitespaces)
+        }
+        return nil
+    }
+    
+    var isSclDescription: Bool {
+        return !isSclCommentLine && sclCents == nil && !isSclRatio
+    }
+    
+    var sclCents: Double? {
+        Double(trimmingCharacters(in: .whitespaces))
+    }
+    
+    var isSclRatio: Bool {
+        return false
+    }
+    
+    var isSclCommentLine: Bool {
+        return self.first == "!"
     }
 }
 
