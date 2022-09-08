@@ -140,12 +140,6 @@ struct ScaleEditor: View {
     private func makeNotesRow(for note: Scale.Note) -> some View {
         return EmptyView()
     }
-    
-    fileprivate func animatedSort() {
-        withAnimation {
-            scale.notes.sort()
-        }
-    }
 
    
     struct DrawingConstants {
@@ -235,10 +229,12 @@ struct NoteRow: View {
         .textFieldStyle(.roundedBorder)
     }
     private func commitCents(for note: Scale.Note) {
+        withAnimation {
+            scaleEditor.scale.notes.sort()
+        }
         scaleEditor.scale.notes[note].denominator = ""
         scaleEditor.scale.notes[note].numerator = ""
         inputRatioIsValid = true
-        scaleEditor.animatedSort()
     }
     
     private func commitRatio(for note: Scale.Note) {
