@@ -126,21 +126,6 @@ struct ScaleEditor: View {
     }
     
     @State private var globalRatioMode = false
-        
-//    {
-//        didSet {
-//            print(globalRatioMode)
-//            for note in scale.notes {
-//                scale.notes[note].ratioMode = globalRatioMode
-//            }
-//        }
-//    }
-    
-    
-    private func makeNotesRow(for note: Scale.Note) -> some View {
-        return EmptyView()
-    }
-
    
     struct DrawingConstants {
         static let notesPadding: CGFloat = 2.0
@@ -155,6 +140,7 @@ struct NoteRow: View {
     var scaleEditor: ScaleEditor
     var note: Scale.Note
     
+    // TODO: decide what to keep in the Model and what is UI that belongs here in the View
     @State private var ratioMode = false
     @State private var inputRatioIsValid = true
     private let numberFormatter: NumberFormatter = {
