@@ -51,36 +51,36 @@ struct AnimatedActionButton: View {
     }
 }
 
-//// simple struct to make it easier to show configurable Alerts
-//// just an Identifiable struct that can create an Alert on demand
-//// use .alert(item: $alertToShow) { theIdentifiableAlert in ... }
-//// where alertToShow is a Binding<IdentifiableAlert>?
-//// then any time you want to show an alert
-//// just set alertToShow = IdentifiableAlert(id: "my alert") { Alert(title: ...) }
-//// of course, the string identifier has to be unique for all your different kinds of alerts
-//
-//struct IdentifiableAlert: Identifiable {
-//    var id: String
-//    var alert: () -> Alert
-//
-//    init(id: String, alert: @escaping () -> Alert) {
-//        self.id = id
-//        self.alert = alert
-//    }
-//
-//    // L15 convenience init added between L14 and L15
-//    init(id: String, title: String, message: String) {
-//        self.id = id
-//        alert = { Alert(title: Text(title), message: Text(message), dismissButton: .default(Text("OK"))) }
-//    }
-//
-//    // L15 convenience init added between L14 and L15
-//    init(title: String, message: String) {
-//        self.id = title + message
-//        alert = { Alert(title: Text(title), message: Text(message), dismissButton: .default(Text("OK"))) }
-//    }
-//}
-//
+// simple struct to make it easier to show configurable Alerts
+// just an Identifiable struct that can create an Alert on demand
+// use .alert(item: $alertToShow) { theIdentifiableAlert in ... }
+// where alertToShow is a Binding<IdentifiableAlert>?
+// then any time you want to show an alert
+// just set alertToShow = IdentifiableAlert(id: "my alert") { Alert(title: ...) }
+// of course, the string identifier has to be unique for all your different kinds of alerts
+
+struct IdentifiableAlert: Identifiable {
+    var id: String
+    var alert: () -> Alert
+
+    init(id: String, alert: @escaping () -> Alert) {
+        self.id = id
+        self.alert = alert
+    }
+
+    // L15 convenience init added between L14 and L15
+    init(id: String, title: String, message: String) {
+        self.id = id
+        alert = { Alert(title: Text(title), message: Text(message), dismissButton: .default(Text("OK"))) }
+    }
+
+    // L15 convenience init added between L14 and L15
+    init(title: String, message: String) {
+        self.id = title + message
+        alert = { Alert(title: Text(title), message: Text(message), dismissButton: .default(Text("OK"))) }
+    }
+}
+
 //// a button that does undo (preferred) or redo
 //// also has a context menu which will display
 //// the given undo or redo description for each

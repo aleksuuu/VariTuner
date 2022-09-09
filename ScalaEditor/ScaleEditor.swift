@@ -6,6 +6,15 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
+
+private let numberFormatter: NumberFormatter = {
+    let formatter = NumberFormatter()
+    formatter.numberStyle = .decimal
+    formatter.maximumFractionDigits = 6
+    //formatter.generatesDecimalNumbers = true
+    return formatter
+}()
 
 struct ScaleEditor: View {
         
@@ -21,11 +30,25 @@ struct ScaleEditor: View {
     @FocusState var focusField: Field?
     
     var body: some View {
-        Form {
-            nameSection
-            descriptionSection
-            notesSection
+        VStack {
+            Form {
+                copyButton
+                nameSection
+                descriptionSection
+                tuningSection
+                notesSection
+            }
         }
+    }
+    
+    var copyButton: some View {
+        Button {
+            UIPasteboard.general.setValue(scale.sclString,
+                        forPasteboardType: UTType.plainText.identifier)
+        } label: {
+            Label("Copy to pasteboard as .scl plaintext", systemImage: "doc.on.doc")
+        }
+        .buttonStyle(.borderless)
     }
     var nameSection: some View {
         Section {
@@ -44,53 +67,24 @@ struct ScaleEditor: View {
         }
     }
     
-//    @State var numberOfNotes = 0
-//
-//    var numberOfNotesSection: some View {
-//        Stepper {
-//            Text("Notes")
-//        } onIncrement: {
-//            if numberOfNotes == 0 {
-//                numberOfNotes = scale.notes.count
-//            }
-//            numberOfNotes += 1
-//        } onDecrement: {
-//            if numberOfNotes == 0 {
-//                numberOfNotes = scale.notes.count
-//            }
-//            numberOfNotes -= 1
-//        }
-//    }
-    
-    // @State var displayCents = true
+    var tuningSection: some View {
+        Section {
+            HStack {
+                TextField("Frequency", value: $scale.degreeOneTuning, formatter: numberFormatter)
+                    .textFieldStyle(.roundedBorder)
+                    .frame(width: 80)
+                Text("Hz")
+            }
+        } header: {
+            Text("Middle Degree 1 Frequency")
+        } footer: {
+            Text("The frequency of the first scale degree in the middle of the range. (When A4 = 440 Hz, C4 = 261.63 Hz.)")
+        }
+    }
     
     var notesSection: some View {
         Section {
             List {
-                Button {
-                    print("""
-! meanquar.scl
-!
-1/4-comma meantone scale. Pietro Aaron's temperament (1523)
- 12
-!
- 76.04900
- 193.15686
- 310.26471
- 5/4
- 503.42157
- 579.47057
- 696.57843
- 25/16
- 889.73529
- 1006.84314
- 1082.89214
- 2/1
-""".scale ?? "unsuccessful")
-                    
-                } label: {
-                    Text("Print")
-                }
                 ForEach(scale.notes) { note in
                     NoteRow(scaleEditor: self, note: note)
                 }
@@ -140,19 +134,12 @@ struct NoteRow: View {
     var scaleEditor: ScaleEditor
     var note: Scale.Note
     
-    // TODO: decide what to keep in the Model and what is UI that belongs here in the View
+    // TODO: decide what to keep in the Model and what is UI that belongs here in the View; add multiselect and duplicate option
     @State private var ratioMode = false
     @State private var inputRatioIsValid = true
-    private let numberFormatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        formatter.maximumFractionDigits = 6
-        //formatter.generatesDecimalNumbers = true
-        return formatter
-    }()
+    
     var body: some View {
         HStack {
-//            if let index = scale.notes.index(matching: note)
             if let index = scaleEditor.scale.notes.index(matching: note)
             {
             TextField("Degree \(index)", text: scaleEditor.$scale.notes[note].name)
@@ -197,6 +184,7 @@ struct NoteRow: View {
                     .keyboardType(.decimalPad)
                     .frame(width: UIScreen.main.bounds.width * ScaleEditor.DrawingConstants.pitchColWidthFactor)
                 }
+                    
                 Picker("Cents or Ratio", selection: scaleEditor.$scale.notes[note].ratioMode) {
                     Text("¢").tag(false)
                     Text(":").tag(true)

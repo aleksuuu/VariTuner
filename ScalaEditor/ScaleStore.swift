@@ -33,4 +33,6 @@ class ScaleStore: ObservableObject {
             )
         }
     }
+    
+    
 }

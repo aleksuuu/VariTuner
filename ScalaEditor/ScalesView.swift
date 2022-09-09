@@ -39,15 +39,35 @@ struct ScalesView: View {
             }
             .navigationTitle("Scales")
             .toolbar {
-                ToolbarItem{ EditButton() }
+                ToolbarItem {
+                    EditButton()
+                }
+                ToolbarItem(placement: .navigationBarLeading) {
+                    AnimatedActionButton(title: "Paste Scala", systemImage: "doc.on.clipboard") {
+                        pasteScala()
+                    }
+                }
             }
             .environment(\.editMode, $editMode)
         }
         .navigationViewStyle(StackNavigationViewStyle())
+        .alert(item: $alertToShow) { alertToShow in
+            alertToShow.alert()
+        }
     }
     private func getTap(for scale: Scale) -> some Gesture {
         TapGesture().onEnded {
             scaleToEdit = scale
+        }
+    }
+    @State private var alertToShow: IdentifiableAlert?
+    private func pasteScala() {
+        if let scl = UIPasteboard.general.string, let scale = scl.scale {
+            store.scales.append(scale)
+        } else {
+            alertToShow = IdentifiableAlert(
+                title: "Paste Scala",
+                message: "There is no Scala text currently on the pasteboard.")
         }
     }
 }

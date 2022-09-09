@@ -25,7 +25,11 @@ extension Collection where Element: Identifiable {
 extension Scale {
     var notesString: String {
         var str = ""
-        for note in notes {
+        var notesWithoutDegreeZero = notes
+        if notes[0].cents == 0 {
+            notesWithoutDegreeZero.remove(at: 0)
+        }
+        for note in notesWithoutDegreeZero {
             if !note.numerator.isEmpty && !note.denominator.isEmpty {
                 str += " \(note.numerator)/\(note.denominator)\n"
             } else {
@@ -39,7 +43,7 @@ extension Scale {
 ! \(name).scl
 !
 \(description)
- \(notes.count)
+ \(notes.count - 1)
 !
 \(notesString)
 """
@@ -87,7 +91,14 @@ extension String {
                 }
             }
         }
-        return Scale(name: name, description: description ?? "", notes: notes)
+        if notes.isEmpty {
+            return nil
+        } else {
+            if notes[0].cents != 0 {
+                notes.insert(Scale.Note(cents: 0), at: 0)
+            }
+            return Scale(name: name, description: description ?? "", notes: notes)
+        } 
     }
     
     var sclName: String? {
