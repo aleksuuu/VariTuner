@@ -14,8 +14,8 @@ enum RatioError: Error {
     case invalidString
 }
 
-struct Scale: Identifiable, Hashable {
-    struct Note: Hashable, Comparable, Identifiable {
+struct Scale: Identifiable, Hashable, Codable {
+    struct Note: Hashable, Comparable, Identifiable, Codable {
         static func == (lhs: Scale.Note, rhs: Scale.Note) -> Bool {
             lhs.id == rhs.id
         }
@@ -33,7 +33,7 @@ struct Scale: Identifiable, Hashable {
         var ratio: Ratio? {
             try? Ratio(numerator: numerator, denominator: denominator)
         }
-        let id = UUID()
+        var id = UUID()
         
         init(name: String = "", cents: Double) {
             self.name = name
@@ -48,7 +48,7 @@ struct Scale: Identifiable, Hashable {
         }
         
         
-        struct Ratio: Hashable {
+        struct Ratio: Hashable, Codable {
             var numerator: Int
             var denominator: Int
             
@@ -76,7 +76,7 @@ struct Scale: Identifiable, Hashable {
         }
     }
     
-    let id = UUID()
+    var id = UUID()
     var name: String
     var description: String
     var notes: [Note]

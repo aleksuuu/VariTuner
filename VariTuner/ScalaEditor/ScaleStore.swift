@@ -6,12 +6,36 @@
 //
 
 import Foundation
-// TODO: persistence
+
 class ScaleStore: ObservableObject {
-    @Published var scales = [Scale]()
+    let name: String
+    @Published var scales = [Scale]() {
+        didSet {
+            storeInUserDefault()
+        }
+    }
+    
+    private var userDefaultsKey: String {
+        "ScaleStore:" + name // prefix makes sure this key is unique
+    }
+    
+    private func storeInUserDefault() {
+        UserDefaults.standard.set(try? JSONEncoder().encode(scales), forKey: userDefaultsKey)
+    }
+    
+    private func restoreFromUserDefault() {
+        if let jsonData = UserDefaults.standard.data(forKey: userDefaultsKey),
+           let decodedScales = try? JSONDecoder().decode(Array<Scale>.self, from: jsonData) {
+            scales = decodedScales
+        }
+    }
+    
     
     init(named name: String) {
+        self.name = name
+        restoreFromUserDefault()
         if scales.isEmpty {
+            print("using built-in scales")
             scales.insert(
                 Scale(name: "12-12_sharps",
                   description: "12 out of 12-tET, the most boring tuning (preferring sharps)",
@@ -31,6 +55,8 @@ class ScaleStore: ObservableObject {
                     Scale.Note(name: "C", cents: 1200)
                   ]), at: 0
             )
+        } else {
+            print("successfully loaded scales from UserDefaults")
         }
     }
     

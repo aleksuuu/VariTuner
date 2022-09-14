@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+// TODO: ability to add scales
 struct ScalesView: View {
     @EnvironmentObject var store: ScaleStore
     

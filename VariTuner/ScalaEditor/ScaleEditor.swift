@@ -17,10 +17,10 @@ private let numberFormatter: NumberFormatter = {
 }()
 
 struct ScaleEditor: View {
-        
+    
     @Binding var scale: Scale
     
-
+    
     enum Field: Hashable {
         case noteName(UUID)
         case pitchValue(UUID)
@@ -44,7 +44,7 @@ struct ScaleEditor: View {
     var copyButton: some View {
         Button {
             UIPasteboard.general.setValue(scale.sclString,
-                        forPasteboardType: UTType.plainText.identifier)
+                                          forPasteboardType: UTType.plainText.identifier)
         } label: {
             Label("Copy to pasteboard as .scl plaintext", systemImage: "doc.on.doc")
         }
@@ -71,6 +71,7 @@ struct ScaleEditor: View {
         Section {
             HStack {
                 TextField("Frequency", value: $scale.degreeOneTuning, formatter: numberFormatter)
+                    .keyboardType(.decimalPad)
                     .textFieldStyle(.roundedBorder)
                     .frame(width: 80)
                 Text("Hz")
@@ -120,7 +121,7 @@ struct ScaleEditor: View {
     }
     
     @State private var globalRatioMode = false
-   
+    
     struct DrawingConstants {
         static let notesPadding: CGFloat = 2.0
         static let borderWidth: CGFloat = 0.25
@@ -140,9 +141,8 @@ struct NoteRow: View {
     
     var body: some View {
         HStack {
-            if let index = scaleEditor.scale.notes.index(matching: note)
-            {
-            TextField("Degree \(index)", text: scaleEditor.$scale.notes[note].name)
+            if let index = scaleEditor.scale.notes.index(matching: note) {
+                TextField("Degree \(index)", text: scaleEditor.$scale.notes[note].name)
                     .disableAutocorrection(true)
                     .foregroundColor(.accentColor)
                     .frame(width: UIScreen.main.bounds.width * ScaleEditor.DrawingConstants.noteNameColWidthFactor)
@@ -162,29 +162,29 @@ struct NoteRow: View {
                 } else {
                     HStack {
                         TextField("", text: scaleEditor.$scale.notes[note].numerator)
-                                    .onChange(of: scaleEditor.focusField) { newField in
-                                        if let last = scaleEditor.scale.notes.last, newField != .noteName(last.id), newField != .pitchValue(last.id), !scaleEditor.scale.notes[note].denominator.isEmpty {
-                                            commitRatio(for: note)
-                                        }
-                                    }
-                                    .focused(scaleEditor.$focusField, equals: .pitchValue(note.id))
-                                    .border(inputRatioIsValid ? .clear : .red)
+                            .onChange(of: scaleEditor.focusField) { newField in
+                                if let last = scaleEditor.scale.notes.last, newField != .noteName(last.id), newField != .pitchValue(last.id), !scaleEditor.scale.notes[note].denominator.isEmpty {
+                                    commitRatio(for: note)
+                                }
+                            }
+                            .focused(scaleEditor.$focusField, equals: .pitchValue(note.id))
+                            .border(inputRatioIsValid ? .clear : .red)
                         Text(":")
                         TextField("", text: scaleEditor.$scale.notes[note].denominator)
-                                    .onChange(of: scaleEditor.focusField) { newField in
-                                        if let last = scaleEditor.scale.notes.last, newField != .noteName(last.id), newField != .pitchValue(last.id), !scaleEditor.scale.notes[note].numerator.isEmpty {
-                                            commitRatio(for: note)
-                                        }
-                                    }
-                                    .focused(scaleEditor.$focusField, equals: .pitchValue(note.id))
-                                    .border(inputRatioIsValid ? .clear : .red)
+                            .onChange(of: scaleEditor.focusField) { newField in
+                                if let last = scaleEditor.scale.notes.last, newField != .noteName(last.id), newField != .pitchValue(last.id), !scaleEditor.scale.notes[note].numerator.isEmpty {
+                                    commitRatio(for: note)
+                                }
+                            }
+                            .focused(scaleEditor.$focusField, equals: .pitchValue(note.id))
+                            .border(inputRatioIsValid ? .clear : .red)
                     }
                     .foregroundColor(index == 0 ? .secondary : (inputRatioIsValid ? .accentColor : Color.red))
                     .disabled(index == 0 ? true : false)
                     .keyboardType(.decimalPad)
                     .frame(width: UIScreen.main.bounds.width * ScaleEditor.DrawingConstants.pitchColWidthFactor)
                 }
-                    
+                
                 Picker("Cents or Ratio", selection: scaleEditor.$scale.notes[note].ratioMode) {
                     Text("¢").tag(false)
                     Text(":").tag(true)
