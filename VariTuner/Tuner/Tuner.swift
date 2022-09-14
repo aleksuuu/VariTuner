@@ -12,6 +12,8 @@ import AudioToolbox
 import SoundpipeAudioKit
 import SwiftUI
 
+// TODO: Separate the MVVM into 3 different files. Ability to select a custom scale. Ability to produce a pitch. Improve UI
+
 struct TunerData {
     var pitch: Float = 0.0
     var amplitude: Float = 0.0
