@@ -7,27 +7,33 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1107558C28CE305C00842049 /* Tuner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1107558B28CE305C00842049 /* Tuner.swift */; };
+		1107558F28CE30FD00842049 /* AudioKitEX in Frameworks */ = {isa = PBXBuildFile; productRef = 1107558E28CE30FD00842049 /* AudioKitEX */; };
+		1107559228CE310A00842049 /* AudioKitUI in Frameworks */ = {isa = PBXBuildFile; productRef = 1107559128CE310A00842049 /* AudioKitUI */; };
+		1107559528CE316400842049 /* SoundpipeAudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1107559428CE316400842049 /* SoundpipeAudioKit */; };
 		111A2E5428BFF86C00E04DC1 /* UtilityExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A2E5328BFF86C00E04DC1 /* UtilityExtensions.swift */; };
 		1122966628C2B8A700BD48CC /* ScalesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1122966528C2B8A700BD48CC /* ScalesView.swift */; };
 		115AC17128C4012300D8224F /* UtilityViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115AC17028C4012300D8224F /* UtilityViews.swift */; };
 		115AC17528C4078800D8224F /* Scale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115AC17428C4078800D8224F /* Scale.swift */; };
 		115AC17728C4338B00D8224F /* ScaleDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115AC17628C4338B00D8224F /* ScaleDocument.swift */; };
-		117AD57728BFDB9A00F04CC8 /* ScalaEditorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117AD57628BFDB9A00F04CC8 /* ScalaEditorApp.swift */; };
+		117AD57728BFDB9A00F04CC8 /* VariTunerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117AD57628BFDB9A00F04CC8 /* VariTunerApp.swift */; };
 		117AD57928BFDB9A00F04CC8 /* ScaleEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117AD57828BFDB9A00F04CC8 /* ScaleEditor.swift */; };
 		117AD57B28BFDB9B00F04CC8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 117AD57A28BFDB9B00F04CC8 /* Assets.xcassets */; };
 		117AD57E28BFDB9B00F04CC8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 117AD57D28BFDB9B00F04CC8 /* Preview Assets.xcassets */; };
 		117AD58528BFDC0900F04CC8 /* ScaleStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117AD58428BFDC0900F04CC8 /* ScaleStore.swift */; };
+		11A252F528CD255900E8B66B /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 11A252F428CD255900E8B66B /* AudioKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1107558B28CE305C00842049 /* Tuner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tuner.swift; sourceTree = "<group>"; };
 		111A2E5328BFF86C00E04DC1 /* UtilityExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityExtensions.swift; sourceTree = "<group>"; };
 		1122966528C2B8A700BD48CC /* ScalesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScalesView.swift; sourceTree = "<group>"; };
-		1124201528CA65F4002C4FC0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		1124201528CA65F4002C4FC0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		115AC17028C4012300D8224F /* UtilityViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityViews.swift; sourceTree = "<group>"; };
 		115AC17428C4078800D8224F /* Scale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scale.swift; sourceTree = "<group>"; };
 		115AC17628C4338B00D8224F /* ScaleDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleDocument.swift; sourceTree = "<group>"; };
-		117AD57328BFDB9A00F04CC8 /* ScalaEditor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScalaEditor.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		117AD57628BFDB9A00F04CC8 /* ScalaEditorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScalaEditorApp.swift; sourceTree = "<group>"; };
+		117AD57328BFDB9A00F04CC8 /* VariTuner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VariTuner.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		117AD57628BFDB9A00F04CC8 /* VariTunerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariTunerApp.swift; sourceTree = "<group>"; };
 		117AD57828BFDB9A00F04CC8 /* ScaleEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleEditor.swift; sourceTree = "<group>"; };
 		117AD57A28BFDB9B00F04CC8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		117AD57D28BFDB9B00F04CC8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -39,16 +45,40 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11A252F528CD255900E8B66B /* AudioKit in Frameworks */,
+				1107559228CE310A00842049 /* AudioKitUI in Frameworks */,
+				1107559528CE316400842049 /* SoundpipeAudioKit in Frameworks */,
+				1107558F28CE30FD00842049 /* AudioKitEX in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1107558928CE2F8A00842049 /* ScalaEditor */ = {
+			isa = PBXGroup;
+			children = (
+				115AC17628C4338B00D8224F /* ScaleDocument.swift */,
+				117AD57828BFDB9A00F04CC8 /* ScaleEditor.swift */,
+				117AD58428BFDC0900F04CC8 /* ScaleStore.swift */,
+				115AC17428C4078800D8224F /* Scale.swift */,
+				1122966528C2B8A700BD48CC /* ScalesView.swift */,
+			);
+			path = ScalaEditor;
+			sourceTree = "<group>";
+		};
+		1107558A28CE301D00842049 /* Tuner */ = {
+			isa = PBXGroup;
+			children = (
+				1107558B28CE305C00842049 /* Tuner.swift */,
+			);
+			path = Tuner;
+			sourceTree = "<group>";
+		};
 		117AD56A28BFDB9A00F04CC8 = {
 			isa = PBXGroup;
 			children = (
-				117AD57528BFDB9A00F04CC8 /* ScalaEditor */,
+				117AD57528BFDB9A00F04CC8 /* VariTuner */,
 				117AD57428BFDB9A00F04CC8 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -56,27 +86,24 @@
 		117AD57428BFDB9A00F04CC8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				117AD57328BFDB9A00F04CC8 /* ScalaEditor.app */,
+				117AD57328BFDB9A00F04CC8 /* VariTuner.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		117AD57528BFDB9A00F04CC8 /* ScalaEditor */ = {
+		117AD57528BFDB9A00F04CC8 /* VariTuner */ = {
 			isa = PBXGroup;
 			children = (
 				1124201528CA65F4002C4FC0 /* Info.plist */,
-				115AC17628C4338B00D8224F /* ScaleDocument.swift */,
-				117AD57628BFDB9A00F04CC8 /* ScalaEditorApp.swift */,
-				117AD57828BFDB9A00F04CC8 /* ScaleEditor.swift */,
-				117AD58428BFDC0900F04CC8 /* ScaleStore.swift */,
-				115AC17428C4078800D8224F /* Scale.swift */,
-				1122966528C2B8A700BD48CC /* ScalesView.swift */,
+				1107558928CE2F8A00842049 /* ScalaEditor */,
 				111A2E5328BFF86C00E04DC1 /* UtilityExtensions.swift */,
+				117AD57628BFDB9A00F04CC8 /* VariTunerApp.swift */,
 				115AC17028C4012300D8224F /* UtilityViews.swift */,
+				1107558A28CE301D00842049 /* Tuner */,
 				117AD57A28BFDB9B00F04CC8 /* Assets.xcassets */,
 				117AD57C28BFDB9B00F04CC8 /* Preview Content */,
 			);
-			path = ScalaEditor;
+			path = VariTuner;
 			sourceTree = "<group>";
 		};
 		117AD57C28BFDB9B00F04CC8 /* Preview Content */ = {
@@ -90,9 +117,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		117AD57228BFDB9A00F04CC8 /* ScalaEditor */ = {
+		117AD57228BFDB9A00F04CC8 /* VariTuner */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 117AD58128BFDB9B00F04CC8 /* Build configuration list for PBXNativeTarget "ScalaEditor" */;
+			buildConfigurationList = 117AD58128BFDB9B00F04CC8 /* Build configuration list for PBXNativeTarget "VariTuner" */;
 			buildPhases = (
 				117AD56F28BFDB9A00F04CC8 /* Sources */,
 				117AD57028BFDB9A00F04CC8 /* Frameworks */,
@@ -102,9 +129,15 @@
 			);
 			dependencies = (
 			);
-			name = ScalaEditor;
+			name = VariTuner;
+			packageProductDependencies = (
+				11A252F428CD255900E8B66B /* AudioKit */,
+				1107558E28CE30FD00842049 /* AudioKitEX */,
+				1107559128CE310A00842049 /* AudioKitUI */,
+				1107559428CE316400842049 /* SoundpipeAudioKit */,
+			);
 			productName = "Scala Editor";
-			productReference = 117AD57328BFDB9A00F04CC8 /* ScalaEditor.app */;
+			productReference = 117AD57328BFDB9A00F04CC8 /* VariTuner.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -122,7 +155,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 117AD56E28BFDB9A00F04CC8 /* Build configuration list for PBXProject "ScalaEditor" */;
+			buildConfigurationList = 117AD56E28BFDB9A00F04CC8 /* Build configuration list for PBXProject "VariTuner" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -131,11 +164,17 @@
 				Base,
 			);
 			mainGroup = 117AD56A28BFDB9A00F04CC8;
+			packageReferences = (
+				11A252F328CD255900E8B66B /* XCRemoteSwiftPackageReference "AudioKit" */,
+				1107558D28CE30FD00842049 /* XCRemoteSwiftPackageReference "AudioKitEX" */,
+				1107559028CE310A00842049 /* XCRemoteSwiftPackageReference "AudioKitUI" */,
+				1107559328CE316400842049 /* XCRemoteSwiftPackageReference "SoundpipeAudioKit" */,
+			);
 			productRefGroup = 117AD57428BFDB9A00F04CC8 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				117AD57228BFDB9A00F04CC8 /* ScalaEditor */,
+				117AD57228BFDB9A00F04CC8 /* VariTuner */,
 			);
 		};
 /* End PBXProject section */
@@ -158,8 +197,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				117AD57928BFDB9A00F04CC8 /* ScaleEditor.swift in Sources */,
+				1107558C28CE305C00842049 /* Tuner.swift in Sources */,
 				1122966628C2B8A700BD48CC /* ScalesView.swift in Sources */,
-				117AD57728BFDB9A00F04CC8 /* ScalaEditorApp.swift in Sources */,
+				117AD57728BFDB9A00F04CC8 /* VariTunerApp.swift in Sources */,
 				111A2E5428BFF86C00E04DC1 /* UtilityExtensions.swift in Sources */,
 				117AD58528BFDC0900F04CC8 /* ScaleStore.swift in Sources */,
 				115AC17528C4078800D8224F /* Scale.swift in Sources */,
@@ -292,11 +332,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"ScalaEditor/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"VariTuner/Preview Content\"";
 				DEVELOPMENT_TEAM = 6UNM6WLCBV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ScalaEditor/Info.plist;
+				INFOPLIST_FILE = VariTuner/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -307,7 +347,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.alexanderwuque.Scala-Editor";
+				PRODUCT_BUNDLE_IDENTIFIER = com.alexanderwuque.VariTuner;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -322,11 +362,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"ScalaEditor/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"VariTuner/Preview Content\"";
 				DEVELOPMENT_TEAM = 6UNM6WLCBV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ScalaEditor/Info.plist;
+				INFOPLIST_FILE = VariTuner/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -337,7 +377,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.alexanderwuque.Scala-Editor";
+				PRODUCT_BUNDLE_IDENTIFIER = com.alexanderwuque.VariTuner;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -348,7 +388,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		117AD56E28BFDB9A00F04CC8 /* Build configuration list for PBXProject "ScalaEditor" */ = {
+		117AD56E28BFDB9A00F04CC8 /* Build configuration list for PBXProject "VariTuner" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				117AD57F28BFDB9B00F04CC8 /* Debug */,
@@ -357,7 +397,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		117AD58128BFDB9B00F04CC8 /* Build configuration list for PBXNativeTarget "ScalaEditor" */ = {
+		117AD58128BFDB9B00F04CC8 /* Build configuration list for PBXNativeTarget "VariTuner" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				117AD58228BFDB9B00F04CC8 /* Debug */,
@@ -367,6 +407,64 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1107558D28CE30FD00842049 /* XCRemoteSwiftPackageReference "AudioKitEX" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AudioKit/AudioKitEX.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		1107559028CE310A00842049 /* XCRemoteSwiftPackageReference "AudioKitUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AudioKit/AudioKitUI.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.0;
+			};
+		};
+		1107559328CE316400842049 /* XCRemoteSwiftPackageReference "SoundpipeAudioKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AudioKit/SoundpipeAudioKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		11A252F328CD255900E8B66B /* XCRemoteSwiftPackageReference "AudioKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AudioKit/AudioKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1107558E28CE30FD00842049 /* AudioKitEX */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1107558D28CE30FD00842049 /* XCRemoteSwiftPackageReference "AudioKitEX" */;
+			productName = AudioKitEX;
+		};
+		1107559128CE310A00842049 /* AudioKitUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1107559028CE310A00842049 /* XCRemoteSwiftPackageReference "AudioKitUI" */;
+			productName = AudioKitUI;
+		};
+		1107559428CE316400842049 /* SoundpipeAudioKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1107559328CE316400842049 /* XCRemoteSwiftPackageReference "SoundpipeAudioKit" */;
+			productName = SoundpipeAudioKit;
+		};
+		11A252F428CD255900E8B66B /* AudioKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 11A252F328CD255900E8B66B /* XCRemoteSwiftPackageReference "AudioKit" */;
+			productName = AudioKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 117AD56B28BFDB9A00F04CC8 /* Project object */;
 }
