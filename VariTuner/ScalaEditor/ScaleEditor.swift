@@ -46,7 +46,7 @@ struct ScaleEditor: View {
             UIPasteboard.general.setValue(scale.sclString,
                                           forPasteboardType: UTType.plainText.identifier)
         } label: {
-            Label("Copy to pasteboard as .scl plaintext", systemImage: "doc.on.doc")
+            Label("Copy to clipboard as .scl plaintext", systemImage: "doc.on.doc")
         }
         .buttonStyle(.borderless)
     }
@@ -54,6 +54,7 @@ struct ScaleEditor: View {
         Section {
             TextField("Name", text: $scale.name)
                 .disableAutocorrection(true)
+                .textInputAutocapitalization(.never)
         } header: {
             Text("Name")
         }
@@ -94,6 +95,7 @@ struct ScaleEditor: View {
                 }
                 AnimatedActionButton(title: "Add new note", systemImage: "plus.circle.fill") {
                     scale.addPlaceholderNote()
+                    // TODO: ability to focus on the new textfield and sort scale when a new note is added (without sorting the new note until the user clicks away from the new note)
                 }
             }
         } header: {

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+// TODO: switch to Core Data?
 class ScaleStore: ObservableObject {
     let name: String
     @Published var scales = [Scale]() {
@@ -26,6 +26,9 @@ class ScaleStore: ObservableObject {
     private func restoreFromUserDefault() {
         if let jsonData = UserDefaults.standard.data(forKey: userDefaultsKey),
            let decodedScales = try? JSONDecoder().decode(Array<Scale>.self, from: jsonData) {
+            if let JSONString = String(data: jsonData, encoding: String.Encoding.utf8) {
+               print(JSONString)
+            }
             scales = decodedScales
         }
     }
