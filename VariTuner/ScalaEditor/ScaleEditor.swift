@@ -37,6 +37,7 @@ struct ScaleEditor: View {
                 descriptionSection
                 tuningSection
                 notesSection
+                    
             }
         }
     }
@@ -98,6 +99,19 @@ struct ScaleEditor: View {
                     // TODO: ability to focus on the new textfield and sort scale when a new note is added (without sorting the new note until the user clicks away from the new note)
                 }
             }
+            // TODO: https://stackoverflow.com/questions/59003612/extend-swiftui-keyboard-with-custom-button
+//            .toolbar {
+//                ToolbarItemGroup(placement: .keyboard) {
+//                    if case .noteName = focusField {
+//                        Button("test") {
+//
+//                        }
+//                        Button("test2") {
+//
+//                        }
+//                    }
+//                }
+//            }
         } header: {
             HStack {
                 Text("Note Names")
