@@ -25,7 +25,6 @@ struct Scale: Identifiable, Hashable, Codable {
         }
         
         var ratioMode = false
-        var inputRatioIsValid = true
         var name: String = ""
         var cents: Double
         var numerator = ""
@@ -81,6 +80,7 @@ struct Scale: Identifiable, Hashable, Codable {
     var description: String
     var notes: [Note]
     var degreeOneTuning: Double = 261.63
+    var isStarred = false
     
     // MARK: - Intent(s)
     

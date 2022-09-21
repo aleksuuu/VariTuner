@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-// TODO: long press to access context menu (including options such as duplicate, delete, star, rename, edit); favorite/all scales (use a json file to initialize if no userDefault - what's the license for the scala archive?); sort by recent/alphabet; search; generate scale
+// TODO: favorite/all scales (use a json file to initialize if no userDefault - what's the license for the scala archive?); sort by recent/alphabet; search; generate scale
 struct ScalesView: View {
     @EnvironmentObject var store: ScaleStore
     
@@ -14,16 +14,42 @@ struct ScalesView: View {
     
     @State private var scaleToEdit: Scale?
     
+    @State private var searchText = ""
+    
+    @State var refresh = false // TODO: find a more elegant solution to update star (prob unnecessary. iOS15 bug)
+    
     var body: some View {
         NavigationView {
             List {
-                ForEach(store.scales) { scale in
+                ForEach(searchResults) { scale in
                     VStack(alignment: .leading) {
                         Text(scale.name)
+                            .fontWeight(scale.isStarred ? .semibold : .regular)
                         Text(scale.description)
                             .font(.caption)
                     }
                     .lineLimit(1)
+                    .contextMenu {
+                        AnimatedActionButton(title: "Duplicate", systemImage: "doc.on.doc.fill") {
+                            duplicateScale(scale)
+                            scaleToEdit = store.scales[0]
+                        }
+                        if store.scales[scale].isStarred {
+                            AnimatedActionButton(title: "Starred", systemImage: "star.fill") {
+                                store.scales[scale].isStarred = false // bug: update to iOS16
+                            }
+                        } else {
+                            AnimatedActionButton(title: "Star", systemImage: "star") {
+                                store.scales[scale].isStarred = true
+                            }
+                        }
+                        AnimatedActionButton(title: "Edit", systemImage: "pencil") {
+                            scaleToEdit = store.scales[scale]
+                        }
+                        AnimatedActionButton(title: "Delete", systemImage: "minus.circle") {
+                            store.scales.remove(store.scales[scale])
+                        }
+                    }
                     .gesture(editMode == .active ? getTap(for: scale) : nil)
                 }
                 .onDelete { indexSet in
@@ -37,6 +63,9 @@ struct ScalesView: View {
                         .wrappedInNavigationViewToMakeDismissable { scaleToEdit = nil }
                 }
             }
+            .searchable(text: $searchText, prompt: "Search with scale name or description")
+            .disableAutocorrection(true)
+            .textInputAutocapitalization(.never)
             .navigationTitle("Scales")
             .toolbar {
                 ToolbarItem {
@@ -58,19 +87,6 @@ struct ScalesView: View {
                     } label: {
                         Label("New...", systemImage: "doc.badge.plus")
                     }
-//                    Button {
-//
-//                    } label: {
-//                        Label("Add from...", systemImage: "doc.badge.plus")
-//                    }
-//                    .contextMenu {
-//                        AnimatedActionButton(title: "clipboard", systemImage: "doc.on.clipboard") {
-//                            pasteScala()
-//                        }
-//                        AnimatedActionButton(title: "new scale", systemImage: "doc") {
-//                            pasteScala()
-//                        }
-//                    }
                 }
             }
             .environment(\.editMode, $editMode)
@@ -78,6 +94,13 @@ struct ScalesView: View {
         .navigationViewStyle(StackNavigationViewStyle())
         .alert(item: $alertToShow) { alertToShow in
             alertToShow.alert()
+        }
+    }
+    var searchResults: [Scale] {
+        if searchText.isEmpty {
+            return store.scales
+        } else {
+            return store.scales.filter { $0.contains(searchText) }
         }
     }
     private func getTap(for scale: Scale) -> some Gesture {
@@ -98,6 +121,11 @@ struct ScalesView: View {
     
     private func addScale() {
         store.scales.insert(Scale(name: "untitled", description: "", notes: [Scale.Note(cents: 0)]), at: 0)
+    }
+    
+    private func duplicateScale(_ scale: Scale) {
+        let name = scale.name + "_dup"
+        store.scales.insert(Scale(name: name, description: scale.description, notes: scale.notes), at: 0)
     }
 }
 

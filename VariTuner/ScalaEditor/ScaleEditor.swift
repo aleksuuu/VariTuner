@@ -33,23 +33,43 @@ struct ScaleEditor: View {
         VStack {
             Form {
                 copyButton
+                starButton
                 nameSection
                 descriptionSection
                 tuningSection
                 notesSection
-                    
             }
         }
     }
     
     var copyButton: some View {
-        Button {
-            UIPasteboard.general.setValue(scale.sclString,
-                                          forPasteboardType: UTType.plainText.identifier)
-        } label: {
-            Label("Copy to clipboard as .scl plaintext", systemImage: "doc.on.doc")
+        Section {
+            Button {
+                UIPasteboard.general.setValue(scale.sclString,
+                                              forPasteboardType: UTType.plainText.identifier)
+            } label: {
+                Label("Copy to clipboard as .scl plaintext", systemImage: "doc.on.doc")
+            }
+            .buttonStyle(.borderless)
         }
-        .buttonStyle(.borderless)
+    }
+    
+    var starButton: some View {
+        Section {
+            if scale.isStarred {
+                Button {
+                    scale.isStarred = false
+                } label: {
+                    Label("Starred", systemImage: "star.fill")
+                }
+            } else {
+                Button {
+                    scale.isStarred = true
+                } label: {
+                    Label("Star", systemImage: "star")
+                }
+            }
+        }
     }
     var nameSection: some View {
         Section {
@@ -207,7 +227,7 @@ struct NoteRow: View {
                 }
                 .pickerStyle(SegmentedPickerStyle())
                 .disabled(index == 0 ? true : false)
-                .onChange(of: ratioMode) { newRatioMode in
+                .onChange(of: ratioMode) { newRatioMode in // TODO: is this doing anything??
                     if newRatioMode {
                         commitCents(for: note)
                     } else {
