@@ -14,7 +14,7 @@ struct ScalesView: View {
     
     @State private var scaleToEdit: Scale?
     
-    @State private var searchText = ""
+    @State private var searchText = "" // TODO: fuzzy search?
     
     @State var refresh = false // TODO: find a more elegant solution to update star (prob unnecessary. iOS15 bug)
     
