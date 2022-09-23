@@ -53,7 +53,7 @@
             <Locations>
                <Location
                   uuid = "E6D46017-CE34-4CD8-B928-BAE2392D9D6F - e207f497748b357"
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "ScalaEditor.NoteRow.body.getter : some"
@@ -68,7 +68,7 @@
                </Location>
                <Location
                   uuid = "E6D46017-CE34-4CD8-B928-BAE2392D9D6F - 937ecbaa6f635aa1"
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "closure #1 () -&gt; Swift.Optional&lt;SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.focused&lt;&#x3c4;_0_0 where &#x3c4;_1_0: Swift.Hashable&gt;(_: SwiftUI.FocusState&lt;&#x3c4;_1_0&gt;.Binding, equals: &#x3c4;_1_0) -&gt; some&gt;&gt;.0, SwiftUI._ConditionalContent&lt;&lt;&lt;opaque return type of SwiftUI.View.focused&lt;&#x3c4;_0_0 where &#x3c4;_1_0: Swift.Hashable&gt;(_: SwiftUI.FocusState&lt;&#x3c4;_1_0&gt;.Binding, equals: &#x3c4;_1_0) -&gt; some&gt;&gt;.0, &lt;&lt;opaque return type of SwiftUI.View.frame(width: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, height: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, alignment: SwiftUI.Alignment) -&gt; some&gt;&gt;.0&gt;, &lt;&lt;opaque return type of SwiftUI.View.onChange&lt;&#x3c4;_0_0 where &#x3c4;_1_0: Swift.Equatable&gt;(of: &#x3c4;_1_0, perform: (&#x3c4;_1_0) -&gt; ()) -&gt; some&gt;&gt;.0)&gt;&gt; in ScalaEditor.NoteRow.body.getter : some"

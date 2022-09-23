@@ -16,6 +16,7 @@
 		115AC17128C4012300D8224F /* UtilityViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115AC17028C4012300D8224F /* UtilityViews.swift */; };
 		115AC17528C4078800D8224F /* Scale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115AC17428C4078800D8224F /* Scale.swift */; };
 		115AC17728C4338B00D8224F /* ScaleDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115AC17628C4338B00D8224F /* ScaleDocument.swift */; };
+		117757A928DD05230039674F /* ScrollBarTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117757A828DD05230039674F /* ScrollBarTest.swift */; };
 		117AD57728BFDB9A00F04CC8 /* VariTunerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117AD57628BFDB9A00F04CC8 /* VariTunerApp.swift */; };
 		117AD57928BFDB9A00F04CC8 /* ScaleEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117AD57828BFDB9A00F04CC8 /* ScaleEditor.swift */; };
 		117AD57B28BFDB9B00F04CC8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 117AD57A28BFDB9B00F04CC8 /* Assets.xcassets */; };
@@ -33,6 +34,7 @@
 		115AC17028C4012300D8224F /* UtilityViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityViews.swift; sourceTree = "<group>"; };
 		115AC17428C4078800D8224F /* Scale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scale.swift; sourceTree = "<group>"; };
 		115AC17628C4338B00D8224F /* ScaleDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleDocument.swift; sourceTree = "<group>"; };
+		117757A828DD05230039674F /* ScrollBarTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollBarTest.swift; sourceTree = "<group>"; };
 		117AD57328BFDB9A00F04CC8 /* VariTuner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VariTuner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		117AD57628BFDB9A00F04CC8 /* VariTunerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariTunerApp.swift; sourceTree = "<group>"; };
 		117AD57828BFDB9A00F04CC8 /* ScaleEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleEditor.swift; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 		117AD57528BFDB9A00F04CC8 /* VariTuner */ = {
 			isa = PBXGroup;
 			children = (
+				117757A828DD05230039674F /* ScrollBarTest.swift */,
 				1124201528CA65F4002C4FC0 /* Info.plist */,
 				11D5A48B28DCDDE100F3A7A9 /* scaleData.json */,
 				1107558928CE2F8A00842049 /* ScalaEditor */,
@@ -208,6 +211,7 @@
 				117AD58528BFDC0900F04CC8 /* ScaleStore.swift in Sources */,
 				115AC17528C4078800D8224F /* Scale.swift in Sources */,
 				115AC17728C4338B00D8224F /* ScaleDocument.swift in Sources */,
+				117757A928DD05230039674F /* ScrollBarTest.swift in Sources */,
 				115AC17128C4012300D8224F /* UtilityViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
