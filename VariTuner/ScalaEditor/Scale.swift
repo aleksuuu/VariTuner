@@ -14,7 +14,11 @@ enum RatioError: Error {
     case invalidString
 }
 
-struct Scale: Identifiable, Hashable, Codable {
+struct Scale: Identifiable, Hashable, Codable, Comparable {
+    static func < (lhs: Scale, rhs: Scale) -> Bool {
+        lhs.name.localizedStandardCompare(rhs.name) == .orderedAscending
+    }
+    
     struct Note: Hashable, Comparable, Identifiable, Codable {
         static func == (lhs: Scale.Note, rhs: Scale.Note) -> Bool {
             lhs.id == rhs.id

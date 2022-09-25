@@ -16,9 +16,18 @@ private let numberFormatter: NumberFormatter = {
     return formatter
 }()
 
+// TODO: either add geometryreader or change size to fixed values
+
 struct ScaleEditor: View {
     
     @Binding var scale: Scale
+    
+    // var viewOnly: Bool
+    @EnvironmentObject var store: ScaleStore
+    
+    var viewOnly: Bool {
+        !store.userScales.contains(scale)
+    }
     
     
     enum Field: Hashable {
@@ -32,13 +41,27 @@ struct ScaleEditor: View {
     var body: some View {
         VStack {
             Form {
+                if viewOnly {
+                    viewOnlyDescription
+                }
                 copyButton
-                starButton
+//                starButton
+//                duplicateButton
                 nameSection
+                    .disabled(viewOnly)
                 descriptionSection
+                    .disabled(viewOnly)
                 tuningSection
+                    .disabled(viewOnly)
                 notesSection
             }
+        }
+    }
+    
+    var viewOnlyDescription: some View {
+        Section {
+        } footer: {
+            Text("To edit this view-only factory scale, make a duplicate.")
         }
     }
     
@@ -48,34 +71,46 @@ struct ScaleEditor: View {
                 UIPasteboard.general.setValue(scale.sclString,
                                               forPasteboardType: UTType.plainText.identifier)
             } label: {
-                Label("Copy to clipboard as .scl plaintext", systemImage: "doc.on.doc")
+                Label("Copy to Clipboard as .scl Plaintext", systemImage: "doc.on.doc")
             }
             .buttonStyle(.borderless)
         }
     }
     
-    var starButton: some View {
-        Section {
-            if scale.isStarred {
-                Button {
-                    scale.isStarred = false
-                } label: {
-                    Label("Starred", systemImage: "star.fill")
-                }
-            } else {
-                Button {
-                    scale.isStarred = true
-                } label: {
-                    Label("Star", systemImage: "star")
-                }
-            }
-        }
-    }
+//    var starButton: some View {
+//        Section {
+//            if scale.isStarred {
+//                Button {
+//                    scale.isStarred = false
+//                } label: {
+//                    Label("Starred", systemImage: "star.fill")
+//                }
+//            } else {
+//                Button {
+//                    scale.isStarred = true
+//                } label: {
+//                    Label("Star", systemImage: "star")
+//                }
+//            }
+//        }
+//    }
+//
+//    var duplicateButton: some View {
+//        Section {
+//            Button {
+//
+//            } label: {
+//                Label("Duplicate to Edit", systemImage: "doc.on.doc.fill")
+//            }
+//        }
+//    }
+    
     var nameSection: some View {
         Section {
             TextField("Name", text: $scale.name)
                 .disableAutocorrection(true)
                 .textInputAutocapitalization(.never)
+                .foregroundColor(.accentColor)
         } header: {
             Text("Name")
         }
@@ -83,7 +118,8 @@ struct ScaleEditor: View {
     var descriptionSection: some View {
         Section {
             TextField("Description of the Scale", text: $scale.description)
-                .lineLimit(2)
+                //.lineLimit(2)
+                .foregroundColor(.accentColor)
         } header: {
             Text("Description")
         }
@@ -96,6 +132,7 @@ struct ScaleEditor: View {
                     .keyboardType(.decimalPad)
                     .textFieldStyle(.roundedBorder)
                     .frame(width: 80)
+                    .foregroundColor(.accentColor)
                 Text("Hz")
             }
         } header: {
@@ -119,6 +156,7 @@ struct ScaleEditor: View {
                     // TODO: ability to focus on the new textfield and sort scale when a new note is added (without sorting the new note until the user clicks away from the new note)
                 }
             }
+            .disabled(viewOnly)
             // TODO: https://stackoverflow.com/questions/59003612/extend-swiftui-keyboard-with-custom-button
 //            .toolbar {
 //                ToolbarItemGroup(placement: .keyboard) {
@@ -263,6 +301,7 @@ struct NoteRow: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ScaleEditor(scale: .constant(ScaleStore(named: "Preview").scales[0]))
+        ScaleEditor(scale: .constant(ScaleStore(named: "Preview").userScales[0]))
+            .environmentObject(ScaleStore(named: "Preview"))
     }
 }
