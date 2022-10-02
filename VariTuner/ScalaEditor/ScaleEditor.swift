@@ -22,8 +22,9 @@ struct ScaleEditor: View {
     
     @Binding var scale: Scale
     
-    // var viewOnly: Bool
     @EnvironmentObject var store: ScaleStore
+    
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     
     var viewOnly: Bool {
         !store.userScales.contains(scale)
@@ -172,15 +173,21 @@ struct ScaleEditor: View {
 //            }
         } header: {
             HStack {
+//                Spacer()
                 Text("Note Names")
-                    .frame(width: UIScreen.main.bounds.width * DrawingConstants.noteNameColWidthFactor, alignment: .leading)
+//                    .frame(width: UIScreen.main.bounds.width * DrawingConstants.noteNameColWidthFactor, alignment: .leading)
+                    .frame(width: ScaleEditor.DrawingConstants.noteNameColWidth)
+                Spacer()
                 Text("Pitch Values")
-                    .frame(width: UIScreen.main.bounds.width * DrawingConstants.noteNameColWidthFactor, alignment: .leading)
+//                    .frame(width: UIScreen.main.bounds.width * DrawingConstants.noteNameColWidthFactor, alignment: .leading)
+                    .frame(width: ScaleEditor.DrawingConstants.pitchColWidth)
+                Spacer()
                 Picker("Cents or Ratio", selection: $globalRatioMode) {
                     Text("¢").tag(false)
                     Text(":").tag(true)
                 }
                 .pickerStyle(SegmentedPickerStyle())
+                .frame(width: ScaleEditor.DrawingConstants.pickerColWidth)
                 .onChange(of: globalRatioMode) { newRatioMode in
                     withAnimation {
                         for note in scale.notes {
@@ -188,6 +195,7 @@ struct ScaleEditor: View {
                         }
                     }
                 }
+//                Spacer()
             }
         } footer: {
             Text("Learn more about the .scl file format at https://www.huygens-fokker.org/scala/scl_format.html.")
@@ -199,8 +207,12 @@ struct ScaleEditor: View {
     struct DrawingConstants {
         static let notesPadding: CGFloat = 2.0
         static let borderWidth: CGFloat = 0.25
-        static let noteNameColWidthFactor: CGFloat = 0.3
-        static let pitchColWidthFactor: CGFloat = 0.3
+//        static let noteNameColWidthFactor: CGFloat = 0.3
+//        static let pitchColWidthFactor: CGFloat = 0.3
+        static let noteNameColWidth: CGFloat = 120
+        static let pitchColWidth: CGFloat = 120
+        static let pickerColWidth: CGFloat = 90
+//        static let notesSectionWidth: CGFloat = 330
     }
     
 }
@@ -216,17 +228,21 @@ struct NoteRow: View {
     var body: some View {
         HStack {
             if let index = scaleEditor.scale.notes.index(matching: note) {
+//                Spacer()
                 TextField("Degree \(index)", text: scaleEditor.$scale.notes[note].name)
                     .disableAutocorrection(true)
                     .foregroundColor(.accentColor)
-                    .frame(width: UIScreen.main.bounds.width * ScaleEditor.DrawingConstants.noteNameColWidthFactor)
+//                    .frame(width: UIScreen.main.bounds.width * ScaleEditor.DrawingConstants.noteNameColWidthFactor)
+                    .frame(width: ScaleEditor.DrawingConstants.noteNameColWidth)
                     .focused(scaleEditor.$focusField, equals: .noteName(note.id))
+                Spacer()
                 if !note.ratioMode {
                     TextField("Cents", value: scaleEditor.$scale.notes[note].cents, formatter: numberFormatter)
                         .foregroundColor(index == 0 ? .secondary : .accentColor)
                         .disabled(index == 0 ? true : false)
                         .keyboardType(.decimalPad)
-                        .frame(width: UIScreen.main.bounds.width * ScaleEditor.DrawingConstants.pitchColWidthFactor)
+//                        .frame(width: UIScreen.main.bounds.width * ScaleEditor.DrawingConstants.pitchColWidthFactor)
+                        .frame(width: ScaleEditor.DrawingConstants.pitchColWidth)
                         .onChange(of: scaleEditor.focusField) { newField in
                             if let last = scaleEditor.scale.notes.last, newField != .noteName(last.id), newField != .pitchValue(last.id) {
                                 commitCents(for: note)
@@ -256,14 +272,16 @@ struct NoteRow: View {
                     .foregroundColor(index == 0 ? .secondary : (inputRatioIsValid ? .accentColor : Color.red))
                     .disabled(index == 0 ? true : false)
                     .keyboardType(.decimalPad)
-                    .frame(width: UIScreen.main.bounds.width * ScaleEditor.DrawingConstants.pitchColWidthFactor)
+//                    .frame(width: UIScreen.main.bounds.width * ScaleEditor.DrawingConstants.pitchColWidthFactor)
+                    .frame(width: ScaleEditor.DrawingConstants.pitchColWidth)
                 }
-                
+                Spacer()
                 Picker("Cents or Ratio", selection: scaleEditor.$scale.notes[note].ratioMode) {
                     Text("¢").tag(false)
                     Text(":").tag(true)
                 }
                 .pickerStyle(SegmentedPickerStyle())
+                .frame(width: ScaleEditor.DrawingConstants.pickerColWidth)
                 .disabled(index == 0 ? true : false)
                 .onChange(of: ratioMode) { newRatioMode in // TODO: is this doing anything??
                     if newRatioMode {
@@ -272,9 +290,11 @@ struct NoteRow: View {
                         commitRatio(for: note)
                     }
                 }
+//                Spacer()
             }
         }
         .textFieldStyle(.roundedBorder)
+        .deleteDisabled(scaleEditor.viewOnly)
     }
     private func commitCents(for note: Scale.Note) {
         withAnimation {
