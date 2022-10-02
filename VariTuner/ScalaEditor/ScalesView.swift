@@ -26,7 +26,7 @@ struct ScalesView: View {
     
     @State private var scrollTarget: String?
     
-    @State var refresh = false // TODO: find a more elegant solution to update star (prob unnecessary. iOS15 bug)
+    // @State var refresh = false // TODO: find a more elegant solution to update star (prob unnecessary. iOS15 bug)
     
     @State var category = Category.all
     
@@ -52,10 +52,7 @@ struct ScalesView: View {
                                         if !scalesWithSameInitial.isEmpty {
                                             Section {
                                                 ForEach(scalesWithSameInitial) { scale in
-                                                    let isAUserScale = store.userScales.contains(scale)
                                                     ScaleRow(scalesView: self, scale: scale)
-                                                        .deleteDisabled(!isAUserScale)
-                                                        .foregroundColor(isAUserScale ? .accentColor : .black)
                                                 }
                                                 .onDelete { indexSet in // indexSet not working?
                                                     store.userScales.remove(atOffsets: indexSet)
@@ -186,9 +183,11 @@ struct ScaleRow: View {
     var scalesView: ScalesView
     var scale: Scale
     var body: some View {
+        let isUser = scalesView.store.userScales.contains(scale)
+        let isStarred = scalesView.store.starredScales.contains(scale)
         VStack(alignment: .leading) {
             Text(scale.name)
-                .fontWeight(scale.isStarred ? .semibold : .regular)
+                .fontWeight(isStarred ? .semibold : .regular)
             Text(scale.description)
                 .font(.caption)
         }
@@ -220,9 +219,10 @@ struct ScaleRow: View {
                     scalesView.scaleToEdit = scalesView.store.userScales[scale]
                 }
             }
-            
         }
         .gesture(scalesView.editMode == .active ? getTap(for: scale) : nil)
+        .deleteDisabled(!isUser)
+        .foregroundColor(isUser ? .accentColor : .black)
     }
     private func getTap(for scale: Scale) -> some Gesture {
         TapGesture().onEnded {

@@ -84,7 +84,6 @@ struct Scale: Identifiable, Hashable, Codable, Comparable {
     var description: String
     var notes: [Note]
     var degreeOneTuning: Double = 261.63
-    var isStarred = false
     
     // MARK: - Intent(s)
     

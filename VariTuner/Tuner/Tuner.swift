@@ -99,6 +99,7 @@ struct TunerView: View {
             HStack {
                 Text("Frequency")
                 Spacer()
+//                let _ = print(conductor.data.pitch)
                 Text("\(conductor.data.pitch, specifier: "%0.1f")")
             }.padding()
 
@@ -125,8 +126,10 @@ struct TunerView: View {
         .navigationBarTitle("Tuner")
         .onAppear {
             conductor.start()
+            conductor.tracker.start()
         }
         .onDisappear {
+            conductor.tracker.stop()
             conductor.stop()
         }
     }

@@ -16,14 +16,13 @@
 		115AC17128C4012300D8224F /* UtilityViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115AC17028C4012300D8224F /* UtilityViews.swift */; };
 		115AC17528C4078800D8224F /* Scale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115AC17428C4078800D8224F /* Scale.swift */; };
 		115AC17728C4338B00D8224F /* ScaleDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115AC17628C4338B00D8224F /* ScaleDocument.swift */; };
-		117757A928DD05230039674F /* ScrollBarTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117757A828DD05230039674F /* ScrollBarTest.swift */; };
 		117AD57728BFDB9A00F04CC8 /* VariTunerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117AD57628BFDB9A00F04CC8 /* VariTunerApp.swift */; };
 		117AD57928BFDB9A00F04CC8 /* ScaleEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117AD57828BFDB9A00F04CC8 /* ScaleEditor.swift */; };
 		117AD57B28BFDB9B00F04CC8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 117AD57A28BFDB9B00F04CC8 /* Assets.xcassets */; };
 		117AD57E28BFDB9B00F04CC8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 117AD57D28BFDB9B00F04CC8 /* Preview Assets.xcassets */; };
 		117AD58528BFDC0900F04CC8 /* ScaleStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117AD58428BFDC0900F04CC8 /* ScaleStore.swift */; };
+		119307B928E654A000E0F806 /* factoryScales.json in Resources */ = {isa = PBXBuildFile; fileRef = 119307B828E654A000E0F806 /* factoryScales.json */; };
 		11A252F528CD255900E8B66B /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 11A252F428CD255900E8B66B /* AudioKit */; };
-		11D5A48C28DCDDE100F3A7A9 /* factoryScales.json in Resources */ = {isa = PBXBuildFile; fileRef = 11D5A48B28DCDDE100F3A7A9 /* factoryScales.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,14 +33,13 @@
 		115AC17028C4012300D8224F /* UtilityViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityViews.swift; sourceTree = "<group>"; };
 		115AC17428C4078800D8224F /* Scale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scale.swift; sourceTree = "<group>"; };
 		115AC17628C4338B00D8224F /* ScaleDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleDocument.swift; sourceTree = "<group>"; };
-		117757A828DD05230039674F /* ScrollBarTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollBarTest.swift; sourceTree = "<group>"; };
 		117AD57328BFDB9A00F04CC8 /* VariTuner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VariTuner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		117AD57628BFDB9A00F04CC8 /* VariTunerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariTunerApp.swift; sourceTree = "<group>"; };
 		117AD57828BFDB9A00F04CC8 /* ScaleEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleEditor.swift; sourceTree = "<group>"; };
 		117AD57A28BFDB9B00F04CC8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		117AD57D28BFDB9B00F04CC8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		117AD58428BFDC0900F04CC8 /* ScaleStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleStore.swift; sourceTree = "<group>"; };
-		11D5A48B28DCDDE100F3A7A9 /* factoryScales.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = factoryScales.json; sourceTree = "<group>"; };
+		119307B828E654A000E0F806 /* factoryScales.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = factoryScales.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,9 +96,8 @@
 		117AD57528BFDB9A00F04CC8 /* VariTuner */ = {
 			isa = PBXGroup;
 			children = (
-				117757A828DD05230039674F /* ScrollBarTest.swift */,
 				1124201528CA65F4002C4FC0 /* Info.plist */,
-				11D5A48B28DCDDE100F3A7A9 /* factoryScales.json */,
+				119307B828E654A000E0F806 /* factoryScales.json */,
 				1107558928CE2F8A00842049 /* ScalaEditor */,
 				111A2E5328BFF86C00E04DC1 /* UtilityExtensions.swift */,
 				117AD57628BFDB9A00F04CC8 /* VariTunerApp.swift */,
@@ -190,8 +187,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				119307B928E654A000E0F806 /* factoryScales.json in Resources */,
 				117AD57E28BFDB9B00F04CC8 /* Preview Assets.xcassets in Resources */,
-				11D5A48C28DCDDE100F3A7A9 /* factoryScales.json in Resources */,
 				117AD57B28BFDB9B00F04CC8 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -211,7 +208,6 @@
 				117AD58528BFDC0900F04CC8 /* ScaleStore.swift in Sources */,
 				115AC17528C4078800D8224F /* Scale.swift in Sources */,
 				115AC17728C4338B00D8224F /* ScaleDocument.swift in Sources */,
-				117757A928DD05230039674F /* ScrollBarTest.swift in Sources */,
 				115AC17128C4012300D8224F /* UtilityViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -345,11 +341,12 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VariTuner/Info.plist;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We use the microphone as an input device to the tuner.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -375,11 +372,12 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VariTuner/Info.plist;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We use the microphone as an input device to the tuner.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
