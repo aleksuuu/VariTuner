@@ -6,7 +6,7 @@
 //
 
 import Foundation
-// TODO: recent; switch to Core Data?
+// TODO: recent; add note one to the json; switch to Core Data?
 class ScaleStore: ObservableObject {
     let name: String
     @Published var userScales = [Scale]() {

@@ -7,39 +7,47 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1107558C28CE305C00842049 /* Tuner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1107558B28CE305C00842049 /* Tuner.swift */; };
+		1107558C28CE305C00842049 /* TunerConductor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1107558B28CE305C00842049 /* TunerConductor.swift */; };
 		1107558F28CE30FD00842049 /* AudioKitEX in Frameworks */ = {isa = PBXBuildFile; productRef = 1107558E28CE30FD00842049 /* AudioKitEX */; };
 		1107559228CE310A00842049 /* AudioKitUI in Frameworks */ = {isa = PBXBuildFile; productRef = 1107559128CE310A00842049 /* AudioKitUI */; };
 		1107559528CE316400842049 /* SoundpipeAudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1107559428CE316400842049 /* SoundpipeAudioKit */; };
 		111A2E5428BFF86C00E04DC1 /* UtilityExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A2E5328BFF86C00E04DC1 /* UtilityExtensions.swift */; };
 		1122966628C2B8A700BD48CC /* ScalesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1122966528C2B8A700BD48CC /* ScalesView.swift */; };
+		1124DF9928E93AD00030CF9F /* BravuraText.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1124DF9828E936520030CF9F /* BravuraText.otf */; };
 		115AC17128C4012300D8224F /* UtilityViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115AC17028C4012300D8224F /* UtilityViews.swift */; };
 		115AC17528C4078800D8224F /* Scale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115AC17428C4078800D8224F /* Scale.swift */; };
 		115AC17728C4338B00D8224F /* ScaleDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115AC17628C4338B00D8224F /* ScaleDocument.swift */; };
+		11645BF628EC85D50058810A /* factoryScales.json in Resources */ = {isa = PBXBuildFile; fileRef = 11645BF528EC85D50058810A /* factoryScales.json */; };
 		117AD57728BFDB9A00F04CC8 /* VariTunerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117AD57628BFDB9A00F04CC8 /* VariTunerApp.swift */; };
 		117AD57928BFDB9A00F04CC8 /* ScaleEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117AD57828BFDB9A00F04CC8 /* ScaleEditor.swift */; };
 		117AD57B28BFDB9B00F04CC8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 117AD57A28BFDB9B00F04CC8 /* Assets.xcassets */; };
 		117AD57E28BFDB9B00F04CC8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 117AD57D28BFDB9B00F04CC8 /* Preview Assets.xcassets */; };
 		117AD58528BFDC0900F04CC8 /* ScaleStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117AD58428BFDC0900F04CC8 /* ScaleStore.swift */; };
-		119307B928E654A000E0F806 /* factoryScales.json in Resources */ = {isa = PBXBuildFile; fileRef = 119307B828E654A000E0F806 /* factoryScales.json */; };
 		11A252F528CD255900E8B66B /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 11A252F428CD255900E8B66B /* AudioKit */; };
+		11C2B9F828ECB641001555F4 /* VariTuner.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 11C2B9F628ECB641001555F4 /* VariTuner.xcdatamodeld */; };
+		11C6638D28EAA1A20081BA64 /* TunerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11C6638C28EAA1A20081BA64 /* TunerData.swift */; };
+		11C6638F28EAA1CA0081BA64 /* TunerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11C6638E28EAA1CA0081BA64 /* TunerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1107558B28CE305C00842049 /* Tuner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tuner.swift; sourceTree = "<group>"; };
+		1107558B28CE305C00842049 /* TunerConductor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunerConductor.swift; sourceTree = "<group>"; };
 		111A2E5328BFF86C00E04DC1 /* UtilityExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityExtensions.swift; sourceTree = "<group>"; };
 		1122966528C2B8A700BD48CC /* ScalesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScalesView.swift; sourceTree = "<group>"; };
 		1124201528CA65F4002C4FC0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1124DF9828E936520030CF9F /* BravuraText.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = BravuraText.otf; sourceTree = "<group>"; };
 		115AC17028C4012300D8224F /* UtilityViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityViews.swift; sourceTree = "<group>"; };
 		115AC17428C4078800D8224F /* Scale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scale.swift; sourceTree = "<group>"; };
 		115AC17628C4338B00D8224F /* ScaleDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleDocument.swift; sourceTree = "<group>"; };
+		11645BF528EC85D50058810A /* factoryScales.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = factoryScales.json; sourceTree = "<group>"; };
 		117AD57328BFDB9A00F04CC8 /* VariTuner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VariTuner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		117AD57628BFDB9A00F04CC8 /* VariTunerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariTunerApp.swift; sourceTree = "<group>"; };
 		117AD57828BFDB9A00F04CC8 /* ScaleEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleEditor.swift; sourceTree = "<group>"; };
 		117AD57A28BFDB9B00F04CC8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		117AD57D28BFDB9B00F04CC8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		117AD58428BFDC0900F04CC8 /* ScaleStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleStore.swift; sourceTree = "<group>"; };
-		119307B828E654A000E0F806 /* factoryScales.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = factoryScales.json; sourceTree = "<group>"; };
+		11C2B9F728ECB641001555F4 /* VariTuner.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VariTuner.xcdatamodel; sourceTree = "<group>"; };
+		11C6638C28EAA1A20081BA64 /* TunerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunerData.swift; sourceTree = "<group>"; };
+		11C6638E28EAA1CA0081BA64 /* TunerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,9 +80,19 @@
 		1107558A28CE301D00842049 /* Tuner */ = {
 			isa = PBXGroup;
 			children = (
-				1107558B28CE305C00842049 /* Tuner.swift */,
+				1107558B28CE305C00842049 /* TunerConductor.swift */,
+				11C6638E28EAA1CA0081BA64 /* TunerView.swift */,
+				11C6638C28EAA1A20081BA64 /* TunerData.swift */,
 			);
 			path = Tuner;
+			sourceTree = "<group>";
+		};
+		1124DF9728E936040030CF9F /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				1124DF9828E936520030CF9F /* BravuraText.otf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 		117AD56A28BFDB9A00F04CC8 = {
@@ -96,11 +114,13 @@
 		117AD57528BFDB9A00F04CC8 /* VariTuner */ = {
 			isa = PBXGroup;
 			children = (
+				1124DF9728E936040030CF9F /* Fonts */,
 				1124201528CA65F4002C4FC0 /* Info.plist */,
-				119307B828E654A000E0F806 /* factoryScales.json */,
+				11645BF528EC85D50058810A /* factoryScales.json */,
 				1107558928CE2F8A00842049 /* ScalaEditor */,
 				111A2E5328BFF86C00E04DC1 /* UtilityExtensions.swift */,
 				117AD57628BFDB9A00F04CC8 /* VariTunerApp.swift */,
+				11C2B9F628ECB641001555F4 /* VariTuner.xcdatamodeld */,
 				115AC17028C4012300D8224F /* UtilityViews.swift */,
 				1107558A28CE301D00842049 /* Tuner */,
 				117AD57A28BFDB9B00F04CC8 /* Assets.xcassets */,
@@ -187,8 +207,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				119307B928E654A000E0F806 /* factoryScales.json in Resources */,
 				117AD57E28BFDB9B00F04CC8 /* Preview Assets.xcassets in Resources */,
+				11645BF628EC85D50058810A /* factoryScales.json in Resources */,
+				1124DF9928E93AD00030CF9F /* BravuraText.otf in Resources */,
 				117AD57B28BFDB9B00F04CC8 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -200,9 +221,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11C6638D28EAA1A20081BA64 /* TunerData.swift in Sources */,
 				117AD57928BFDB9A00F04CC8 /* ScaleEditor.swift in Sources */,
-				1107558C28CE305C00842049 /* Tuner.swift in Sources */,
+				11C2B9F828ECB641001555F4 /* VariTuner.xcdatamodeld in Sources */,
+				1107558C28CE305C00842049 /* TunerConductor.swift in Sources */,
 				1122966628C2B8A700BD48CC /* ScalesView.swift in Sources */,
+				11C6638F28EAA1CA0081BA64 /* TunerView.swift in Sources */,
 				117AD57728BFDB9A00F04CC8 /* VariTunerApp.swift in Sources */,
 				111A2E5428BFF86C00E04DC1 /* UtilityExtensions.swift in Sources */,
 				117AD58528BFDC0900F04CC8 /* ScaleStore.swift in Sources */,
@@ -471,6 +495,19 @@
 			productName = AudioKit;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		11C2B9F628ECB641001555F4 /* VariTuner.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				11C2B9F728ECB641001555F4 /* VariTuner.xcdatamodel */,
+			);
+			currentVersion = 11C2B9F728ECB641001555F4 /* VariTuner.xcdatamodel */;
+			path = VariTuner.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 117AD56B28BFDB9A00F04CC8 /* Project object */;
 }
