@@ -30,6 +30,7 @@ struct ScaleEditor: View {
         case noteName(UUID)
         case pitchValue(UUID)
         case centsRatioOptions(UUID)
+        case anotherTextField
     }
     
     @FocusState var focusField: Field?
@@ -41,8 +42,6 @@ struct ScaleEditor: View {
                     viewOnlyDescription
                 }
                 copyButton
-                //                starButton
-                //                duplicateButton
                 nameSection
                     .disabled(viewOnly)
                 descriptionSection
@@ -50,6 +49,72 @@ struct ScaleEditor: View {
                 tuningSection
                     .disabled(viewOnly)
                 notesSection
+            }
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    if case let .noteName(id) = focusField {
+                        if let currentNote = scale.notes.first(where: { $0.id == id }) {
+                            Group {
+                                Button {
+                                    scale.notes[currentNote].name.append(" \u{E260}")
+                                } label: {
+                                    Text("\u{E260}")
+                                }
+                                Button {
+                                    scale.notes[currentNote].name.append(" \u{E262}")
+                                } label: {
+                                    Text("\u{E262}")
+                                }
+                                Button {
+                                    scale.notes[currentNote].name.append(" \u{E270}")
+                                } label: {
+                                    Text("\u{E270}")
+                                }
+                                Button {
+                                    scale.notes[currentNote].name.append(" \u{E271}")
+                                } label: {
+                                    Text("\u{E271}")
+                                }
+                                Button {
+                                    scale.notes[currentNote].name.append(" \u{E274}")
+                                } label: {
+                                    Text("\u{E274}")
+                                }
+                                Button {
+                                    scale.notes[currentNote].name.append(" \u{E275}")
+                                } label: {
+                                    Text("\u{E273}")
+                                }
+                                Button {
+                                    scale.notes[currentNote].name.append(" \u{E280}")
+                                } label: {
+                                    Text("\u{E280}")
+                                }
+                                Button {
+                                    scale.notes[currentNote].name.append(" \u{E281}")
+                                } label: {
+                                    Text("\u{E281}")
+                                }
+                                Button {
+                                    scale.notes[currentNote].name.append(" \u{E282}")
+                                } label: {
+                                    Text("\u{E282}")
+                                }
+                                Button {
+                                    scale.notes[currentNote].name.append(" \u{E283}")
+                                } label: {
+                                    Text("\u{E283}")
+                                }
+                            }
+                            .font(.custom("BravuraText", size: DrawingConstants.accidentalFontSize, relativeTo: .body))
+                            
+                        }
+                    }
+                    Spacer()
+                    Button("Done") {
+                        focusField = nil
+                    }
+                }
             }
         }
     }
@@ -73,40 +138,13 @@ struct ScaleEditor: View {
         }
     }
     
-    //    var starButton: some View {
-    //        Section {
-    //            if scale.isStarred {
-    //                Button {
-    //                    scale.isStarred = false
-    //                } label: {
-    //                    Label("Starred", systemImage: "star.fill")
-    //                }
-    //            } else {
-    //                Button {
-    //                    scale.isStarred = true
-    //                } label: {
-    //                    Label("Star", systemImage: "star")
-    //                }
-    //            }
-    //        }
-    //    }
-    //
-    //    var duplicateButton: some View {
-    //        Section {
-    //            Button {
-    //
-    //            } label: {
-    //                Label("Duplicate to Edit", systemImage: "doc.on.doc.fill")
-    //            }
-    //        }
-    //    }
-    
     var nameSection: some View {
         Section {
             TextField("Name", text: $scale.name)
                 .disableAutocorrection(true)
                 .textInputAutocapitalization(.never)
                 .foregroundColor(.accentColor)
+                .focused($focusField, equals: .anotherTextField)
         } header: {
             Text("Name")
         }
@@ -114,8 +152,8 @@ struct ScaleEditor: View {
     var descriptionSection: some View {
         Section {
             TextField("Description of the Scale", text: $scale.description)
-            //.lineLimit(2)
                 .foregroundColor(.accentColor)
+                .focused($focusField, equals: .anotherTextField)
         } header: {
             Text("Description")
         }
@@ -124,17 +162,18 @@ struct ScaleEditor: View {
     var tuningSection: some View {
         Section {
             HStack {
-                TextField("Frequency", value: $scale.degreeOneTuning, formatter: numberFormatter)
+                TextField("Fundamental Frequency", value: $scale.fundamental, formatter: numberFormatter)
                     .keyboardType(.decimalPad)
                     .textFieldStyle(.roundedBorder)
                     .frame(width: 80)
                     .foregroundColor(.accentColor)
+                    .focused($focusField, equals: .anotherTextField)
                 Text("Hz")
             }
         } header: {
-            Text("Middle Degree 1 Frequency")
+            Text("Fundamental Frequency")
         } footer: {
-            Text("The frequency of the first scale degree in the middle of the range. (When A4 = 440 Hz, C4 = 261.63 Hz.)")
+            Text("The frequency of the first scale degree in the zeroth equave (e.g., in 12edo, when A4 = 440 Hz, C0 = 16.35 Hz).")
         }
     }
     
@@ -156,30 +195,13 @@ struct ScaleEditor: View {
             }
             .disabled(viewOnly)
             // TODO: https://stackoverflow.com/questions/59003612/extend-swiftui-keyboard-with-custom-button
-            //            .toolbar {
-            //                ToolbarItemGroup(placement: .keyboard) {
-            //                    if case .noteName = focusField {
-            //                        Button("test") {
-            //
-            //                        }
-            //                        Button("test2") {
-            //
-            //                        }
-            //                    }
-            //                }
-            //            }
         } header: {
             GeometryReader { geometry in
                 HStack {
-                    //                Spacer()
                     Text("Note Names")
-                    //                    .frame(width: UIScreen.main.bounds.width * DrawingConstants.noteNameColWidthFactor, alignment: .leading)
-                    //                        .frame(width: ScaleEditor.DrawingConstants.noteNameColWidth)
                         .frame(width: geometry.size.width * DrawingConstants.noteNameColWidthFactor, alignment: .leading)
                     Spacer()
                     Text("Pitch Values")
-                    //                    .frame(width: UIScreen.main.bounds.width * DrawingConstants.noteNameColWidthFactor, alignment: .leading)
-                    //                        .frame(width: ScaleEditor.DrawingConstants.pitchColWidth)
                         .frame(width: geometry.size.width * DrawingConstants.pitchColWidthFactor, alignment: .leading)
                     Spacer()
                     Picker("Cents or Ratio", selection: $globalRatioMode) {
@@ -187,7 +209,6 @@ struct ScaleEditor: View {
                         Text(":").tag(true)
                     }
                     .pickerStyle(SegmentedPickerStyle())
-                    //                    .frame(width: ScaleEditor.DrawingConstants.pickerColWidth)
                     .onChange(of: globalRatioMode) { newRatioMode in
                         withAnimation {
                             for note in scale.notes {
@@ -195,7 +216,6 @@ struct ScaleEditor: View {
                             }
                         }
                     }
-                    //                Spacer()
                 }
             }
             .padding(.bottom)
@@ -213,10 +233,8 @@ struct ScaleEditor: View {
         static let borderWidth: CGFloat = 0.25
         static let noteNameColWidthFactor: CGFloat = 0.35
         static let pitchColWidthFactor: CGFloat = 0.35
-        static let noteNameColWidth: CGFloat = 120
-        static let pitchColWidth: CGFloat = 120
-        static let pickerColWidth: CGFloat = 90
-        //        static let notesSectionWidth: CGFloat = 330
+        static let accidentalFontSize: CGFloat = 28
+        static let noteNameFontSize: CGFloat = 18
     }
     
 }
@@ -226,19 +244,20 @@ struct NoteRow: View {
     var note: Scale.Note
     var width: CGFloat
     
-    // TODO: decide what to keep in the Model and what is UI that belongs here in the View; add multiselect and duplicate option
     @State private var ratioMode = false
     @State private var inputRatioIsValid = true
     
+    private var index: Int? {
+        scaleEditor.scale.notes.index(matching: note)
+    }
+    
     var body: some View {
         HStack {
-            if let index = scaleEditor.scale.notes.index(matching: note) {
-                //                Spacer()
-                TextField("Degree \(index)", text: scaleEditor.$scale.notes[note].name)
+            if index != nil {
+                TextField("Degree \(index!)", text: scaleEditor.$scale.notes[note].name)
+                    .font(.custom("BravuraText", size: ScaleEditor.DrawingConstants.noteNameFontSize, relativeTo: .body))
                     .disableAutocorrection(true)
                     .foregroundColor(.accentColor)
-                //                    .frame(width: UIScreen.main.bounds.width * ScaleEditor.DrawingConstants.noteNameColWidthFactor)
-                //                    .frame(width: ScaleEditor.DrawingConstants.noteNameColWidth)
                     .frame(width: width * ScaleEditor.DrawingConstants.noteNameColWidthFactor)
                     .focused(scaleEditor.$focusField, equals: .noteName(note.id))
                 Spacer()
@@ -247,8 +266,6 @@ struct NoteRow: View {
                         .foregroundColor(index == 0 ? .secondary : .accentColor)
                         .disabled(index == 0 ? true : false)
                         .keyboardType(.decimalPad)
-                    //                        .frame(width: UIScreen.main.bounds.width * ScaleEditor.DrawingConstants.pitchColWidthFactor)
-                    //                        .frame(width: ScaleEditor.DrawingConstants.pitchColWidth)
                         .frame(width: width * ScaleEditor.DrawingConstants.pitchColWidthFactor)
                         .onChange(of: scaleEditor.focusField) { newField in
                             if let last = scaleEditor.scale.notes.last, newField != .noteName(last.id), newField != .pitchValue(last.id) {
@@ -279,7 +296,6 @@ struct NoteRow: View {
                     .foregroundColor(index == 0 ? .secondary : (inputRatioIsValid ? .accentColor : Color.red))
                     .disabled(index == 0 ? true : false)
                     .keyboardType(.decimalPad)
-                    //                    .frame(width: UIScreen.main.bounds.width * ScaleEditor.DrawingConstants.pitchColWidthFactor)
                     .frame(width: width * ScaleEditor.DrawingConstants.pitchColWidthFactor)
                 }
                 Spacer()
@@ -288,7 +304,6 @@ struct NoteRow: View {
                     Text(":").tag(true)
                 }
                 .pickerStyle(SegmentedPickerStyle())
-                //                .frame(width: ScaleEditor.DrawingConstants.pickerColWidth)
                 .disabled(index == 0 ? true : false)
                 .onChange(of: ratioMode) { newRatioMode in // TODO: is this doing anything??
                     if newRatioMode {
@@ -297,11 +312,12 @@ struct NoteRow: View {
                         commitRatio(for: note)
                     }
                 }
-                //                Spacer()
             }
         }
         .textFieldStyle(.roundedBorder)
-        .deleteDisabled(scaleEditor.viewOnly)
+        .deleteDisabled(scaleEditor.viewOnly || index == 0) // TODO: fix this (maybe it doesn't work because of the if clause?)
+//        .deleteDisabled(true)
+        
     }
     private func commitCents(for note: Scale.Note) {
         withAnimation {
