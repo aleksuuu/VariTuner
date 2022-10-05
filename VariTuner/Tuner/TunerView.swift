@@ -10,7 +10,7 @@ import AudioKit
 import AudioKitUI
 
 struct TunerView: View {
-    @StateObject var conductor = TunerConductor()
+    @StateObject var conductor = TunerConductor(scale: Scale(name: "Preview", description: "Preview scale", notes: []))
 
     var body: some View {
         VStack {
@@ -30,7 +30,11 @@ struct TunerView: View {
             HStack {
                 Text("Note Name")
                 Spacer()
-                Text("\(conductor.data.noteNameWithSharps) / \(conductor.data.noteNameWithFlats)")
+                Text("\(conductor.data.noteName)")
+                    .font(.custom("BravuraText", size: DrawingConstants.noteNameFontSize, relativeTo: .body))
+                + Text("\(conductor.data.equave)")
+                    .font(.caption)
+                    .baselineOffset(-4.0)
             }.padding()
 
             InputDevicePicker(device: conductor.initialDevice)
@@ -41,7 +45,7 @@ struct TunerView: View {
 
             NodeFFTView(conductor.tappableNodeC).clipped()
         }
-        .navigationBarTitle("Tuner")
+        .navigationBarTitle(conductor.scale.name)
         .onAppear {
             conductor.start()
             conductor.tracker.start()
@@ -50,6 +54,9 @@ struct TunerView: View {
             conductor.tracker.stop()
             conductor.stop()
         }
+    }
+    struct DrawingConstants {
+        static let noteNameFontSize: CGFloat = 18
     }
 }
 

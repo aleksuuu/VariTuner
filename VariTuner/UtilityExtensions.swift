@@ -8,6 +8,15 @@
 
 import SwiftUI
 
+extension Double {
+    func centsToRatio() -> Double {
+        pow(2, self / 1200)
+    }
+    func centsToFreq(lowerFreq: Double) -> Double {
+        lowerFreq * centsToRatio()
+    }
+}
+
 // in a Collection of Identifiables
 // we often might want to find the element that has the same id
 // as an Identifiable we already have in hand

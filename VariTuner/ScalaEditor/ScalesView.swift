@@ -52,7 +52,9 @@ struct ScalesView: View {
                                         if !scalesWithSameInitial.isEmpty {
                                             Section {
                                                 ForEach(scalesWithSameInitial) { scale in
-                                                    ScaleRow(scalesView: self, scale: scale)
+                                                    NavigationLink(destination: TunerView(conductor: TunerConductor(scale: scale))) {
+                                                        ScaleRow(scalesView: self, scale: scale)
+                                                    }
                                                 }
                                                 .onDelete { indexSet in // indexSet not working?
                                                     store.userScales.remove(atOffsets: indexSet)
@@ -114,6 +116,7 @@ struct ScalesView: View {
             
         }
     }
+    
     
     
     var searchResults: [Scale] {

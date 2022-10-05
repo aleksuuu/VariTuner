@@ -83,16 +83,16 @@ class ScaleStore: ObservableObject {
                   description: "12 out of 12-tET, the most boring tuning (preferring sharps)",
                   notes: [
                     Scale.Note(name: "C", cents: 0),
-                    Scale.Note(name: "C#", cents: 100),
+                    Scale.Note(name: "C \u{E262}", cents: 100),
                     Scale.Note(name: "D", cents: 200),
-                    Scale.Note(name: "D#", cents: 300),
+                    Scale.Note(name: "D \u{E262}", cents: 300),
                     Scale.Note(name: "E", cents: 400),
                     Scale.Note(name: "F", cents: 500),
-                    Scale.Note(name: "F#", cents: 600),
+                    Scale.Note(name: "F \u{E262}", cents: 600),
                     Scale.Note(name: "G", cents: 700),
-                    Scale.Note(name: "G#", cents: 800),
+                    Scale.Note(name: "G \u{E262}", cents: 800),
                     Scale.Note(name: "A", cents: 900),
-                    Scale.Note(name: "A#", cents: 1000),
+                    Scale.Note(name: "A \u{E262}", cents: 1000),
                     Scale.Note(name: "B", cents: 1100),
                     Scale.Note(name: "C", cents: 1200)
                   ]), at: 0
@@ -106,25 +106,6 @@ class ScaleStore: ObservableObject {
         restoreFromUserDefault()
         if userScales.isEmpty {
             print("using built-in scales")
-//            scales.insert(
-//                Scale(name: "12-12_sharps",
-//                  description: "12 out of 12-tET, the most boring tuning (preferring sharps)",
-//                  notes: [
-//                    Scale.Note(name: "C", cents: 0),
-//                    Scale.Note(name: "C#", cents: 100),
-//                    Scale.Note(name: "D", cents: 200),
-//                    Scale.Note(name: "D#", cents: 300),
-//                    Scale.Note(name: "E", cents: 400),
-//                    Scale.Note(name: "F", cents: 500),
-//                    Scale.Note(name: "F#", cents: 600),
-//                    Scale.Note(name: "G", cents: 700),
-//                    Scale.Note(name: "G#", cents: 800),
-//                    Scale.Note(name: "A", cents: 900),
-//                    Scale.Note(name: "A#", cents: 1000),
-//                    Scale.Note(name: "B", cents: 1100),
-//                    Scale.Note(name: "C", cents: 1200)
-//                  ]), at: 0
-//            )
         } else {
             print("successfully loaded scales from UserDefaults")
         }

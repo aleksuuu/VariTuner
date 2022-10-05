@@ -85,6 +85,18 @@ struct Scale: Identifiable, Hashable, Codable, Comparable {
     var notes: [Note]
     var fundamental: Double = 16.35
     
+    var lowestFrequencies: [Double] {
+        var freqs = [fundamental]
+        for note in notes[1...] {
+            freqs.append(note.cents.centsToFreq(lowerFreq: fundamental))
+        }
+        return freqs
+    }
+    
+    var equaveRatio: Double {
+        notes.last?.cents.centsToRatio() ?? 2
+    }
+    
     // MARK: - Intent(s)
     
     mutating func addPlaceholderNote() {

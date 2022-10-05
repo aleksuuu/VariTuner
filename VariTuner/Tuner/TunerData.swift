@@ -10,6 +10,6 @@ import Foundation
 struct TunerData {
     var pitch: Float = 0.0
     var amplitude: Float = 0.0
-    var noteNameWithSharps = "-"
-    var noteNameWithFlats = "-"
+    var noteName = "-"
+    var equave = 0
 }
