@@ -87,7 +87,7 @@ class TunerConductor: ObservableObject, HasAudioEngine {
         
         guard amp > 0.1 && pitch > Float(scale.fundamental) && pitch > 30 else { return }
 
-        data.pitch = pitch
+        data.freq = pitch
         data.amplitude = amp
 
         var frequency = pitch
@@ -108,17 +108,17 @@ class TunerConductor: ObservableObject, HasAudioEngine {
         
         for (index, note) in scale.notes.enumerated() {
             let freqToCompare = Float(scale.lowestFrequencies[index])
-            let deviation = freqToCompare - frequency
+            let deviation = frequency - freqToCompare
             if abs(deviation) < abs(minDeviation) {
-                noteName = note.name.isEmpty ? "\(index)" : note.name
+                noteName = note.name.isEmpty ? "\(index)̂" : note.name
                 minDeviation = deviation
                 closestFrequency = freqToCompare
             }
         }
+        data.roundedFreq = closestFrequency * pow(2, Float(equave))
         data.noteName = "\(noteName)"
         data.equave = equave
-        data.deviation = minDeviation * pow(2, Float(equave))
-        data.deviationInCents = frequency.hzToCents(lowerFreq: closestFrequency)
+//        data.deviation = minDeviation * pow(2, Float(equave))
     }
 }
 

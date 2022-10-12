@@ -8,10 +8,12 @@
 import Foundation
 
 struct TunerData {
-    var pitch: Float = 0
+    var freq: Float = 0
     var amplitude: Float = 0
     var noteName = "–"
     var equave = -1
-    var deviation: Float = 0
-    var deviationInCents: Float = 0
+    var roundedFreq: Float = 0
+    var deviationInCents: Float {
+        freq.hzToCents(freqToCompare: roundedFreq)
+    }
 }

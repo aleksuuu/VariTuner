@@ -49,8 +49,8 @@ struct PitchScroll: View {
         return Button {
             conductor.currentFreq = freq
         } label: {
-            Text(note.name.isEmpty ? "\(scale.notes.index(matching: note) ?? 0)" : note.name)
-                .font(.custom("BravuraText", size: DrawingConstants.noteNameFontSize, relativeTo: .body))
+            Text(note.name.isEmpty ? "\(scale.notes.index(matching: note) ?? 0)̂" : note.name)
+                .font(.custom("BravuraText", size: DrawingConstants.pitchButtonFontSize, relativeTo: .body))
                 .lineLimit(1)
                 .truncationMode(.middle)
         }

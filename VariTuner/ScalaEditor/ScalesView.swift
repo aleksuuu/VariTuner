@@ -52,7 +52,7 @@ struct ScalesView: View {
                                                 ForEach(scalesWithSameInitial) { scale in
                                                     NavigationLink(destination: TunerView(conductor: TunerConductor(scale: scale))) {
                                                         ScaleRow(scalesView: self, scale: scale)
-                                                    }
+                                                    }.navigationBarTitleDisplayMode(.inline)
                                                 }
                                                 .onDelete { indexSet in // indexSet not working?
                                                     store.userScales.remove(atOffsets: indexSet)
@@ -113,6 +113,7 @@ struct ScalesView: View {
             }
             
         }
+
     }
     
     
