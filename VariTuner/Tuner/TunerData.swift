@@ -8,8 +8,10 @@
 import Foundation
 
 struct TunerData {
-    var pitch: Float = 0.0
-    var amplitude: Float = 0.0
-    var noteName = "-"
+    var pitch: Float = 0
+    var amplitude: Float = 0
+    var noteName = "–"
     var equave = -1
+    var deviation: Float = 0
+    var deviationInCents: Float = 0
 }

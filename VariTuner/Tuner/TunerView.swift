@@ -9,7 +9,7 @@ import SwiftUI
 import AudioKit
 
 struct TunerView: View {
-//    @StateObject var conductor = TunerConductor(scale: Scale(name: "Preview", description: "Preview scale", notes: []))
+    //    @StateObject var conductor = TunerConductor(scale: Scale(name: "Preview", description: "Preview scale", notes: []))
     @StateObject var conductor: TunerConductor
     
     
@@ -20,13 +20,7 @@ struct TunerView: View {
                 Spacer()
                 Text("\(conductor.data.pitch, specifier: "%0.1f")")
             }.padding()
-
-            HStack {
-                Text("Amplitude")
-                Spacer()
-                Text("\(conductor.data.amplitude, specifier: "%0.1f")")
-            }.padding()
-
+            
             HStack {
                 Text("Note Name")
                 Spacer()
@@ -36,10 +30,19 @@ struct TunerView: View {
                     .font(.caption)
                     .baselineOffset(-4.0)
             }.padding()
-            //InputDevicePicker(device: conductor.initialDevice)
+            HStack {
+                Text("Deviation in Hz")
+                Spacer()
+                Text("\(conductor.data.deviation, specifier: "%0.1f")")
+            }.padding()
+            HStack {
+                Text("Deviation in Cents")
+                Spacer()
+                Text("\(conductor.data.deviationInCents, specifier: "%0.1f")")
+            }.padding()
             PitchScroll(scale: conductor.scale)
                 .environmentObject(conductor)
-                
+            
         }
         .navigationBarTitle(conductor.scale.name)
         .onAppear {
@@ -51,39 +54,8 @@ struct TunerView: View {
             conductor.stop()
         }
     }
-    
-    
-//    var pitchScroll {
-//
-//    }
-    
 }
 
-//struct InputDevicePicker: View {
-//    @State var device: Device
-//
-//    var body: some View {
-//        Picker("Input: \(device.deviceID)", selection: $device) {
-//            ForEach(getDevices(), id: \.self) {
-//                Text($0.deviceID)
-//            }
-//        }
-//        .pickerStyle(MenuPickerStyle())
-//        .onChange(of: device, perform: setInputDevice)
-//    }
-//
-//    func getDevices() -> [Device] {
-//        AudioEngine.inputDevices.compactMap { $0 }
-//    }
-//
-//    func setInputDevice(to device: Device) {
-//        do {
-//            try AudioEngine.setInputDevice(device)
-//        } catch let err {
-//            print(err)
-//        }
-//    }
-//}
 
 struct TunerView_Previews: PreviewProvider {
     static var previews: some View {

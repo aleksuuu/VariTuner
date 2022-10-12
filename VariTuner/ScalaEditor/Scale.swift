@@ -88,7 +88,7 @@ struct Scale: Identifiable, Hashable, Codable, Comparable {
     var lowestFrequencies: [Double] {
         var freqs = [fundamental]
         for note in notes[1...] {
-            freqs.append(note.cents.centsToFreq(lowerFreq: fundamental))
+            freqs.append(note.cents.centsToHz(lowerFreq: fundamental))
         }
         return freqs
     }

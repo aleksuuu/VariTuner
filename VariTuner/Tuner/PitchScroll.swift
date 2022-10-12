@@ -41,9 +41,9 @@ struct PitchScroll: View {
     }
     
     private func makePitchButton(note: Scale.Note) -> some View {
-        let freq = note.cents.centsToFreq(lowerFreq: scale.fundamental) * pow(scale.equaveRatio, Double(equave))
+        let freq = note.cents.centsToHz(lowerFreq: scale.fundamental) * pow(scale.equaveRatio, Double(equave))
         var outOfBounds = false
-        if freq > 12000 || freq < 30 {
+        if freq > TuningConstants.highestFreq || freq < TuningConstants.lowestFreq {
             outOfBounds = true
         }
         return Button {

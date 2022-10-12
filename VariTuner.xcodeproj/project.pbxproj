@@ -16,6 +16,7 @@
 		1124DF9928E93AD00030CF9F /* BravuraText.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1124DF9828E936520030CF9F /* BravuraText.otf */; };
 		115AC17128C4012300D8224F /* UtilityViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115AC17028C4012300D8224F /* UtilityViews.swift */; };
 		115AC17528C4078800D8224F /* Scale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115AC17428C4078800D8224F /* Scale.swift */; };
+		11731EB428F71DCE001B1807 /* TuningConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11731EB328F71DCE001B1807 /* TuningConstants.swift */; };
 		117AD57728BFDB9A00F04CC8 /* VariTunerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117AD57628BFDB9A00F04CC8 /* VariTunerApp.swift */; };
 		117AD57928BFDB9A00F04CC8 /* ScaleEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117AD57828BFDB9A00F04CC8 /* ScaleEditor.swift */; };
 		117AD57B28BFDB9B00F04CC8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 117AD57A28BFDB9B00F04CC8 /* Assets.xcassets */; };
@@ -37,6 +38,7 @@
 		1124DF9828E936520030CF9F /* BravuraText.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = BravuraText.otf; sourceTree = "<group>"; };
 		115AC17028C4012300D8224F /* UtilityViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityViews.swift; sourceTree = "<group>"; };
 		115AC17428C4078800D8224F /* Scale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scale.swift; sourceTree = "<group>"; };
+		11731EB328F71DCE001B1807 /* TuningConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TuningConstants.swift; sourceTree = "<group>"; };
 		117AD57328BFDB9A00F04CC8 /* VariTuner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VariTuner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		117AD57628BFDB9A00F04CC8 /* VariTunerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariTunerApp.swift; sourceTree = "<group>"; };
 		117AD57828BFDB9A00F04CC8 /* ScaleEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleEditor.swift; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 		1107558A28CE301D00842049 /* Tuner */ = {
 			isa = PBXGroup;
 			children = (
+				11731EB328F71DCE001B1807 /* TuningConstants.swift */,
 				11A5D4D228EF59CA00469AB8 /* PitchScroll.swift */,
 				1107558B28CE305C00842049 /* TunerConductor.swift */,
 				11C6638E28EAA1CA0081BA64 /* TunerView.swift */,
@@ -226,6 +229,7 @@
 				1107558C28CE305C00842049 /* TunerConductor.swift in Sources */,
 				1122966628C2B8A700BD48CC /* ScalesView.swift in Sources */,
 				11A5D4D328EF59CA00469AB8 /* PitchScroll.swift in Sources */,
+				11731EB428F71DCE001B1807 /* TuningConstants.swift in Sources */,
 				11C6638F28EAA1CA0081BA64 /* TunerView.swift in Sources */,
 				117AD57728BFDB9A00F04CC8 /* VariTunerApp.swift in Sources */,
 				111A2E5428BFF86C00E04DC1 /* UtilityExtensions.swift in Sources */,

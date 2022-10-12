@@ -39,14 +39,13 @@ class TunerConductor: ObservableObject, HasAudioEngine {
                     currentFreq = nil
                 } else {
                     switch freq {
-                    case _ where freq > 12000:
-                        tone.parameter1 = 12000
-                    case _ where freq < 30:
-                        tone.parameter1 = 30
+                    case _ where freq > TuningConstants.highestFreq:
+                        tone.parameter1 = AUValue(TuningConstants.highestFreq)
+                    case _ where freq < TuningConstants.lowestFreq:
+                        tone.parameter1 = AUValue(TuningConstants.lowestFreq)
                     default:
                         tone.parameter1 = AUValue(freq)
                     }
-                    print(tone.parameter1)
                     if !tone.isStarted {
                         tone.start()
                     }
@@ -85,9 +84,8 @@ class TunerConductor: ObservableObject, HasAudioEngine {
 
     func update(_ pitch: AUValue, _ amp: AUValue) {
         // Reduces sensitivity to background noise to prevent random / fluctuating data.
-        guard amp > 0.1 else { return }
         
-        guard pitch > Float(scale.fundamental) else { return }
+        guard amp > 0.1 && pitch > Float(scale.fundamental) && pitch > 30 else { return }
 
         data.pitch = pitch
         data.amplitude = amp
@@ -99,28 +97,28 @@ class TunerConductor: ObservableObject, HasAudioEngine {
             frequency /= Float(scale.equaveRatio)
             equave += 1
         }
-
-        var minDistance: Float = 10000.0
+        
+        // frequency is now in the lowest equave
+        
+        var minDeviation: Float = 10000
         
         var noteName = "-"
         
+        var closestFrequency = Float(scale.fundamental)
+        
         for (index, note) in scale.notes.enumerated() {
-            let distance = abs(Float(scale.lowestFrequencies[index]) - frequency)
-            if distance < minDistance {
+            let freqToCompare = Float(scale.lowestFrequencies[index])
+            let deviation = freqToCompare - frequency
+            if abs(deviation) < abs(minDeviation) {
                 noteName = note.name.isEmpty ? "\(index)" : note.name
-                minDistance = distance
+                minDeviation = deviation
+                closestFrequency = freqToCompare
             }
         }
-
-//        for possibleIndex in 0 ..< scale.lowestFrequencies.count {
-//            let distance = fabsf(Float(noteFrequencies[possibleIndex]) - frequency)
-//            if distance < minDistance {
-//                index = possibleIndex
-//                minDistance = distance
-//            }
-//        }
         data.noteName = "\(noteName)"
         data.equave = equave
+        data.deviation = minDeviation * pow(2, Float(equave))
+        data.deviationInCents = frequency.hzToCents(lowerFreq: closestFrequency)
     }
 }
 

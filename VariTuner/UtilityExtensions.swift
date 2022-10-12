@@ -12,8 +12,14 @@ extension Double {
     func centsToRatio() -> Double {
         pow(2, self / 1200)
     }
-    func centsToFreq(lowerFreq: Double) -> Double {
+    func centsToHz(lowerFreq: Double) -> Double {
         lowerFreq * centsToRatio()
+    }
+}
+
+extension Float {
+    func hzToCents(lowerFreq: Float) -> Float {
+        1200 * log2(self / lowerFreq)
     }
 }
 
