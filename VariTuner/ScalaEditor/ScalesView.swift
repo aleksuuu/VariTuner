@@ -26,8 +26,6 @@ struct ScalesView: View {
     
     @State private var scrollTarget: String?
     
-    // @State var refresh = false // TODO: find a more elegant solution to update star (prob unnecessary. iOS15 bug)
-    
     @State var category = Category.all
     
     private let alphabet = ["#","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]

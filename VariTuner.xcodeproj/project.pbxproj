@@ -22,7 +22,11 @@
 		117AD57B28BFDB9B00F04CC8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 117AD57A28BFDB9B00F04CC8 /* Assets.xcassets */; };
 		117AD57E28BFDB9B00F04CC8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 117AD57D28BFDB9B00F04CC8 /* Preview Assets.xcassets */; };
 		117AD58528BFDC0900F04CC8 /* ScaleStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117AD58428BFDC0900F04CC8 /* ScaleStore.swift */; };
+		1199278B28EF68AC006199D4 /* DrawingConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1199278A28EF68AC006199D4 /* DrawingConstants.swift */; };
 		11A252F528CD255900E8B66B /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 11A252F428CD255900E8B66B /* AudioKit */; };
+		11A5D4CC28EF3A8D00469AB8 /* ToneGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A5D4CB28EF3A8D00469AB8 /* ToneGenerator.swift */; };
+		11A5D4CF28EF3BC100469AB8 /* SporthAudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 11A5D4CE28EF3BC100469AB8 /* SporthAudioKit */; };
+		11A5D4D328EF59CA00469AB8 /* PitchScroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A5D4D228EF59CA00469AB8 /* PitchScroll.swift */; };
 		11C6638D28EAA1A20081BA64 /* TunerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11C6638C28EAA1A20081BA64 /* TunerData.swift */; };
 		11C6638F28EAA1CA0081BA64 /* TunerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11C6638E28EAA1CA0081BA64 /* TunerView.swift */; };
 /* End PBXBuildFile section */
@@ -42,6 +46,9 @@
 		117AD57A28BFDB9B00F04CC8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		117AD57D28BFDB9B00F04CC8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		117AD58428BFDC0900F04CC8 /* ScaleStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleStore.swift; sourceTree = "<group>"; };
+		1199278A28EF68AC006199D4 /* DrawingConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingConstants.swift; sourceTree = "<group>"; };
+		11A5D4CB28EF3A8D00469AB8 /* ToneGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToneGenerator.swift; sourceTree = "<group>"; };
+		11A5D4D228EF59CA00469AB8 /* PitchScroll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PitchScroll.swift; sourceTree = "<group>"; };
 		11C6638C28EAA1A20081BA64 /* TunerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunerData.swift; sourceTree = "<group>"; };
 		11C6638E28EAA1CA0081BA64 /* TunerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -51,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11A5D4CF28EF3BC100469AB8 /* SporthAudioKit in Frameworks */,
 				11A252F528CD255900E8B66B /* AudioKit in Frameworks */,
 				1107559228CE310A00842049 /* AudioKitUI in Frameworks */,
 				1107559528CE316400842049 /* SoundpipeAudioKit in Frameworks */,
@@ -75,7 +83,9 @@
 		1107558A28CE301D00842049 /* Tuner */ = {
 			isa = PBXGroup;
 			children = (
+				11A5D4D228EF59CA00469AB8 /* PitchScroll.swift */,
 				1107558B28CE305C00842049 /* TunerConductor.swift */,
+				11A5D4CB28EF3A8D00469AB8 /* ToneGenerator.swift */,
 				11C6638E28EAA1CA0081BA64 /* TunerView.swift */,
 				11C6638C28EAA1A20081BA64 /* TunerData.swift */,
 			);
@@ -109,6 +119,7 @@
 		117AD57528BFDB9A00F04CC8 /* VariTuner */ = {
 			isa = PBXGroup;
 			children = (
+				1199278A28EF68AC006199D4 /* DrawingConstants.swift */,
 				1124DF9728E936040030CF9F /* Fonts */,
 				1124201528CA65F4002C4FC0 /* Info.plist */,
 				11645BF528EC85D50058810A /* factoryScales.json */,
@@ -152,6 +163,7 @@
 				1107558E28CE30FD00842049 /* AudioKitEX */,
 				1107559128CE310A00842049 /* AudioKitUI */,
 				1107559428CE316400842049 /* SoundpipeAudioKit */,
+				11A5D4CE28EF3BC100469AB8 /* SporthAudioKit */,
 			);
 			productName = "Scala Editor";
 			productReference = 117AD57328BFDB9A00F04CC8 /* VariTuner.app */;
@@ -186,6 +198,7 @@
 				1107558D28CE30FD00842049 /* XCRemoteSwiftPackageReference "AudioKitEX" */,
 				1107559028CE310A00842049 /* XCRemoteSwiftPackageReference "AudioKitUI" */,
 				1107559328CE316400842049 /* XCRemoteSwiftPackageReference "SoundpipeAudioKit" */,
+				11A5D4CD28EF3BC100469AB8 /* XCRemoteSwiftPackageReference "SporthAudioKit" */,
 			);
 			productRefGroup = 117AD57428BFDB9A00F04CC8 /* Products */;
 			projectDirPath = "";
@@ -219,9 +232,12 @@
 				117AD57928BFDB9A00F04CC8 /* ScaleEditor.swift in Sources */,
 				1107558C28CE305C00842049 /* TunerConductor.swift in Sources */,
 				1122966628C2B8A700BD48CC /* ScalesView.swift in Sources */,
+				11A5D4D328EF59CA00469AB8 /* PitchScroll.swift in Sources */,
 				11C6638F28EAA1CA0081BA64 /* TunerView.swift in Sources */,
+				11A5D4CC28EF3A8D00469AB8 /* ToneGenerator.swift in Sources */,
 				117AD57728BFDB9A00F04CC8 /* VariTunerApp.swift in Sources */,
 				111A2E5428BFF86C00E04DC1 /* UtilityExtensions.swift in Sources */,
+				1199278B28EF68AC006199D4 /* DrawingConstants.swift in Sources */,
 				117AD58528BFDC0900F04CC8 /* ScaleStore.swift in Sources */,
 				115AC17528C4078800D8224F /* Scale.swift in Sources */,
 				115AC17128C4012300D8224F /* UtilityViews.swift in Sources */,
@@ -463,6 +479,14 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		11A5D4CD28EF3BC100469AB8 /* XCRemoteSwiftPackageReference "SporthAudioKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AudioKit/SporthAudioKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -485,6 +509,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 11A252F328CD255900E8B66B /* XCRemoteSwiftPackageReference "AudioKit" */;
 			productName = AudioKit;
+		};
+		11A5D4CE28EF3BC100469AB8 /* SporthAudioKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 11A5D4CD28EF3BC100469AB8 /* XCRemoteSwiftPackageReference "SporthAudioKit" */;
+			productName = SporthAudioKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

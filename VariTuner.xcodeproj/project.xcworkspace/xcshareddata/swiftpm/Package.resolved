@@ -53,6 +53,15 @@
         "revision" : "e49400311f926ad6c0c26fdb7f4f2d6fca1c3191",
         "version" : "5.5.2"
       }
+    },
+    {
+      "identity" : "sporthaudiokit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/AudioKit/SporthAudioKit.git",
+      "state" : {
+        "revision" : "638c95036430ce23ba2810101de319ed31f481bb",
+        "version" : "5.5.1"
+      }
     }
   ],
   "version" : 2

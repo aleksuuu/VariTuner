@@ -194,7 +194,6 @@ struct ScaleEditor: View {
                 }
             }
             .disabled(viewOnly)
-            // TODO: https://stackoverflow.com/questions/59003612/extend-swiftui-keyboard-with-custom-button
         } header: {
             GeometryReader { geometry in
                 HStack {

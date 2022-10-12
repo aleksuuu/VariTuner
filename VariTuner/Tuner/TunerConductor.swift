@@ -7,10 +7,8 @@
 
 import AudioKit
 import AudioKitEX
-import AudioKitUI
-import AudioToolbox
+import Foundation
 import SoundpipeAudioKit
-import SwiftUI
 
 // TODO: Ability to produce a pitch. Improve UI.
 

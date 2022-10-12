@@ -37,9 +37,6 @@ class ScaleStore: ObservableObject {
         "ScaleStore:" + name // prefix makes sure this key is unique
     }
     
-//    private func storeInUserDefault(for key: String) {
-//        UserDefaults.standard.set(try? JSONEncoder().encode(userScales), forKey: key)
-//    }
     
     private func restoreFromUserDefault() {
         //UserDefaults.standard.removeObject(forKey: userDefaultsKey)
@@ -132,7 +129,7 @@ class ScaleStore: ObservableObject {
     
     init(named name: String) {
         self.name = name
-        //loadFactoryScales()
+//        loadFactoryScales()
         loadTestScales()
         restoreFromUserDefault()
         if userScales.isEmpty {
