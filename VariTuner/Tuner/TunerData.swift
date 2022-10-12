@@ -11,5 +11,5 @@ struct TunerData {
     var pitch: Float = 0.0
     var amplitude: Float = 0.0
     var noteName = "-"
-    var equave = 0
+    var equave = -1
 }

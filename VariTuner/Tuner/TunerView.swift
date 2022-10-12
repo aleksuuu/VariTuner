@@ -9,7 +9,8 @@ import SwiftUI
 import AudioKit
 
 struct TunerView: View {
-    @StateObject var conductor = TunerConductor(scale: Scale(name: "Preview", description: "Preview scale", notes: []))
+//    @StateObject var conductor = TunerConductor(scale: Scale(name: "Preview", description: "Preview scale", notes: []))
+    @StateObject var conductor: TunerConductor
     
     
     var body: some View {
@@ -31,12 +32,13 @@ struct TunerView: View {
                 Spacer()
                 Text("\(conductor.data.noteName)")
                     .font(.custom("BravuraText", size: DrawingConstants.noteNameFontSize, relativeTo: .body))
-                + Text("\(conductor.data.equave)")
+                + Text(conductor.data.equave == -1 ? "" : "\(conductor.data.equave)")
                     .font(.caption)
                     .baselineOffset(-4.0)
             }.padding()
             //InputDevicePicker(device: conductor.initialDevice)
             PitchScroll(scale: conductor.scale)
+                .environmentObject(conductor)
                 
         }
         .navigationBarTitle(conductor.scale.name)
@@ -85,6 +87,6 @@ struct TunerView: View {
 
 struct TunerView_Previews: PreviewProvider {
     static var previews: some View {
-        TunerView()
+        TunerView(conductor: TunerConductor(scale: Scale(name: "Preview", description: "Preview scale", notes: [])))
     }
 }

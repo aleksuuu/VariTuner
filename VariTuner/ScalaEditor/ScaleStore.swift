@@ -67,12 +67,12 @@ class ScaleStore: ObservableObject {
         return nil
     }
     
-    private func loadFactoryScales() {
-        if let localData = self.readLocalFile(forName: "factoryScales"),
-        let decodedScales = try? JSONDecoder().decode(Array<Scale>.self, from: localData) {
-            factoryScales = decodedScales
-        }
-    }
+//    private func loadFactoryScales() {
+//        if let localData = self.readLocalFile(forName: "factoryScales"),
+//        let decodedScales = try? JSONDecoder().decode(Array<Scale>.self, from: localData) {
+//            factoryScales = decodedScales
+//        }
+//    }
     
     private func loadTestScales() {
         factoryScales.insert(

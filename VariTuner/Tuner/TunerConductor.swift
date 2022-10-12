@@ -9,6 +9,7 @@ import AudioKit
 import AudioKitEX
 import Foundation
 import SoundpipeAudioKit
+import SporthAudioKit
 
 // TODO: Ability to produce a pitch. Improve UI.
 
@@ -24,15 +25,41 @@ class TunerConductor: ObservableObject, HasAudioEngine {
     let tappableNodeA: Fader
     let tappableNodeB: Fader
     let tappableNodeC: Fader
-    let silence: Fader
     
 
     var tracker: PitchTap!
 
-//    let noteFrequencies = [16.35, 17.32, 18.35, 19.45, 20.6, 21.83, 23.12, 24.5, 25.96, 27.5, 29.14, 30.87]
-//
-//    let noteNamesWithSharps = ["C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯", "A", "A♯", "B"]
-//    let noteNamesWithFlats = ["C", "D♭", "D", "E♭", "E", "F", "G♭", "G", "A♭", "A", "B♭", "B"]
+    @Published var currentFreq: Double? {
+        didSet {
+            if let freq = currentFreq {
+                if freq == oldValue {
+                    if tone.isStarted {
+                        tone.stop()
+                    }
+                    currentFreq = nil
+                } else {
+                    switch freq {
+                    case _ where freq > 12000:
+                        tone.parameter1 = 12000
+                    case _ where freq < 30:
+                        tone.parameter1 = 30
+                    default:
+                        tone.parameter1 = AUValue(freq)
+                    }
+                    print(tone.parameter1)
+                    if !tone.isStarted {
+                        tone.start()
+                    }
+                }
+            }
+        }
+    }
+
+    let tone = OperationGenerator { _ in
+        let tone = Operation.sineWave(frequency: Operation.parameters[0], amplitude: 0.5)
+        return tone
+    }
+
 
     init(scale: Scale) {
         guard let input = engine.input else { fatalError() }
@@ -47,8 +74,7 @@ class TunerConductor: ObservableObject, HasAudioEngine {
         tappableNodeA = Fader(mic)
         tappableNodeB = Fader(tappableNodeA)
         tappableNodeC = Fader(tappableNodeB)
-        silence = Fader(tappableNodeC, gain: 0)
-        engine.output = silence
+        engine.output = tone
 
         tracker = PitchTap(mic) { pitch, amp in
             DispatchQueue.main.async {
@@ -69,26 +95,19 @@ class TunerConductor: ObservableObject, HasAudioEngine {
         var frequency = pitch
         
         var equave = 0
-//        while frequency > Float(noteFrequencies[noteFrequencies.count - 1]) {
-//            frequency /= 2.0
-//        }
-//        while frequency < Float(noteFrequencies[0]) {
-//            frequency *= 2.0
-//        }
         while frequency >= Float(scale.fundamental * scale.equaveRatio) {
             frequency /= Float(scale.equaveRatio)
             equave += 1
         }
 
         var minDistance: Float = 10000.0
-//        var index = 0
         
         var noteName = "-"
         
         for (index, note) in scale.notes.enumerated() {
             let distance = abs(Float(scale.lowestFrequencies[index]) - frequency)
             if distance < minDistance {
-                noteName = note.name
+                noteName = note.name.isEmpty ? "\(index)" : note.name
                 minDistance = distance
             }
         }
