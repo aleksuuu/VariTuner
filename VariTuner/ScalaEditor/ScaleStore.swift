@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 // TODO: recent; add note one to the json; switch to Core Data?
 class ScaleStore: ObservableObject {
     let name: String
@@ -67,10 +68,22 @@ class ScaleStore: ObservableObject {
         return nil
     }
     
+    private func loadFactoryScales() {
+        if let localData = self.readLocalFile(forName: "factoryScales"),
+        let decodedScales = try? JSONDecoder().decode(Array<Scale>.self, from: localData) {
+            factoryScales = decodedScales
+        } else {
+            print("Parsing failed")
+        }
+    }
+    
 //    private func loadFactoryScales() {
-//        if let localData = self.readLocalFile(forName: "factoryScales"),
-//        let decodedScales = try? JSONDecoder().decode(Array<Scale>.self, from: localData) {
+//        let asset = NSDataAsset(name: "Data", bundle: Bundle.main)
+//        if let json = try? JSONSerialization.jsonObject(with: asset!.data, options: JSONSerialization.ReadingOptions.allowFragments),
+//           let decodedScales = json as? [Scale] {
 //            factoryScales = decodedScales
+//        } else {
+//            print("Parsing failed")
 //        }
 //    }
     
@@ -129,8 +142,8 @@ class ScaleStore: ObservableObject {
     
     init(named name: String) {
         self.name = name
-//        loadFactoryScales()
-        loadTestScales()
+        loadFactoryScales()
+//        loadTestScales()
         restoreFromUserDefault()
         if userScales.isEmpty {
             print("using built-in scales")

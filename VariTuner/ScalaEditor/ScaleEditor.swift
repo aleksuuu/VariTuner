@@ -254,8 +254,8 @@ struct NoteRow: View {
     var body: some View {
         GeometryReader { geometry in
             HStack {
-                if index != nil {
-                    TextField("Degree \(index!)", text: scaleEditor.$scale.notes[note].name)
+                if let index = index {
+                    TextField("\(index)̂", text: scaleEditor.$scale.notes[note].name)
                         .font(.custom("BravuraText", size: DrawingConstants.editorNoteNameFontSize, relativeTo: .body))
                         .disableAutocorrection(true)
                         .foregroundColor(.accentColor)
