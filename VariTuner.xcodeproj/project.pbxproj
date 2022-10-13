@@ -23,6 +23,8 @@
 		117AD57E28BFDB9B00F04CC8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 117AD57D28BFDB9B00F04CC8 /* Preview Assets.xcassets */; };
 		117AD58528BFDC0900F04CC8 /* ScaleStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117AD58428BFDC0900F04CC8 /* ScaleStore.swift */; };
 		11936DF628F8A8990081E255 /* factoryScales.json in Resources */ = {isa = PBXBuildFile; fileRef = 11936DF528F8A8990081E255 /* factoryScales.json */; };
+		11936DF928F8AA590081E255 /* VariTuner.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 11936DF728F8AA590081E255 /* VariTuner.xcdatamodeld */; };
+		11936DFB28F8B1140081E255 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11936DFA28F8B1140081E255 /* Note.swift */; };
 		1199278B28EF68AC006199D4 /* DrawingConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1199278A28EF68AC006199D4 /* DrawingConstants.swift */; };
 		11A252F528CD255900E8B66B /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 11A252F428CD255900E8B66B /* AudioKit */; };
 		11A5D4CF28EF3BC100469AB8 /* SporthAudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 11A5D4CE28EF3BC100469AB8 /* SporthAudioKit */; };
@@ -47,6 +49,8 @@
 		117AD57D28BFDB9B00F04CC8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		117AD58428BFDC0900F04CC8 /* ScaleStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleStore.swift; sourceTree = "<group>"; };
 		11936DF528F8A8990081E255 /* factoryScales.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = factoryScales.json; sourceTree = "<group>"; };
+		11936DF828F8AA590081E255 /* VariTuner.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VariTuner.xcdatamodel; sourceTree = "<group>"; };
+		11936DFA28F8B1140081E255 /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		1199278A28EF68AC006199D4 /* DrawingConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingConstants.swift; sourceTree = "<group>"; };
 		11A5D4D228EF59CA00469AB8 /* PitchScroll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PitchScroll.swift; sourceTree = "<group>"; };
 		11C6638C28EAA1A20081BA64 /* TunerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunerData.swift; sourceTree = "<group>"; };
@@ -75,6 +79,7 @@
 				117AD57828BFDB9A00F04CC8 /* ScaleEditor.swift */,
 				117AD58428BFDC0900F04CC8 /* ScaleStore.swift */,
 				115AC17428C4078800D8224F /* Scale.swift */,
+				11936DFA28F8B1140081E255 /* Note.swift */,
 				1122966528C2B8A700BD48CC /* ScalesView.swift */,
 			);
 			path = ScalaEditor;
@@ -119,6 +124,7 @@
 		117AD57528BFDB9A00F04CC8 /* VariTuner */ = {
 			isa = PBXGroup;
 			children = (
+				11936DF728F8AA590081E255 /* VariTuner.xcdatamodeld */,
 				1199278A28EF68AC006199D4 /* DrawingConstants.swift */,
 				11936DF528F8A8990081E255 /* factoryScales.json */,
 				1124DF9728E936040030CF9F /* Fonts */,
@@ -230,8 +236,10 @@
 			files = (
 				11C6638D28EAA1A20081BA64 /* TunerData.swift in Sources */,
 				117AD57928BFDB9A00F04CC8 /* ScaleEditor.swift in Sources */,
+				11936DF928F8AA590081E255 /* VariTuner.xcdatamodeld in Sources */,
 				1107558C28CE305C00842049 /* TunerConductor.swift in Sources */,
 				1122966628C2B8A700BD48CC /* ScalesView.swift in Sources */,
+				11936DFB28F8B1140081E255 /* Note.swift in Sources */,
 				11A5D4D328EF59CA00469AB8 /* PitchScroll.swift in Sources */,
 				11731EB428F71DCE001B1807 /* TuningConstants.swift in Sources */,
 				11C6638F28EAA1CA0081BA64 /* TunerView.swift in Sources */,
@@ -516,6 +524,19 @@
 			productName = SporthAudioKit;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		11936DF728F8AA590081E255 /* VariTuner.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				11936DF828F8AA590081E255 /* VariTuner.xcdatamodel */,
+			);
+			currentVersion = 11936DF828F8AA590081E255 /* VariTuner.xcdatamodel */;
+			path = VariTuner.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 117AD56B28BFDB9A00F04CC8 /* Project object */;
 }

@@ -15,6 +15,7 @@ extension Double {
     func centsToHz(lowerFreq: Double) -> Double {
         lowerFreq * centsToRatio()
     }
+    
 }
 
 extension Float {
