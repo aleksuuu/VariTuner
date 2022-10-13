@@ -139,5 +139,15 @@ class ScaleStore: ObservableObject {
         }
     }
     
+    // MARK: - Intent(s)
+    
+    func addToRecent(scale: Scale) {
+        if !recentScales.contains(scale) {
+            recentScales.insert(scale, at: 0)
+            while recentScales.count > 15 {
+                recentScales.removeLast()
+            }
+        }
+    }
     
 }

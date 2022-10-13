@@ -20,7 +20,13 @@ struct ScalesView: View {
     
     @State fileprivate var editMode: EditMode = .inactive
     
-    @State fileprivate var scaleToEdit: Scale?
+    @State fileprivate var scaleToEdit: Scale? {
+        didSet {
+            if let scale = scaleToEdit {
+                store.addToRecent(scale: scale)
+            }
+        }
+    }
     
     @State private var searchText = "" // TODO: fuzzy search?
     
@@ -50,20 +56,10 @@ struct ScalesView: View {
                                         if !scalesWithSameInitial.isEmpty {
                                             Section {
                                                 ForEach(scalesWithSameInitial) { scale in
-//                                                    NavigationLink(destination: TunerView(conductor: TunerConductor(scale: scale))) {
-//                                                        ScaleRow(scalesView: self, scale: scale)
-//                                                    }
-//                                                    .navigationBarTitleDisplayMode(.inline)
-//                                                    .deleteDisabled(true)
                                                     ScaleRow(scalesView: self, scale: scale)
                                                 }
                                                 .onDelete { indexSet in // indexSet not working? no shit..
-                                                    let userScaleIndexSet = indexSet.map { store.userScales.index(matching: scalesWithSameInitial[$0]) }
-                                                    for index in userScaleIndexSet {
-                                                        if let index = index {
-                                                            store.userScales.remove(at: index)
-                                                        }
-                                                    }
+                                                    deleteScale(indexSet: indexSet, scales: scalesWithSameInitial)
                                                 }
                                                 .sheet(item: $scaleToEdit) { scale in
                                                     ScaleEditor(scale: $store.userScales[scale]) // this subscript works even if it's a factory scale because in UtilityExtensions, if a subscripted item can't be found in the array, the function returns the item itself
@@ -121,10 +117,17 @@ struct ScalesView: View {
             }
             
         }
-
+        
     }
     
-    
+    private func deleteScale(indexSet: IndexSet, scales: [Scale]) {
+        let userScaleIndexSet = indexSet.map { store.userScales.index(matching: scales[$0]) }
+        for index in userScaleIndexSet {
+            if let index = index {
+                store.userScales.remove(at: index)
+            }
+        }
+    }
     
     var searchResults: [Scale] {
         var visibleScales = [Scale]()
@@ -195,7 +198,7 @@ struct ScaleRow: View {
     var body: some View {
         let isUser = scalesView.store.userScales.contains(scale)
         let isStarred = scalesView.store.starredScales.contains(scale)
-        NavigationLink(destination: TunerView(conductor: TunerConductor(scale: scale))) {
+        NavigationLink(destination: TunerView(conductor: TunerConductor(scale: scale)).environmentObject(scalesView.store)) {
             VStack(alignment: .leading) {
                 Text(scale.name)
                     .fontWeight(isStarred ? .semibold : .regular)
@@ -209,8 +212,8 @@ struct ScaleRow: View {
                     scalesView.scaleToEdit = scalesView.store.userScales[0]
                 }
                 if scalesView.store.starredScales.contains(scale) {
-                    AnimatedActionButton(title: "Starred", systemImage: "star.fill") {
-                        scalesView.store.starredScales.remove(scale) // bug: update to iOS16
+                    AnimatedActionButton(title: "Unstar", systemImage: "star.slash.fill") {
+                        scalesView.store.starredScales.remove(scale)
                     }
                 } else {
                     AnimatedActionButton(title: "Star", systemImage: "star") {
@@ -236,6 +239,33 @@ struct ScaleRow: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .deleteDisabled(!isUser)
+        .swipeActions(edge: .leading) {
+            Button {
+                scalesView.scaleToEdit = scale
+            } label: {
+                if isUser {
+                    Label("Edit", systemImage: "pencil")
+                } else {
+                    Label("Inspect", systemImage: "eye")
+                }
+            }
+            .tint(.indigo)
+            Group {
+                if scalesView.store.starredScales.contains(scale) {
+                    Button {
+                        scalesView.store.starredScales.remove(scale)
+                    } label: {
+                        Label("Unstar", systemImage: "star.slash.fill")
+                    }
+                } else {
+                    Button {
+                        scalesView.store.starredScales.insert(scale, at: 0)
+                    } label: {
+                        Label("Star", systemImage: "star")
+                    }
+                }
+            }.tint(.yellow)
+        }
     }
     private func getTap(for scale: Scale) -> some Gesture {
         TapGesture().onEnded {

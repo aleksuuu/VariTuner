@@ -9,8 +9,9 @@ import SwiftUI
 import AudioKit
 
 struct TunerView: View {
-    //    @StateObject var conductor = TunerConductor(scale: Scale(name: "Preview", description: "Preview scale", notes: []))
     @StateObject var conductor: TunerConductor
+    @EnvironmentObject var store: ScaleStore
+    
     var body: some View {
         GeometryReader { geometry in
             VStack {
@@ -62,6 +63,7 @@ struct TunerView: View {
             .onDisappear {
                 conductor.tracker.stop()
                 conductor.stop()
+                store.addToRecent(scale: conductor.scale)
             }
         }
     }

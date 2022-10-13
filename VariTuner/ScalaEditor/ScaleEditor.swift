@@ -185,9 +185,6 @@ struct ScaleEditor: View {
             List {
                 ForEach(scale.notes) { note in
                     NoteRow(scaleEditor: self, note: note)
-//                    GeometryReader { geometry in
-//                        NoteRow(scaleEditor: self, note: note, width: geometry.size.width)
-//                    }
                 }
                 .onDelete { indexSet in
                     scale.notes.remove(atOffsets: indexSet)
@@ -231,21 +228,21 @@ struct ScaleEditor: View {
     
     @State private var globalRatioMode = false
     
-//    struct DrawingConstants {
-//        static let notesPadding: CGFloat = 2.0
-//        static let borderWidth: CGFloat = 0.25
-//        static let noteNameColWidthFactor: CGFloat = 0.35
-//        static let pitchColWidthFactor: CGFloat = 0.35
-//        static let accidentalFontSize: CGFloat = 28
-//        static let editorNoteNameFontSize: CGFloat = 18
-//    }
+    //    struct DrawingConstants {
+    //        static let notesPadding: CGFloat = 2.0
+    //        static let borderWidth: CGFloat = 0.25
+    //        static let noteNameColWidthFactor: CGFloat = 0.35
+    //        static let pitchColWidthFactor: CGFloat = 0.35
+    //        static let accidentalFontSize: CGFloat = 28
+    //        static let editorNoteNameFontSize: CGFloat = 18
+    //    }
     
 }
 
 struct NoteRow: View {
     var scaleEditor: ScaleEditor
     var note: Scale.Note
-//    var width: CGFloat
+    //    var width: CGFloat
     
     @State private var ratioMode = false
     @State private var inputRatioIsValid = true
@@ -320,10 +317,7 @@ struct NoteRow: View {
             }
             .textFieldStyle(.roundedBorder)
         }
-        
-        .deleteDisabled(scaleEditor.viewOnly || index == 0) // TODO: fix this (maybe it doesn't work because of the if clause?)
-//        .deleteDisabled(true)
-        
+        .deleteDisabled(scaleEditor.viewOnly || index == 0)
     }
     private func commitCents(for note: Scale.Note) {
         withAnimation {
