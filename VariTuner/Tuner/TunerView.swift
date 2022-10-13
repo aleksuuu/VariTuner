@@ -22,25 +22,34 @@ struct TunerView: View {
                         .frame(width: geometry.size.width)
                         .offset(x: xOffset)
                         .animation(.easeInOut, value: conductor.data.deviationInCents)
+                } else {
+                    Text(" ")
                 }
                 HStack(alignment: .firstTextBaseline, spacing: 0) {
                     Text("\(conductor.data.noteName)")
-                        .font(.custom("BravuraText", size: DrawingConstants.noteNameFontSize, relativeTo: .title2))
+                        .font(.custom("BravuraText", size: DrawingConstants.tunerNoteNameFontSize, relativeTo: .title2))
                         .foregroundColor(noteColor)
                         .lineLimit(1)
                         .truncationMode(.middle)
                     Text(conductor.data.equave == -1 ? "" : " \(conductor.data.equave)")
                         .font(.title2)
-                }.padding(.bottom, -5.0)
-                    if let xOffset = devXOffset {
-                        Text("\(conductor.data.roundedFreq, specifier: "%0.1f") Hz")
-                            .font(.title2)
-                        Text("\(conductor.data.freq, specifier: "%0.1f") Hz")
-                            .foregroundColor(.secondary)
-                            .frame(width: geometry.size.width)
-                            .offset(x: xOffset)
-                            .animation(.easeInOut, value: conductor.data.freq)
-                    }
+                }.padding(.vertical, DrawingConstants.tunerPadding)
+                if let xOffset = devXOffset {
+                    Text("\(conductor.data.roundedFreq, specifier: "%0.1f") Hz")
+                        .font(.title2)
+                    Text("\(conductor.data.freq, specifier: "%0.1f") Hz")
+                        .foregroundColor(.secondary)
+                        .frame(width: geometry.size.width)
+                        .offset(x: xOffset)
+                        .animation(.easeInOut, value: conductor.data.freq)
+                        .padding(.vertical, DrawingConstants.tunerPadding)
+                } else {
+                    Text("–")
+                        .font(.title2)
+                    Text(" ")
+                        .foregroundColor(.secondary)
+                        .padding(.vertical, DrawingConstants.tunerPadding)
+                }
             
                 PitchScroll(scale: conductor.scale)
                     .environmentObject(conductor)

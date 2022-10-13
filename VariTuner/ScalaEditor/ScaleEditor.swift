@@ -51,70 +51,73 @@ struct ScaleEditor: View {
                 notesSection
             }
             .toolbar {
-                ToolbarItemGroup(placement: .keyboard) {
-                    if case let .noteName(id) = focusField {
-                        if let currentNote = scale.notes.first(where: { $0.id == id }) {
-                            Group {
-                                Button {
-                                    scale.notes[currentNote].name.append(" \u{E260}")
-                                } label: {
-                                    Text("\u{E260}")
-                                }
-                                Button {
-                                    scale.notes[currentNote].name.append(" \u{E262}")
-                                } label: {
-                                    Text("\u{E262}")
-                                }
-                                Button {
-                                    scale.notes[currentNote].name.append(" \u{E270}")
-                                } label: {
-                                    Text("\u{E270}")
-                                }
-                                Button {
-                                    scale.notes[currentNote].name.append(" \u{E271}")
-                                } label: {
-                                    Text("\u{E271}")
-                                }
-                                Button {
-                                    scale.notes[currentNote].name.append(" \u{E274}")
-                                } label: {
-                                    Text("\u{E274}")
-                                }
-                                Button {
-                                    scale.notes[currentNote].name.append(" \u{E275}")
-                                } label: {
-                                    Text("\u{E273}")
-                                }
-                                Button {
-                                    scale.notes[currentNote].name.append(" \u{E280}")
-                                } label: {
-                                    Text("\u{E280}")
-                                }
-                                Button {
-                                    scale.notes[currentNote].name.append(" \u{E281}")
-                                } label: {
-                                    Text("\u{E281}")
-                                }
-                                Button {
-                                    scale.notes[currentNote].name.append(" \u{E282}")
-                                } label: {
-                                    Text("\u{E282}")
-                                }
-                                Button {
-                                    scale.notes[currentNote].name.append(" \u{E283}")
-                                } label: {
-                                    Text("\u{E283}")
-                                }
-                            }
-                            .font(.custom("BravuraText", size: DrawingConstants.accidentalFontSize, relativeTo: .body))
-                            
+                ToolbarItemGroup(placement: .keyboard) { keyboardToolbar }
+            }
+        }
+    }
+    
+    var keyboardToolbar: some View {
+        Group {
+            if case let .noteName(id) = focusField {
+                if let currentNote = scale.notes.first(where: { $0.id == id }) {
+                    Group {
+                        Button {
+                            scale.notes[currentNote].name.append(" \u{E260}")
+                        } label: {
+                            Text("\u{E260}")
+                        }
+                        Button {
+                            scale.notes[currentNote].name.append(" \u{E262}")
+                        } label: {
+                            Text("\u{E262}")
+                        }
+                        Button {
+                            scale.notes[currentNote].name.append(" \u{E270}")
+                        } label: {
+                            Text("\u{E270}")
+                        }
+                        Button {
+                            scale.notes[currentNote].name.append(" \u{E271}")
+                        } label: {
+                            Text("\u{E271}")
+                        }
+                        Button {
+                            scale.notes[currentNote].name.append(" \u{E274}")
+                        } label: {
+                            Text("\u{E274}")
+                        }
+                        Button {
+                            scale.notes[currentNote].name.append(" \u{E275}")
+                        } label: {
+                            Text("\u{E275}")
+                        }
+                        Button {
+                            scale.notes[currentNote].name.append(" \u{E280}")
+                        } label: {
+                            Text("\u{E280}")
+                        }
+                        Button {
+                            scale.notes[currentNote].name.append(" \u{E281}")
+                        } label: {
+                            Text("\u{E281}")
+                        }
+                        Button {
+                            scale.notes[currentNote].name.append(" \u{E282}")
+                        } label: {
+                            Text("\u{E282}")
+                        }
+                        Button {
+                            scale.notes[currentNote].name.append(" \u{E283}")
+                        } label: {
+                            Text("\u{E283}")
                         }
                     }
-                    Spacer()
-                    Button("Done") {
-                        focusField = nil
-                    }
+                    .font(.custom("BravuraText", size: DrawingConstants.accidentalFontSize, relativeTo: .body))
                 }
+            }
+            Spacer()
+            Button("Done") {
+                focusField = nil
             }
         }
     }
@@ -181,9 +184,10 @@ struct ScaleEditor: View {
         Section {
             List {
                 ForEach(scale.notes) { note in
-                    GeometryReader { geometry in
-                        NoteRow(scaleEditor: self, note: note, width: geometry.size.width)
-                    }
+                    NoteRow(scaleEditor: self, note: note)
+//                    GeometryReader { geometry in
+//                        NoteRow(scaleEditor: self, note: note, width: geometry.size.width)
+//                    }
                 }
                 .onDelete { indexSet in
                     scale.notes.remove(atOffsets: indexSet)
@@ -227,21 +231,21 @@ struct ScaleEditor: View {
     
     @State private var globalRatioMode = false
     
-    struct DrawingConstants {
-        static let notesPadding: CGFloat = 2.0
-        static let borderWidth: CGFloat = 0.25
-        static let noteNameColWidthFactor: CGFloat = 0.35
-        static let pitchColWidthFactor: CGFloat = 0.35
-        static let accidentalFontSize: CGFloat = 28
-        static let noteNameFontSize: CGFloat = 18
-    }
+//    struct DrawingConstants {
+//        static let notesPadding: CGFloat = 2.0
+//        static let borderWidth: CGFloat = 0.25
+//        static let noteNameColWidthFactor: CGFloat = 0.35
+//        static let pitchColWidthFactor: CGFloat = 0.35
+//        static let accidentalFontSize: CGFloat = 28
+//        static let editorNoteNameFontSize: CGFloat = 18
+//    }
     
 }
 
 struct NoteRow: View {
     var scaleEditor: ScaleEditor
     var note: Scale.Note
-    var width: CGFloat
+//    var width: CGFloat
     
     @State private var ratioMode = false
     @State private var inputRatioIsValid = true
@@ -251,69 +255,72 @@ struct NoteRow: View {
     }
     
     var body: some View {
-        HStack {
-            if index != nil {
-                TextField("Degree \(index!)", text: scaleEditor.$scale.notes[note].name)
-                    .font(.custom("BravuraText", size: ScaleEditor.DrawingConstants.noteNameFontSize, relativeTo: .body))
-                    .disableAutocorrection(true)
-                    .foregroundColor(.accentColor)
-                    .frame(width: width * ScaleEditor.DrawingConstants.noteNameColWidthFactor)
-                    .focused(scaleEditor.$focusField, equals: .noteName(note.id))
-                Spacer()
-                if !note.ratioMode {
-                    TextField("Cents", value: scaleEditor.$scale.notes[note].cents, formatter: numberFormatter)
-                        .foregroundColor(index == 0 ? .secondary : .accentColor)
+        GeometryReader { geometry in
+            HStack {
+                if index != nil {
+                    TextField("Degree \(index!)", text: scaleEditor.$scale.notes[note].name)
+                        .font(.custom("BravuraText", size: DrawingConstants.editorNoteNameFontSize, relativeTo: .body))
+                        .disableAutocorrection(true)
+                        .foregroundColor(.accentColor)
+                        .frame(width: geometry.size.width * DrawingConstants.noteNameColWidthFactor)
+                        .focused(scaleEditor.$focusField, equals: .noteName(note.id))
+                    Spacer()
+                    if !note.ratioMode {
+                        TextField("Cents", value: scaleEditor.$scale.notes[note].cents, formatter: numberFormatter)
+                            .foregroundColor(index == 0 ? .secondary : .accentColor)
+                            .disabled(index == 0 ? true : false)
+                            .keyboardType(.decimalPad)
+                            .frame(width: geometry.size.width * DrawingConstants.pitchColWidthFactor)
+                            .onChange(of: scaleEditor.focusField) { newField in
+                                if let last = scaleEditor.scale.notes.last, newField != .noteName(last.id), newField != .pitchValue(last.id) {
+                                    commitCents(for: note)
+                                }
+                            }
+                            .focused(scaleEditor.$focusField, equals: .pitchValue(note.id))
+                    } else {
+                        HStack {
+                            TextField("", text: scaleEditor.$scale.notes[note].numerator)
+                                .onChange(of: scaleEditor.focusField) { newField in
+                                    if let last = scaleEditor.scale.notes.last, newField != .noteName(last.id), newField != .pitchValue(last.id), !scaleEditor.scale.notes[note].denominator.isEmpty {
+                                        commitRatio(for: note)
+                                    }
+                                }
+                                .focused(scaleEditor.$focusField, equals: .pitchValue(note.id))
+                                .border(inputRatioIsValid ? .clear : .red)
+                            Text(":")
+                            TextField("", text: scaleEditor.$scale.notes[note].denominator)
+                                .onChange(of: scaleEditor.focusField) { newField in
+                                    if let last = scaleEditor.scale.notes.last, newField != .noteName(last.id), newField != .pitchValue(last.id), !scaleEditor.scale.notes[note].numerator.isEmpty {
+                                        commitRatio(for: note)
+                                    }
+                                }
+                                .focused(scaleEditor.$focusField, equals: .pitchValue(note.id))
+                                .border(inputRatioIsValid ? .clear : .red)
+                        }
+                        .foregroundColor(index == 0 ? .secondary : (inputRatioIsValid ? .accentColor : Color.red))
                         .disabled(index == 0 ? true : false)
                         .keyboardType(.decimalPad)
-                        .frame(width: width * ScaleEditor.DrawingConstants.pitchColWidthFactor)
-                        .onChange(of: scaleEditor.focusField) { newField in
-                            if let last = scaleEditor.scale.notes.last, newField != .noteName(last.id), newField != .pitchValue(last.id) {
-                                commitCents(for: note)
-                            }
-                        }
-                        .focused(scaleEditor.$focusField, equals: .pitchValue(note.id))
-                } else {
-                    HStack {
-                        TextField("", text: scaleEditor.$scale.notes[note].numerator)
-                            .onChange(of: scaleEditor.focusField) { newField in
-                                if let last = scaleEditor.scale.notes.last, newField != .noteName(last.id), newField != .pitchValue(last.id), !scaleEditor.scale.notes[note].denominator.isEmpty {
-                                    commitRatio(for: note)
-                                }
-                            }
-                            .focused(scaleEditor.$focusField, equals: .pitchValue(note.id))
-                            .border(inputRatioIsValid ? .clear : .red)
-                        Text(":")
-                        TextField("", text: scaleEditor.$scale.notes[note].denominator)
-                            .onChange(of: scaleEditor.focusField) { newField in
-                                if let last = scaleEditor.scale.notes.last, newField != .noteName(last.id), newField != .pitchValue(last.id), !scaleEditor.scale.notes[note].numerator.isEmpty {
-                                    commitRatio(for: note)
-                                }
-                            }
-                            .focused(scaleEditor.$focusField, equals: .pitchValue(note.id))
-                            .border(inputRatioIsValid ? .clear : .red)
+                        .frame(width: geometry.size.width * DrawingConstants.pitchColWidthFactor)
                     }
-                    .foregroundColor(index == 0 ? .secondary : (inputRatioIsValid ? .accentColor : Color.red))
+                    Spacer()
+                    Picker("Cents or Ratio", selection: scaleEditor.$scale.notes[note].ratioMode) {
+                        Text("¢").tag(false)
+                        Text(":").tag(true)
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
                     .disabled(index == 0 ? true : false)
-                    .keyboardType(.decimalPad)
-                    .frame(width: width * ScaleEditor.DrawingConstants.pitchColWidthFactor)
-                }
-                Spacer()
-                Picker("Cents or Ratio", selection: scaleEditor.$scale.notes[note].ratioMode) {
-                    Text("¢").tag(false)
-                    Text(":").tag(true)
-                }
-                .pickerStyle(SegmentedPickerStyle())
-                .disabled(index == 0 ? true : false)
-                .onChange(of: ratioMode) { newRatioMode in // TODO: is this doing anything??
-                    if newRatioMode {
-                        commitCents(for: note)
-                    } else {
-                        commitRatio(for: note)
+                    .onChange(of: ratioMode) { newRatioMode in // TODO: is this doing anything??
+                        if newRatioMode {
+                            commitCents(for: note)
+                        } else {
+                            commitRatio(for: note)
+                        }
                     }
                 }
             }
+            .textFieldStyle(.roundedBorder)
         }
-        .textFieldStyle(.roundedBorder)
+        
         .deleteDisabled(scaleEditor.viewOnly || index == 0) // TODO: fix this (maybe it doesn't work because of the if clause?)
 //        .deleteDisabled(true)
         

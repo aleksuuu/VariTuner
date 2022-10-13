@@ -50,12 +50,20 @@ struct ScalesView: View {
                                         if !scalesWithSameInitial.isEmpty {
                                             Section {
                                                 ForEach(scalesWithSameInitial) { scale in
-                                                    NavigationLink(destination: TunerView(conductor: TunerConductor(scale: scale))) {
-                                                        ScaleRow(scalesView: self, scale: scale)
-                                                    }.navigationBarTitleDisplayMode(.inline)
+//                                                    NavigationLink(destination: TunerView(conductor: TunerConductor(scale: scale))) {
+//                                                        ScaleRow(scalesView: self, scale: scale)
+//                                                    }
+//                                                    .navigationBarTitleDisplayMode(.inline)
+//                                                    .deleteDisabled(true)
+                                                    ScaleRow(scalesView: self, scale: scale)
                                                 }
-                                                .onDelete { indexSet in // indexSet not working?
-                                                    store.userScales.remove(atOffsets: indexSet)
+                                                .onDelete { indexSet in // indexSet not working? no shit..
+                                                    let userScaleIndexSet = indexSet.map { store.userScales.index(matching: scalesWithSameInitial[$0]) }
+                                                    for index in userScaleIndexSet {
+                                                        if let index = index {
+                                                            store.userScales.remove(at: index)
+                                                        }
+                                                    }
                                                 }
                                                 .sheet(item: $scaleToEdit) { scale in
                                                     ScaleEditor(scale: $store.userScales[scale]) // this subscript works even if it's a factory scale because in UtilityExtensions, if a subscripted item can't be found in the array, the function returns the item itself
@@ -187,44 +195,47 @@ struct ScaleRow: View {
     var body: some View {
         let isUser = scalesView.store.userScales.contains(scale)
         let isStarred = scalesView.store.starredScales.contains(scale)
-        VStack(alignment: .leading) {
-            Text(scale.name)
-                .fontWeight(isStarred ? .semibold : .regular)
-            Text(scale.description)
-                .font(.caption)
+        NavigationLink(destination: TunerView(conductor: TunerConductor(scale: scale))) {
+            VStack(alignment: .leading) {
+                Text(scale.name)
+                    .fontWeight(isStarred ? .semibold : .regular)
+                Text(scale.description)
+                    .font(.caption)
+            }
+            .lineLimit(1)
+            .contextMenu {
+                AnimatedActionButton(title: "Duplicate", systemImage: "doc.on.doc.fill") {
+                    duplicateScale(scale)
+                    scalesView.scaleToEdit = scalesView.store.userScales[0]
+                }
+                if scalesView.store.starredScales.contains(scale) {
+                    AnimatedActionButton(title: "Starred", systemImage: "star.fill") {
+                        scalesView.store.starredScales.remove(scale) // bug: update to iOS16
+                    }
+                } else {
+                    AnimatedActionButton(title: "Star", systemImage: "star") {
+                        scalesView.store.starredScales.insert(scale, at: 0)
+                    }
+                }
+                if scalesView.store.userScales.contains(scale) {
+                    AnimatedActionButton(title: "Edit", systemImage: "pencil") {
+                        scalesView.scaleToEdit = scalesView.store.userScales[scale]
+                    }
+                    AnimatedActionButton(title: "Delete", systemImage: "minus.circle") {
+                        scalesView.store.userScales.remove(scalesView.store.userScales[scale])
+                    }
+                    .foregroundColor(.red)
+                } else {
+                    AnimatedActionButton(title: "Inspect", systemImage: "eye") {
+                        scalesView.scaleToEdit = scalesView.store.userScales[scale]
+                    }
+                }
+            }
+            .gesture(scalesView.editMode == .active ? getTap(for: scale) : nil)
+            .foregroundColor(isUser ? .accentColor : .primary)
         }
-        .lineLimit(1)
-        .contextMenu {
-            AnimatedActionButton(title: "Duplicate", systemImage: "doc.on.doc.fill") {
-                duplicateScale(scale)
-                scalesView.scaleToEdit = scalesView.store.userScales[0]
-            }
-            if scalesView.store.starredScales.contains(scale) {
-                AnimatedActionButton(title: "Starred", systemImage: "star.fill") {
-                    scalesView.store.starredScales.remove(scale) // bug: update to iOS16
-                }
-            } else {
-                AnimatedActionButton(title: "Star", systemImage: "star") {
-                    scalesView.store.starredScales.insert(scale, at: 0)
-                }
-            }
-            if scalesView.store.userScales.contains(scale) {
-                AnimatedActionButton(title: "Edit", systemImage: "pencil") {
-                    scalesView.scaleToEdit = scalesView.store.userScales[scale]
-                }
-                AnimatedActionButton(title: "Delete", systemImage: "minus.circle") {
-                    scalesView.store.userScales.remove(scalesView.store.userScales[scale])
-                }
-                .foregroundColor(.red)
-            } else {
-                AnimatedActionButton(title: "Inspect", systemImage: "eye") {
-                    scalesView.scaleToEdit = scalesView.store.userScales[scale]
-                }
-            }
-        }
-        .gesture(scalesView.editMode == .active ? getTap(for: scale) : nil)
+        .navigationBarTitleDisplayMode(.inline)
         .deleteDisabled(!isUser)
-        .foregroundColor(isUser ? .accentColor : .black)
     }
     private func getTap(for scale: Scale) -> some Gesture {
         TapGesture().onEnded {

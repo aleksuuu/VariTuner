@@ -59,7 +59,7 @@ struct PitchScroll: View {
         .disabled(outOfBounds)
         .overlay(RoundedRectangle(cornerRadius: 12)
             .strokeBorder(lineWidth: DrawingConstants.pitchButtonBorderLineWidth)
-            .foregroundColor(DrawingConstants.pitchButtonBorderColor)
+            .foregroundColor(.secondary)
         )
         
     }
