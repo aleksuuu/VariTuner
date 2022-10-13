@@ -13,7 +13,7 @@ struct TunerData {
     var noteName = "–"
     var equave = -1
     var roundedFreq: Float = 0
-    var deviationInCents: Float {
+    var deviationInCents: Float? {
         freq.hzToCents(freqToCompare: roundedFreq)
     }
 }

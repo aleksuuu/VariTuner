@@ -18,8 +18,8 @@ extension Double {
 }
 
 extension Float {
-    func hzToCents(freqToCompare: Float) -> Float {
-        1200 * log2(self / freqToCompare)
+    func hzToCents(freqToCompare: Float) -> Float? {
+        freqToCompare == 0 ? nil : 1200 * log2(self / freqToCompare)
     }
 }
 

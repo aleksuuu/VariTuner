@@ -29,7 +29,7 @@ struct PitchScroll: View {
     
     private var equaveStepper: some View {
         Stepper {
-            Text("Equave: \(equave)")
+            Text("Equave: \(equave)").fontWeight(.bold)
         } onIncrement: {
             equave += 1
         } onDecrement: {
