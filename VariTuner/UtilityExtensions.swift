@@ -40,7 +40,7 @@ extension Collection where Element: Identifiable {
 extension Scale {
     func contains(_ text: String) -> Bool {
         let lowerCaseText = text.lowercased().trimmingCharacters(in: .whitespaces)
-        if name.contains(lowerCaseText) || description.contains(lowerCaseText) {
+        if name.lowercased().contains(lowerCaseText) || description.lowercased().contains(lowerCaseText) {
             return true
         }
         return false

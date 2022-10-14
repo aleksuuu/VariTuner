@@ -20,13 +20,14 @@ struct ScalesView: View {
     
     @State fileprivate var editMode: EditMode = .inactive
     
-    @State fileprivate var scaleToEdit: Scale? { // TODO: why does didSet work here? shouldn't I use onChange(of:)?
-        didSet {
-            if let scale = scaleToEdit {
-                store.addToRecent(scale: scale)
-            }
-        }
-    }
+    @State fileprivate var scaleToEdit: Scale?
+//    { // TODO: why does didSet work here? shouldn't I use onChange(of:)?
+//        didSet {
+//            if let scale = scaleToEdit {
+//                store.addToRecent(scale: scale)
+//            }
+//        }
+//    }
     
     @State private var scrollTarget: String?
     
@@ -47,7 +48,7 @@ struct ScalesView: View {
                 .onChange(of: category) { category in
                     Task {
                         store.load(category: category)
-                        store.searchText = "" // TODO: there's gotta be a better way to do this...
+//                        store.searchText = "" // TODO: there's gotta be a better way to do this...
                     }
                 }
                 ZStack {
@@ -69,10 +70,13 @@ struct ScalesView: View {
                                                 .sheet(item: $scaleToEdit) { scale in
                                                     ScaleEditor(scale: $store.userScales[scale]) // this subscript works even if it's a factory scale because in UtilityExtensions, if a subscripted item can't be found in the array, the function returns the item itself
                                                         .wrappedInNavigationViewToMakeDismissable {
+                                                            store.addToRecent(scale: scale)
                                                             scaleToEdit = nil
-                                                            store.load(category: category)
-                                                            store.searchText = ""
-                                                            // implement scrollTarget
+                                                            Task {
+                                                                store.load(category: category)
+//                                                                store.searchText = ""
+                                                            }
+                                                            // TODO: implement scrollTarget
                                                         }
                                                 }
                                             } header: {
@@ -81,7 +85,6 @@ struct ScalesView: View {
                                         }
                                     }
                                 }
-                                .id(UUID())
                                 .onChange(of: scrollTarget) { target in
                                     if let target = target {
                                         scrollTarget = nil
@@ -139,9 +142,21 @@ struct ScalesView: View {
     
     private func deleteScale(indexSet: IndexSet, scales: [Scale]) {
         let userScaleIndexSet = indexSet.map { store.userScales.index(matching: scales[$0]) }
+        let starredScaleIndexSet = indexSet.map { store.starredScales.index(matching: scales[$0]) }
+        let recentScaleIndexSet = indexSet.map { store.recentScales.index(matching: scales[$0]) }
         for index in userScaleIndexSet {
             if let index = index {
                 store.userScales.remove(at: index)
+            }
+        }
+        for index in starredScaleIndexSet {
+            if let index = index {
+                store.starredScales.remove(at: index)
+            }
+        }
+        for index in recentScaleIndexSet {
+            if let index = index {
+                store.recentScales.remove(at: index)
             }
         }
     }

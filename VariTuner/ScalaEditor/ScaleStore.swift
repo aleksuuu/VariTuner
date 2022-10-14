@@ -49,7 +49,8 @@ class ScaleStore: ObservableObject {
     
     
     private func restoreFromUserDefault() {
-        //UserDefaults.standard.removeObject(forKey: userDefaultsKey)
+//        UserDefaults.standard.removeObject(forKey: userDefaultsKey + "user")
+//        UserDefaults.standard.removeObject(forKey: userDefaultsKey + "starred")
         if let jsonData = UserDefaults.standard.data(forKey: userDefaultsKey + "user"),
            let decodedScales = try? JSONDecoder().decode(Array<Scale>.self, from: jsonData) {
             userScales = decodedScales
@@ -97,9 +98,9 @@ class ScaleStore: ObservableObject {
 //    }
     
     private func loadTestScales() {
-        factoryScales.insert(
+        userScales.insert(
             Scale(name: "12-12_sharps",
-                  description: "12 out of 12edo, the most boring tuning (preferring sharps)",
+                  description: "12 out of 12-tET, the most boring tuning (preferring sharps)",
                   notes: [
                     Scale.Note(name: "C", cents: 0),
                     Scale.Note(name: "C \u{E262}", cents: 100),
@@ -116,9 +117,9 @@ class ScaleStore: ObservableObject {
                     Scale.Note(name: "C", cents: 1200)
                   ]), at: 0
         )
-        factoryScales.insert(
-            Scale(name: "24-12_sharps",
-                  description: "24 out of 12edo (preferring sharps)",
+        userScales.insert(
+            Scale(name: "24-24_sharps",
+                  description: "24 out of 24-tET (preferring sharps)",
                   notes: [
                     Scale.Note(name: "C", cents: 0),
                     Scale.Note(name: "C \u{E282}", cents: 50),
@@ -149,16 +150,14 @@ class ScaleStore: ObservableObject {
         )
     }
     
-    
-    
     init(named name: String) {
         self.name = name
         if factoryScales.isEmpty {
             loadFactoryScales()
         }
-//        loadTestScales()
         restoreFromUserDefault()
         if userScales.isEmpty {
+            loadTestScales()
             print("using built-in scales")
         } else {
             print("successfully loaded scales from UserDefaults")
@@ -215,12 +214,13 @@ class ScaleStore: ObservableObject {
             }
             sorted[initial] = scalesWithSameInitial.sorted()
         }
+        searchText = searchText
     }
     
     // MARK: - Intent(s)
     
     func addToRecent(scale: Scale) {
-        if !recentScales.contains(scale) {
+        if !recentScales.contains(where: { $0.id == scale.id }) {
             recentScales.insert(scale, at: 0)
             while recentScales.count > 15 {
                 recentScales.removeLast()
