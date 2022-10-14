@@ -11,7 +11,7 @@ import Foundation
 import SoundpipeAudioKit
 import SporthAudioKit
 
-// TODO: Ability to produce a pitch. Improve UI.
+// TODO: Prevent an empty scale from crashing this view
 
 class TunerConductor: ObservableObject, HasAudioEngine {
     @Published var data = TunerData()

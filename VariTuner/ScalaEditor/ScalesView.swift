@@ -14,21 +14,19 @@ enum Category {
     case recent
 }
 
-// TODO: scrollbar swipe gesture; what's the license for the scala archive?; generate scale
+// TODO: scrollbar swipe gesture; generate scale
 struct ScalesView: View {
     @EnvironmentObject var store: ScaleStore
     
     @State fileprivate var editMode: EditMode = .inactive
     
-    @State fileprivate var scaleToEdit: Scale? {
+    @State fileprivate var scaleToEdit: Scale? { // TODO: why does didSet work here? shouldn't I use onChange(of:)?
         didSet {
             if let scale = scaleToEdit {
                 store.addToRecent(scale: scale)
             }
         }
     }
-    
-    @State private var searchText = "" // TODO: fuzzy search?
     
     @State private var scrollTarget: String?
     
@@ -46,31 +44,44 @@ struct ScalesView: View {
                     Text("Recent").tag(Category.recent)
                 }
                 .pickerStyle(.segmented)
+                .onChange(of: category) { category in
+                    Task {
+                        store.load(category: category)
+                        store.searchText = "" // TODO: there's gotta be a better way to do this...
+                    }
+                }
                 ZStack {
                     GeometryReader { geometryProxy in
                         ScrollView {
                             ScrollViewReader { scrollViewProxy in
                                 List {
-                                    ForEach(alphabet, id: \.self) { letter in
-                                        let scalesWithSameInitial = getScalesWithSameInitial(letter)
-                                        if !scalesWithSameInitial.isEmpty {
+                                    ForEach(alphabet, id: \.self) { initial in
+//                                        let scalesWithSameInitial = getScalesWithSameInitial(letter)
+                                        let scalesWithSameInitial = store.sortedAndFiltered[initial]
+                                        if let scales = scalesWithSameInitial, !scales.isEmpty {
                                             Section {
-                                                ForEach(scalesWithSameInitial) { scale in
+                                                ForEach(scales) { scale in
                                                     ScaleRow(scalesView: self, scale: scale)
                                                 }
                                                 .onDelete { indexSet in // indexSet not working? no shit..
-                                                    deleteScale(indexSet: indexSet, scales: scalesWithSameInitial)
+                                                    deleteScale(indexSet: indexSet, scales: scales)
                                                 }
                                                 .sheet(item: $scaleToEdit) { scale in
                                                     ScaleEditor(scale: $store.userScales[scale]) // this subscript works even if it's a factory scale because in UtilityExtensions, if a subscripted item can't be found in the array, the function returns the item itself
-                                                        .wrappedInNavigationViewToMakeDismissable { scaleToEdit = nil }
+                                                        .wrappedInNavigationViewToMakeDismissable {
+                                                            scaleToEdit = nil
+                                                            store.load(category: category)
+                                                            store.searchText = ""
+                                                            // implement scrollTarget
+                                                        }
                                                 }
                                             } header: {
-                                                Text(letter)
+                                                Text(initial)
                                             }
                                         }
                                     }
                                 }
+                                .id(UUID())
                                 .onChange(of: scrollTarget) { target in
                                     if let target = target {
                                         scrollTarget = nil
@@ -80,7 +91,7 @@ struct ScalesView: View {
                                     }
                                 }
                                 .listStyle(.plain)
-                                .searchable(text: $searchText, prompt: "Search with scale name or description")
+                                .searchable(text: $store.searchText, prompt: "Search scale names and descriptions")
                                 .disableAutocorrection(true)
                                 .textInputAutocapitalization(.never)
                                 .navigationTitle("Scales")
@@ -115,7 +126,13 @@ struct ScalesView: View {
                     alertToShow.alert()
                 }
             }
-            
+        }
+        .onAppear {
+            if store.sorted.isEmpty {
+                Task {
+                    store.load(category: category)
+                }
+            }
         }
         
     }
@@ -129,26 +146,26 @@ struct ScalesView: View {
         }
     }
     
-    var searchResults: [Scale] {
-        var visibleScales = [Scale]()
-        
-        switch category {
-        case .all:
-            visibleScales = store.factoryScales + store.userScales
-        case .user:
-            visibleScales = store.userScales
-        case .starred:
-            visibleScales = store.starredScales
-        case .recent:
-            visibleScales = store.recentScales
-        }
-        visibleScales.sort()
-        if searchText.isEmpty {
-            return visibleScales
-        } else {
-            return visibleScales.filter { $0.contains(searchText) }
-        }
-    }
+//    var searchResults: [Scale] {
+//        var visibleScales = [Scale]()
+//
+//        switch category {
+//        case .all:
+//            visibleScales = store.factoryScales + store.userScales
+//        case .user:
+//            visibleScales = store.userScales
+//        case .starred:
+//            visibleScales = store.starredScales
+//        case .recent:
+//            visibleScales = store.recentScales
+//        }
+//        visibleScales.sort()
+//        if searchText.isEmpty {
+//            return visibleScales
+//        } else {
+//            return visibleScales.filter { $0.contains(searchText) }
+//        }
+//    }
     
     var scrollBar: some View {
         HStack {
@@ -169,13 +186,13 @@ struct ScalesView: View {
     }
     
     
-    private func getScalesWithSameInitial(_ letter: String) -> [Scale] {
-        if letter == "#" {
-            return searchResults.filter { !($0.name.first?.isLetter ?? false)}
-        } else {
-            return searchResults.filter { $0.name.hasPrefix(letter) }
-        }
-    }
+//    private func getScalesWithSameInitial(_ letter: String) -> [Scale] {
+//        if letter == "#" {
+//            return searchResults.filter { !($0.name.first?.isLetter ?? false)}
+//        } else {
+//            return searchResults.filter { $0.name.hasPrefix(letter) }
+//        }
+//    }
     @State private var alertToShow: IdentifiableAlert?
     private func pasteScala() {
         if let scl = UIPasteboard.general.string, let scale = scl.scale {

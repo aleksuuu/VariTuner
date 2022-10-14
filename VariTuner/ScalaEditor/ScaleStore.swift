@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import UIKit
-// TODO: recent; add note one to the json; switch to Core Data?
+import Combine
+// TODO: switch to Core Data?
 class ScaleStore: ObservableObject {
     let name: String
     @Published var userScales = [Scale]() {
@@ -16,12 +16,9 @@ class ScaleStore: ObservableObject {
         }
     }
     
+    let alphabet = ["#","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
     var factoryScales = [Scale]()
     
-//    var scales: [Scale] {
-//        userScales + factoryScales
-//    }
-//
     @Published var starredScales = [Scale]() {
         didSet {
             UserDefaults.standard.set(try? JSONEncoder().encode(starredScales), forKey: userDefaultsKey + "starred")
@@ -33,6 +30,18 @@ class ScaleStore: ObservableObject {
             UserDefaults.standard.set(try? JSONEncoder().encode(recentScales), forKey: userDefaultsKey + "recent")
         }
     }
+    
+    @Published var searchText = ""
+    @Published var sorted: [String: [Scale]] = [:]
+    @Published var sortedAndFiltered: [String: [Scale]] = [:]
+//    @Published var category = Category.all
+//    {
+//        willSet {
+//            Task { @MainActor in
+//                load(category: category)
+//            }
+//        }
+//    }
     
     private var userDefaultsKey: String {
         "ScaleStore:" + name // prefix makes sure this key is unique
@@ -140,15 +149,71 @@ class ScaleStore: ObservableObject {
         )
     }
     
+    
+    
     init(named name: String) {
         self.name = name
-        loadFactoryScales()
+        if factoryScales.isEmpty {
+            loadFactoryScales()
+        }
 //        loadTestScales()
         restoreFromUserDefault()
         if userScales.isEmpty {
             print("using built-in scales")
         } else {
             print("successfully loaded scales from UserDefaults")
+        }
+        $searchText
+            .debounce(for: 0.4, scheduler: RunLoop.main) // wait for user to stop typing
+            .receive(on: DispatchQueue.global()) // perform filter on background
+            .map { [weak self] filterString in
+                guard let self = self else {
+                    return [:]
+                }
+                if filterString.isEmpty { return self.sorted } else {
+                    var filteredDict: [String: [Scale]] = [:]
+                    for initial in self.sorted.keys {
+                        filteredDict[initial] = self.sorted[initial]!.filter { $0.contains(filterString) }
+                    }
+                    return filteredDict
+                }
+            }
+            .receive(on: RunLoop.main) // switch back to uithread
+            .assign(to: &$sortedAndFiltered)
+//        $category
+//            .receive(on: DispatchQueue.global())
+//            .map { [weak self] category in
+//                guard let self = self else { return [:] }
+//                Task { @MainActor in
+//                    self.load(category: category)
+//                }
+//
+//                return self.sorted
+//            }
+//            .receive(on: DispatchQueue.main)
+//            .assign(to: &$sortedAndFiltered)
+    }
+    
+    func load(category: Category) {
+        var scales: [Scale] = []
+        switch category {
+        case .all:
+            scales = userScales + factoryScales
+        case .user:
+            scales = userScales
+        case .starred:
+            scales = starredScales
+        case .recent:
+            scales = recentScales
+        }
+        for initial in alphabet {
+            var scalesWithSameInitial: [Scale] = []
+            if initial == "#" {
+                scalesWithSameInitial = scales.filter { !($0.name.first?.isLetter ?? false) }
+            } else {
+                scalesWithSameInitial = scales.filter { $0.name.hasPrefix(initial) }
+            }
+            sorted[initial] = scalesWithSameInitial.sorted()
         }
     }
     

@@ -8,6 +8,7 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
+
 private let numberFormatter: NumberFormatter = {
     let formatter = NumberFormatter()
     formatter.numberStyle = .decimal
