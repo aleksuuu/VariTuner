@@ -321,7 +321,7 @@ struct NoteRow: View {
         .deleteDisabled(scaleEditor.viewOnly || index == 0)
     }
     private func commitCents(for note: Scale.Note) {
-        withAnimation {
+        withAnimation { // TODO: currently not working; possibly because UserScales is no longer published?
             scaleEditor.scale.notes.sort()
         }
         scaleEditor.scale.notes[note].denominator = ""
@@ -339,7 +339,6 @@ struct NoteRow: View {
             inputRatioIsValid = false
         }
     }
-    
 }
 
 

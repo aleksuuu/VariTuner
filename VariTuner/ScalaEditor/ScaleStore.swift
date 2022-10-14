@@ -10,7 +10,7 @@ import Combine
 // TODO: switch to Core Data?
 class ScaleStore: ObservableObject {
     let name: String
-    @Published var userScales = [Scale]() {
+    var userScales = [Scale]() {
         didSet {
             UserDefaults.standard.set(try? JSONEncoder().encode(userScales), forKey: userDefaultsKey + "user")
         }
@@ -19,13 +19,13 @@ class ScaleStore: ObservableObject {
     let alphabet = ["#","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
     var factoryScales = [Scale]()
     
-    @Published var starredScaleIDs = [UUID]() {
+    var starredScaleIDs = [UUID]() {
         didSet {
             UserDefaults.standard.set(try? JSONEncoder().encode(starredScaleIDs), forKey: userDefaultsKey + "starred")
         }
     }
     
-    @Published var recentScaleIDs = [UUID]() {
+    var recentScaleIDs = [UUID]() {
         didSet {
             UserDefaults.standard.set(try? JSONEncoder().encode(recentScaleIDs), forKey: userDefaultsKey + "recent")
         }
