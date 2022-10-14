@@ -141,23 +141,16 @@ struct ScalesView: View {
     }
     
     private func deleteScale(indexSet: IndexSet, scales: [Scale]) {
-        let userScaleIndexSet = indexSet.map { store.userScales.index(matching: scales[$0]) }
-        let starredScaleIndexSet = indexSet.map { store.starredScales.index(matching: scales[$0]) }
-        let recentScaleIndexSet = indexSet.map { store.recentScales.index(matching: scales[$0]) }
-        for index in userScaleIndexSet {
-            if let index = index {
-                store.userScales.remove(at: index)
-            }
+//        let userScaleIndexSet = indexSet.map { store.userScales.index(matching: scales[$0]) }
+//        let starredScaleIndexSet = indexSet.map { store.starredScaleIDs.firstIndex(of: scales[$0].id) }
+//        let recentScaleIndexSet = indexSet.map { store.recentScales.index(matching: scales[$0]) }
+        for index in indexSet {
+            store.userScales.remove(scales[index])
+            store.starredScaleIDs.remove(scales[index].id)
+            store.recentScaleIDs.remove(scales[index].id)
         }
-        for index in starredScaleIndexSet {
-            if let index = index {
-                store.starredScales.remove(at: index)
-            }
-        }
-        for index in recentScaleIndexSet {
-            if let index = index {
-                store.recentScales.remove(at: index)
-            }
+        Task {
+            store.load(category: category)
         }
     }
     
@@ -229,7 +222,7 @@ struct ScaleRow: View {
     var scale: Scale
     var body: some View {
         let isUser = scalesView.store.userScales.contains(scale)
-        let isStarred = scalesView.store.starredScales.contains(scale)
+        let isStarred = scalesView.store.starredScaleIDs.contains(scale.id)
         NavigationLink(destination: TunerView(conductor: TunerConductor(scale: scale)).environmentObject(scalesView.store)) {
             VStack(alignment: .leading) {
                 Text(scale.name)
@@ -243,13 +236,13 @@ struct ScaleRow: View {
                     duplicateScale(scale)
                     scalesView.scaleToEdit = scalesView.store.userScales[0]
                 }
-                if scalesView.store.starredScales.contains(scale) {
+                if scalesView.store.starredScaleIDs.contains(scale.id) {
                     AnimatedActionButton(title: "Unstar", systemImage: "star.slash.fill") {
-                        scalesView.store.starredScales.remove(scale)
+                        scalesView.store.starredScaleIDs.remove(scale.id)
                     }
                 } else {
                     AnimatedActionButton(title: "Star", systemImage: "star") {
-                        scalesView.store.starredScales.insert(scale, at: 0)
+                        scalesView.store.starredScaleIDs.insert(scale.id, at: 0)
                     }
                 }
                 if scalesView.store.userScales.contains(scale) {
@@ -283,15 +276,15 @@ struct ScaleRow: View {
             }
             .tint(.indigo)
             Group {
-                if scalesView.store.starredScales.contains(scale) {
+                if scalesView.store.starredScaleIDs.contains(scale.id) {
                     Button {
-                        scalesView.store.starredScales.remove(scale)
+                        scalesView.store.starredScaleIDs.remove(scale.id)
                     } label: {
                         Label("Unstar", systemImage: "star.slash.fill")
                     }
                 } else {
                     Button {
-                        scalesView.store.starredScales.insert(scale, at: 0)
+                        scalesView.store.starredScaleIDs.insert(scale.id, at: 0)
                     } label: {
                         Label("Star", systemImage: "star")
                     }

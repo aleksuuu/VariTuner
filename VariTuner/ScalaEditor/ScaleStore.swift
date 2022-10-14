@@ -19,15 +19,15 @@ class ScaleStore: ObservableObject {
     let alphabet = ["#","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
     var factoryScales = [Scale]()
     
-    @Published var starredScales = [Scale]() {
+    @Published var starredScaleIDs = [UUID]() {
         didSet {
-            UserDefaults.standard.set(try? JSONEncoder().encode(starredScales), forKey: userDefaultsKey + "starred")
+            UserDefaults.standard.set(try? JSONEncoder().encode(starredScaleIDs), forKey: userDefaultsKey + "starred")
         }
     }
     
-    @Published var recentScales = [Scale]() {
+    @Published var recentScaleIDs = [UUID]() {
         didSet {
-            UserDefaults.standard.set(try? JSONEncoder().encode(recentScales), forKey: userDefaultsKey + "recent")
+            UserDefaults.standard.set(try? JSONEncoder().encode(recentScaleIDs), forKey: userDefaultsKey + "recent")
         }
     }
     
@@ -56,12 +56,12 @@ class ScaleStore: ObservableObject {
             userScales = decodedScales
         }
         if let jsonData = UserDefaults.standard.data(forKey: userDefaultsKey + "starred"),
-           let decodedScales = try? JSONDecoder().decode(Array<Scale>.self, from: jsonData) {
-            starredScales = decodedScales
+           let decodedScales = try? JSONDecoder().decode(Array<UUID>.self, from: jsonData) {
+            starredScaleIDs = decodedScales
         }
         if let jsonData = UserDefaults.standard.data(forKey: userDefaultsKey + "recent"),
-           let decodedScales = try? JSONDecoder().decode(Array<Scale>.self, from: jsonData) {
-            recentScales = decodedScales
+           let decodedScales = try? JSONDecoder().decode(Array<UUID>.self, from: jsonData) {
+            recentScaleIDs = decodedScales
         }
     }
     
@@ -201,9 +201,9 @@ class ScaleStore: ObservableObject {
         case .user:
             scales = userScales
         case .starred:
-            scales = starredScales
+            scales = (userScales + factoryScales).filter { starredScaleIDs.contains($0.id) }
         case .recent:
-            scales = recentScales
+            scales = (userScales + factoryScales).filter { recentScaleIDs.contains($0.id) }
         }
         for initial in alphabet {
             var scalesWithSameInitial: [Scale] = []
@@ -220,10 +220,10 @@ class ScaleStore: ObservableObject {
     // MARK: - Intent(s)
     
     func addToRecent(scale: Scale) {
-        if !recentScales.contains(where: { $0.id == scale.id }) {
-            recentScales.insert(scale, at: 0)
-            while recentScales.count > 15 {
-                recentScales.removeLast()
+        if !recentScaleIDs.contains(scale.id) {
+            recentScaleIDs.insert(scale.id, at: 0)
+            while recentScaleIDs.count > 15 {
+                recentScaleIDs.removeLast()
             }
         }
     }

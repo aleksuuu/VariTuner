@@ -28,7 +28,7 @@ import AVFoundation
 //    }
 //}
 
-
+// TODO: change user, starred, and recent arrays to arrays of IDs; fix "Attempted to scroll the collection view to an out-of-bounds item"; launch the app in tuner view
 
 @main
 struct VariTunerApp: App {

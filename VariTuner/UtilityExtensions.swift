@@ -195,11 +195,11 @@ extension String {
 // (or subscripts on vars on that var, etc.)
 
 extension RangeReplaceableCollection where Element: Identifiable {
-    mutating func remove(_ element: Element) {
-        if let index = index(matching: element) {
-            remove(at: index)
-        }
-    }
+//    mutating func remove(_ element: Element) {
+//        if let index = index(matching: element) {
+//            remove(at: index)
+//        }
+//    }
 
     subscript(_ element: Element) -> Element {
         get {
@@ -216,6 +216,16 @@ extension RangeReplaceableCollection where Element: Identifiable {
         }
     }
 }
+
+extension RangeReplaceableCollection where Element: Equatable {
+    mutating func remove(_ element: Element) {
+        if let index = firstIndex(of: element) {
+            remove(at: index)
+        }
+    }
+}
+
+
 
 //// if you use a Set to represent the selection of emoji in HW5
 //// then you might find this syntactic sugar function to be of use
