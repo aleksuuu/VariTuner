@@ -7,9 +7,7 @@
 
 import SwiftUI
 import AudioKit
-import AudioKitUI
 import AVFoundation
-//import CookbookCommon
 
 //class AppDelegate: NSObject, NSApplicationDelegate {
 //    func applicationDidFinishLaunching(_ aNotification: Notification) {
@@ -28,7 +26,7 @@ import AVFoundation
 //    }
 //}
 
-// TODO: change user, starred, and recent arrays to arrays of IDs; fix "Attempted to scroll the collection view to an out-of-bounds item"; launch the app in tuner view
+// TODO: fix "Attempted to scroll the collection view to an out-of-bounds item"; launch the app in tuner view; change to SQLite?? (https://www.reddit.com/r/SwiftUI/comments/ho0mlm/comment/fxezjbp/?context=3); recent tab should display scales in chronological order;
 
 @main
 struct VariTunerApp: App {

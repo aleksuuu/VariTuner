@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		1107558C28CE305C00842049 /* TunerConductor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1107558B28CE305C00842049 /* TunerConductor.swift */; };
 		1107558F28CE30FD00842049 /* AudioKitEX in Frameworks */ = {isa = PBXBuildFile; productRef = 1107558E28CE30FD00842049 /* AudioKitEX */; };
-		1107559228CE310A00842049 /* AudioKitUI in Frameworks */ = {isa = PBXBuildFile; productRef = 1107559128CE310A00842049 /* AudioKitUI */; };
 		1107559528CE316400842049 /* SoundpipeAudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1107559428CE316400842049 /* SoundpipeAudioKit */; };
 		111A2E5428BFF86C00E04DC1 /* UtilityExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A2E5328BFF86C00E04DC1 /* UtilityExtensions.swift */; };
 		1122966628C2B8A700BD48CC /* ScalesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1122966528C2B8A700BD48CC /* ScalesView.swift */; };
@@ -60,7 +59,6 @@
 			files = (
 				11A5D4CF28EF3BC100469AB8 /* SporthAudioKit in Frameworks */,
 				11A252F528CD255900E8B66B /* AudioKit in Frameworks */,
-				1107559228CE310A00842049 /* AudioKitUI in Frameworks */,
 				1107559528CE316400842049 /* SoundpipeAudioKit in Frameworks */,
 				1107558F28CE30FD00842049 /* AudioKitEX in Frameworks */,
 			);
@@ -161,7 +159,6 @@
 			packageProductDependencies = (
 				11A252F428CD255900E8B66B /* AudioKit */,
 				1107558E28CE30FD00842049 /* AudioKitEX */,
-				1107559128CE310A00842049 /* AudioKitUI */,
 				1107559428CE316400842049 /* SoundpipeAudioKit */,
 				11A5D4CE28EF3BC100469AB8 /* SporthAudioKit */,
 			);
@@ -196,7 +193,6 @@
 			packageReferences = (
 				11A252F328CD255900E8B66B /* XCRemoteSwiftPackageReference "AudioKit" */,
 				1107558D28CE30FD00842049 /* XCRemoteSwiftPackageReference "AudioKitEX" */,
-				1107559028CE310A00842049 /* XCRemoteSwiftPackageReference "AudioKitUI" */,
 				1107559328CE316400842049 /* XCRemoteSwiftPackageReference "SoundpipeAudioKit" */,
 				11A5D4CD28EF3BC100469AB8 /* XCRemoteSwiftPackageReference "SporthAudioKit" */,
 			);
@@ -373,6 +369,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VariTuner/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We use the microphone as an input device to the tuner.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -404,6 +401,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VariTuner/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We use the microphone as an input device to the tuner.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -455,14 +453,6 @@
 				minimumVersion = 5.0.0;
 			};
 		};
-		1107559028CE310A00842049 /* XCRemoteSwiftPackageReference "AudioKitUI" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/AudioKit/AudioKitUI.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.2.0;
-			};
-		};
 		1107559328CE316400842049 /* XCRemoteSwiftPackageReference "SoundpipeAudioKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/AudioKit/SoundpipeAudioKit.git";
@@ -494,11 +484,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1107558D28CE30FD00842049 /* XCRemoteSwiftPackageReference "AudioKitEX" */;
 			productName = AudioKitEX;
-		};
-		1107559128CE310A00842049 /* AudioKitUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1107559028CE310A00842049 /* XCRemoteSwiftPackageReference "AudioKitUI" */;
-			productName = AudioKitUI;
 		};
 		1107559428CE316400842049 /* SoundpipeAudioKit */ = {
 			isa = XCSwiftPackageProductDependency;

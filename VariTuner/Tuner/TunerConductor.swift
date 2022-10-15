@@ -29,7 +29,7 @@ class TunerConductor: ObservableObject, HasAudioEngine {
 
     var tracker: PitchTap!
 
-    @Published var currentFreq: Double? {
+    @Published var currentFreq: Double? { // TODO: when two notes share the same frequency, currently the second note would stop the first note
         didSet {
             if let freq = currentFreq {
                 if freq == oldValue {

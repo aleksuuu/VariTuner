@@ -32,7 +32,7 @@ class ScaleStore: ObservableObject {
     }
     
     @Published var searchText = ""
-    @Published var sorted: [String: [Scale]] = [:]
+    var sorted: [String: [Scale]] = [:]
     @Published var sortedAndFiltered: [String: [Scale]] = [:]
 //    @Published var category = Category.all
 //    {

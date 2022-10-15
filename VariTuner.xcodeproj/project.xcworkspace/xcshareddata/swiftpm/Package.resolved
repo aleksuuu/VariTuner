@@ -19,24 +19,6 @@
       }
     },
     {
-      "identity" : "audiokitui",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/AudioKit/AudioKitUI.git",
-      "state" : {
-        "revision" : "fd92646e5926da45e7817ee01b4d2931179dce50",
-        "version" : "0.3.4"
-      }
-    },
-    {
-      "identity" : "controls",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/AudioKit/Controls.git",
-      "state" : {
-        "revision" : "2cdc89b292cc5a7a4b4b7cac72192b521f5e70f1",
-        "version" : "1.1.0"
-      }
-    },
-    {
       "identity" : "kissfft",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/AudioKit/KissFFT",

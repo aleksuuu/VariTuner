@@ -31,16 +31,20 @@ struct ScalesView: View {
     
     @State private var scrollTarget: String?
     
-    @State var category = Category.all
+    @State private var category = Category.starred
+    
+//    @State private var contentOverflow: Bool = false
+//https://stackoverflow.com/questions/62463142/swiftui-make-scrollview-scrollable-only-if-it-exceeds-the-height-of-the-screen
+//https://stackoverflow.com/a/69755635
     
     var body: some View {
         NavigationView {
             VStack {
                 Picker("Cents or Ratio", selection: $category) {
-                    Text("All").tag(Category.all)
-                    Text("User").tag(Category.user)
                     Text("Starred").tag(Category.starred)
+                    Text("User").tag(Category.user)
                     Text("Recent").tag(Category.recent)
+                    Text("All").tag(Category.all)
                 }
                 .pickerStyle(.segmented)
                 .onChange(of: category) { category in

@@ -19,7 +19,7 @@ struct PitchScroll: View {
             Spacer()
             ScrollView {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: DrawingConstants.pitchButtonWidth))]) {
-                    ForEach(scale.notes) { note in
+                    ForEach(scale.notes.dropLast(1)) { note in
                         makePitchButton(note: note)
                     }
                 }
