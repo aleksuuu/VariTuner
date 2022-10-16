@@ -31,7 +31,7 @@ struct ScalesView: View {
     
     @State private var scrollTarget: String?
     
-    @State private var category = Category.starred
+    @State fileprivate var category = Category.starred
     
 //    @State private var contentOverflow: Bool = false
 //https://stackoverflow.com/questions/62463142/swiftui-make-scrollview-scrollable-only-if-it-exceeds-the-height-of-the-screen
@@ -129,7 +129,7 @@ struct ScalesView: View {
                     ForEach(scales) { scale in
                         ScaleRow(scalesView: self, scale: scale)
                     }
-                    .onDelete { indexSet in // indexSet not working? no shit..
+                    .onDelete { indexSet in
                         deleteScale(indexSet: indexSet, scales: scales)
                     }
                     .sheet(item: $scaleToEdit) { scale in
@@ -225,6 +225,18 @@ struct ScalesView: View {
     private func addScale() {
         store.userScales.insert(Scale(name: "untitled", description: "", notes: [Scale.Note(cents: 0)]), at: 0)
     }
+    fileprivate func starScale(_ scale: Scale) {
+        store.starredScaleIDs.insert(scale.id, at: 0)
+        Task {
+            store.load(category: category)
+        }
+    }
+    fileprivate func unstarScale(_ scale: Scale) {
+        store.starredScaleIDs.remove(scale.id)
+        Task {
+            store.load(category: category)
+        }
+    }
 }
 
 struct ScaleRow: View {
@@ -248,21 +260,23 @@ struct ScaleRow: View {
                 }
                 if scalesView.store.starredScaleIDs.contains(scale.id) {
                     AnimatedActionButton(title: "Unstar", systemImage: "star.slash.fill") {
-                        scalesView.store.starredScaleIDs.remove(scale.id)
-                    }
+                        scalesView.unstarScale(scale)                    }
                 } else {
                     AnimatedActionButton(title: "Star", systemImage: "star") {
-                        scalesView.store.starredScaleIDs.insert(scale.id, at: 0)
-                    }
+                        scalesView.starScale(scale)                    }
                 }
                 if scalesView.store.userScales.contains(scale) {
                     AnimatedActionButton(title: "Edit", systemImage: "pencil") {
                         scalesView.scaleToEdit = scalesView.store.userScales[scale]
                     }
-                    AnimatedActionButton(title: "Delete", systemImage: "minus.circle") {
+                    Button(role: .destructive) {
                         scalesView.store.userScales.remove(scalesView.store.userScales[scale])
+                        Task {
+                            scalesView.store.load(category: scalesView.category)
+                        }
+                    } label: {
+                        Label("Delete", systemImage: "trash")
                     }
-                    .foregroundColor(.red)
                 } else {
                     AnimatedActionButton(title: "Inspect", systemImage: "eye") {
                         scalesView.scaleToEdit = scalesView.store.userScales[scale]
@@ -288,13 +302,12 @@ struct ScaleRow: View {
             Group {
                 if scalesView.store.starredScaleIDs.contains(scale.id) {
                     Button {
-                        scalesView.store.starredScaleIDs.remove(scale.id)
-                    } label: {
+                        scalesView.unstarScale(scale)                    } label: {
                         Label("Unstar", systemImage: "star.slash.fill")
                     }
                 } else {
                     Button {
-                        scalesView.store.starredScaleIDs.insert(scale.id, at: 0)
+                        scalesView.starScale(scale)
                     } label: {
                         Label("Star", systemImage: "star")
                     }
