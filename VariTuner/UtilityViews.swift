@@ -68,13 +68,11 @@ struct IdentifiableAlert: Identifiable {
         self.alert = alert
     }
 
-    // L15 convenience init added between L14 and L15
     init(id: String, title: String, message: String) {
         self.id = id
         alert = { Alert(title: Text(title), message: Text(message), dismissButton: .default(Text("OK"))) }
     }
 
-    // L15 convenience init added between L14 and L15
     init(title: String, message: String) {
         self.id = title + message
         alert = { Alert(title: Text(title), message: Text(message), dismissButton: .default(Text("OK"))) }

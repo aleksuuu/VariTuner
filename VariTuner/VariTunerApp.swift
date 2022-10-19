@@ -9,45 +9,42 @@ import SwiftUI
 import AudioKit
 import AVFoundation
 
-//class AppDelegate: NSObject, NSApplicationDelegate {
-//    func applicationDidFinishLaunching(_ aNotification: Notification) {
-//        guard let app = notification.object as? NSApplication else {
-//                    fatalError("no application object")
-//    }
-//    
-//    func applicationWillTerminate(_ aNotification: Notification) {
-//        // Insert code here to tear down your application
-//    }
-//    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-//        // Check if your app can open the URL
-//        // If it can, do something with the url and options, then return true
-//        // otherwise return false
-//        return false
-//    }
-//}
-
-// TODO: fix "Attempted to scroll the collection view to an out-of-bounds item"; launch the app in tuner view; change to SQLite?? (https://www.reddit.com/r/SwiftUI/comments/ho0mlm/comment/fxezjbp/?context=3); recent tab should display scales in chronological order;
+// TODO: fix "Attempted to scroll the collection view to an out-of-bounds item" [looks like it crashes when list items are not overflowing; unless there're precisely 3 or 5 items in which case it also doesn't crash] [so the problem seems to actually be caused by the switching of categories
+// launch the app in tuner view; change to SQLite?? (https://www.reddit.com/r/SwiftUI/comments/ho0mlm/comment/fxezjbp/?context=3); recent tab should display scales in chronological order;
 
 @main
 struct VariTunerApp: App {
-//    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-
     @StateObject var scaleStore = ScaleStore(named: "Default")
     
     
-    init() {
-#if os(iOS)
-        do {
-            Settings.bufferLength = .short
-            try AVAudioSession.sharedInstance().setPreferredIOBufferDuration(Settings.bufferLength.duration)
-            try AVAudioSession.sharedInstance().setCategory(.playAndRecord,
-                                                            options: [.defaultToSpeaker, .mixWithOthers, .allowBluetoothA2DP])
-            try AVAudioSession.sharedInstance().setActive(true)
-        } catch let err {
-            print(err)
-        }
-#endif
-    }
+//    init() {
+//#if os(iOS)
+//        do {
+//            Settings.bufferLength = .short
+//            let session = AVAudioSession.sharedInstance()
+//            try session.setPreferredIOBufferDuration(Settings.bufferLength.duration)
+//            try session.setCategory(.playAndRecord,
+//                                                            options: [.defaultToSpeaker, .mixWithOthers, .allowBluetoothA2DP])
+//            try session.setActive(true)
+//        } catch let err {
+//            print(err)
+//        }
+//#endif
+//    }
+//    init() {
+//        do {
+//            let session = AVAudioSession.sharedInstance()
+////            Settings.bufferLength = .short
+//
+////            try session.setPreferredIOBufferDuration(4096)
+////            try session.setCategory(.playAndRecord, options: [.defaultToSpeaker, .allowBluetooth])
+//
+//            try session.overrideOutputAudioPort(.speaker)
+//
+//        } catch {
+//            fatalError("Failed to configure and activate session.")
+//        }
+//    }
     var body: some Scene {
         WindowGroup {
             ScalesView()

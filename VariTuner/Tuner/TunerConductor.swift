@@ -10,21 +10,27 @@ import AudioKitEX
 import Foundation
 import SoundpipeAudioKit
 import SporthAudioKit
+import AVFoundation
 
 // TODO: Prevent an empty scale from crashing this view
 
-class TunerConductor: ObservableObject, HasAudioEngine {
+class TunerConductor: ObservableObject {
     @Published var data = TunerData()
     
     var scale: Scale
     
-    let engine = AudioEngine()
-    let initialDevice: Device
+    private let engine = AudioEngine()
+//#if os(iOS)
+//    private let session = AVAudioSession.sharedInstance()
+//#endif
+    private var hasMicrophoneAccess = false
+    var showMicrophoneAccessAlert = false
+//    let initialDevice: Device
 
-    let mic: AudioEngine.InputNode
-    let tappableNodeA: Fader
-    let tappableNodeB: Fader
-    let tappableNodeC: Fader
+//    let mic: AudioEngine.InputNode
+//    let tappableNodeA: Fader
+//    let tappableNodeB: Fader
+//    let tappableNodeC: Fader
     
 
     var tracker: PitchTap!
@@ -61,32 +67,116 @@ class TunerConductor: ObservableObject, HasAudioEngine {
 
 
     init(scale: Scale) {
-        guard let input = engine.input else { fatalError() }
+//        guard let input = engine.input else { fatalError() }
 
-        guard let device = engine.inputDevice else { fatalError() }
+        //guard let device = engine.inputDevice else { fatalError() }
 
-        initialDevice = device
+//        initialDevice = device
 
         self.scale = scale
         
-        mic = input
-        tappableNodeA = Fader(mic)
-        tappableNodeB = Fader(tappableNodeA)
-        tappableNodeC = Fader(tappableNodeB)
+//        mic = input
+//        tappableNodeA = Fader(mic)
+//        tappableNodeB = Fader(tappableNodeA)
+//        tappableNodeC = Fader(tappableNodeB)
         engine.output = tone
+        checkMicrophoneAuthorizationStatus()
 
-        tracker = PitchTap(mic) { pitch, amp in
-            DispatchQueue.main.async {
-                self.update(pitch[0], amp[0])
-            }
-        }
+//        tracker = PitchTap(mic) { pitch, amp in
+//            DispatchQueue.main.async {
+//                self.update(pitch[0], amp[0])
+//            }
+//        }
     }
 
-    func update(_ pitch: AUValue, _ amp: AUValue) {
+    private func checkMicrophoneAuthorizationStatus() { // modified from ZenTuner
+        guard !hasMicrophoneAccess else { return }
+        switch AVCaptureDevice.authorizationStatus(for: .audio) {
+        case .authorized: // The user has previously granted access to the microphone.
+            self.setUpPitchTracking()
+        case .notDetermined: // The user has not yet been asked for microphone access.
+            AVCaptureDevice.requestAccess(for: .audio) { granted in
+                if granted {
+                    self.setUpPitchTracking()
+                } else {
+                    self.showMicrophoneAccessAlert = true
+                    return
+                }
+            }
+        case .denied: // The user has previously denied access.
+            self.showMicrophoneAccessAlert = true
+            return
+        case .restricted: // The user can't grant access due to restrictions.
+            self.showMicrophoneAccessAlert = true
+            return
+        @unknown default:
+            self.showMicrophoneAccessAlert = true
+            return
+        }
+    }
+    
+    private func setUpPitchTracking() {
+        if let input = engine.input {
+            tracker = PitchTap(input) { pitch, amp in
+                DispatchQueue.main.async {
+                    self.update(pitch[0], amp[0])
+                }
+            }
+        }
+        hasMicrophoneAccess = true
+        start()
+    }
+    
+    private func setUpAudioSession() {
+        do {
+            let session = AVAudioSession.sharedInstance()
+            try session.setCategory(.playAndRecord, options: [.defaultToSpeaker, .allowBluetooth])
+//            try session.setPreferredIOBufferDuration(4096)
+//            try session.overrideOutputAudioPort(.speaker)
+            try session.setActive(true)
+            
+        } catch {
+            fatalError("Failed to configure and activate session.")
+        }
+    }
+    
+    func start() {
+        guard hasMicrophoneAccess else { return }
+        do {
+            try engine.start()
+//#if os(iOS)
+//        do {
+//            Settings.bufferLength = .short
+//            try AVAudioSession.sharedInstance().setPreferredIOBufferDuration(Settings.bufferLength.duration)
+//            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, options: [.defaultToSpeaker, .mixWithOthers, .allowBluetoothA2DP])
+//            try AVAudioSession.sharedInstance().setActive(true)
+//        } catch let err {
+//            print(err)
+//        }
+//#endif
+            tracker.start()
+        } catch let err {
+            print(err)
+        }
+    }
+    
+    func stop() {
+        engine.stop()
+//#if os(iOS)
+//        do {
+//            try AVAudioSession.sharedInstance().setActive(false)
+//        } catch {
+//            // TODO: Handle error
+//        }
+//#endif
+    }
+    
+    
+    private func update(_ pitch: AUValue, _ amp: AUValue) {
         // Reduces sensitivity to background noise to prevent random / fluctuating data.
         
         guard amp > 0.1 && pitch > Float(scale.fundamental) && pitch > 30 else { return }
-
+        
         data.freq = pitch
         data.amplitude = amp
 

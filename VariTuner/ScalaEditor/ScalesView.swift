@@ -21,19 +21,13 @@ struct ScalesView: View {
     @State fileprivate var editMode: EditMode = .inactive
     
     @State fileprivate var scaleToEdit: Scale?
-//    { // TODO: why does didSet work here? shouldn't I use onChange(of:)?
-//        didSet {
-//            if let scale = scaleToEdit {
-//                store.addToRecent(scale: scale)
-//            }
-//        }
-//    }
     
     @State private var scrollTarget: String?
     
     @State fileprivate var category = Category.starred
     
-//    @State private var contentOverflow: Bool = false
+    @StateObject var alerter: Alerter = Alerter()
+    
 //https://stackoverflow.com/questions/62463142/swiftui-make-scrollview-scrollable-only-if-it-exceeds-the-height-of-the-screen
 //https://stackoverflow.com/a/69755635
     
@@ -58,16 +52,27 @@ struct ScalesView: View {
                         ScrollView {
                             ScrollViewReader { scrollViewProxy in
                                 List {
-                                    scalesSection
-                                }
-                                .onChange(of: scrollTarget) { target in
-                                    if let target = target {
-                                        scrollTarget = nil
-                                        withAnimation {
-                                            scrollViewProxy.scrollTo(target, anchor: .center)
+                                    if store.sortedAndFiltered.values.allSatisfy { $0.isEmpty } { emptyCategory }
+                                    else { scalesSection
+                                        .onChange(of: scrollTarget) { target in
+                                            if let target = target {
+                                                scrollTarget = nil
+                                                withAnimation {
+                                                    scrollViewProxy.scrollTo(target, anchor: .center)
+                                                }
+                                            }
                                         }
                                     }
                                 }
+                                .navigationBarTitleDisplayMode(.inline)
+//                                .onChange(of: scrollTarget) { target in
+//                                    if let target = target {
+//                                        scrollTarget = nil
+//                                        withAnimation {
+//                                            scrollViewProxy.scrollTo(target, anchor: .center)
+//                                        }
+//                                    }
+//                                }
                                 .listStyle(.plain)
                                 .searchable(text: $store.searchText, prompt: "Search scale names and descriptions")
                                 .disableAutocorrection(true)
@@ -100,8 +105,9 @@ struct ScalesView: View {
                     scrollBar
                 }
                 .navigationViewStyle(StackNavigationViewStyle())
-                .alert(item: $alertToShow) { alertToShow in
-                    alertToShow.alert()
+                .alert(alerter.title, isPresented: $alerter.isPresented) {
+                } message: {
+                    Text(alerter.message)
                 }
             }
         }
@@ -115,9 +121,9 @@ struct ScalesView: View {
         
     }
     
-    var emptySection: some View {
+    var emptyCategory: some View {
         Section {
-            Text("No scales available")
+            Text("No \(String(describing: category)) scales.")
         }
     }
     
@@ -151,9 +157,6 @@ struct ScalesView: View {
     }
     
     private func deleteScale(indexSet: IndexSet, scales: [Scale]) {
-//        let userScaleIndexSet = indexSet.map { store.userScales.index(matching: scales[$0]) }
-//        let starredScaleIndexSet = indexSet.map { store.starredScaleIDs.firstIndex(of: scales[$0].id) }
-//        let recentScaleIndexSet = indexSet.map { store.recentScales.index(matching: scales[$0]) }
         for index in indexSet {
             store.userScales.remove(scales[index])
             store.starredScaleIDs.remove(scales[index].id)
@@ -202,23 +205,14 @@ struct ScalesView: View {
             }
         }
     }
-    
-    
-//    private func getScalesWithSameInitial(_ letter: String) -> [Scale] {
-//        if letter == "#" {
-//            return searchResults.filter { !($0.name.first?.isLetter ?? false)}
-//        } else {
-//            return searchResults.filter { $0.name.hasPrefix(letter) }
-//        }
-//    }
-    @State private var alertToShow: IdentifiableAlert?
+
     private func pasteScala() {
         if let scl = UIPasteboard.general.string, let scale = scl.scale {
             store.userScales.insert(scale, at: 0)
         } else {
-            alertToShow = IdentifiableAlert(
-                title: "Paste Scala",
-                message: "There is no Scala text currently on the clipboard.")
+            alerter.title = "Paste Scala"
+            alerter.message = "There is no Scala text currently on the clipboard."
+            alerter.isPresented = true
         }
     }
     
@@ -245,7 +239,11 @@ struct ScaleRow: View {
     var body: some View {
         let isUser = scalesView.store.userScales.contains(scale)
         let isStarred = scalesView.store.starredScaleIDs.contains(scale.id)
-        NavigationLink(destination: TunerView(conductor: TunerConductor(scale: scale)).environmentObject(scalesView.store)) {
+        NavigationLink(destination:
+                        TunerView(conductor: TunerConductor(scale: scale))
+            .environmentObject(scalesView.store)
+            .environmentObject(scalesView.alerter))
+        {
             VStack(alignment: .leading) {
                 Text(scale.name)
                     .fontWeight(isStarred ? .semibold : .regular)
@@ -286,7 +284,6 @@ struct ScaleRow: View {
             .gesture(scalesView.editMode == .active ? getTap(for: scale) : nil)
             .foregroundColor(isUser ? .accentColor : .primary)
         }
-        .navigationBarTitleDisplayMode(.inline)
         .deleteDisabled(!isUser)
         .swipeActions(edge: .leading) {
             Button {

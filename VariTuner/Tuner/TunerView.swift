@@ -7,10 +7,12 @@
 
 import SwiftUI
 import AudioKit
+import AVFoundation
 
 struct TunerView: View {
     @StateObject var conductor: TunerConductor
     @EnvironmentObject var store: ScaleStore
+    @EnvironmentObject var alerter: Alerter
     
     var body: some View {
         GeometryReader { geometry in
@@ -56,15 +58,24 @@ struct TunerView: View {
                     .environmentObject(conductor)
             }
             .navigationBarTitle(conductor.scale.name)
-            .onAppear {
-                conductor.start()
-                conductor.tracker.start()
+        }
+        .onAppear {
+#if os(iOS)
+            UIApplication.shared.isIdleTimerDisabled = true
+#endif
+            conductor.start()
+            if conductor.showMicrophoneAccessAlert {
+                alerter.title = "Microphone Access Required"
+                alerter.message = "Please grant microphone access in the Settings app in the Privacy ⇾ Microphone section."
+                alerter.isPresented = true
             }
-            .onDisappear {
-                conductor.tracker.stop()
-                conductor.stop()
-                store.addToRecent(scale: conductor.scale)
-            }
+        }
+        .onDisappear {
+#if os(iOS)
+            UIApplication.shared.isIdleTimerDisabled = false
+#endif
+            conductor.stop()
+            store.addToRecent(scale: conductor.scale)
         }
     }
     
