@@ -98,6 +98,9 @@ class ScaleStore: ObservableObject {
 //        }
 //    }
     
+    private func initRecentScales() {
+        //recentScaleIDs.append(factoryScales.filter { $0.name == "12-12_sharps" }.first!.id)
+    }
     private func loadTestScales() {
         userScales.insert(
             Scale(name: "12-12_sharps",
@@ -155,6 +158,9 @@ class ScaleStore: ObservableObject {
         self.name = name
         if factoryScales.isEmpty {
             loadFactoryScales()
+        }
+        if recentScaleIDs.isEmpty {
+            initRecentScales()
         }
         restoreFromUserDefault()
         if userScales.isEmpty {

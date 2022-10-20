@@ -69,13 +69,13 @@ struct TunerView: View {
                 alerter.message = "Please grant microphone access in the Settings app in the Privacy ⇾ Microphone section."
                 alerter.isPresented = true
             }
+            store.addToRecent(scale: conductor.scale)
         }
         .onDisappear {
 #if os(iOS)
             UIApplication.shared.isIdleTimerDisabled = false
 #endif
             conductor.stop()
-            store.addToRecent(scale: conductor.scale)
         }
     }
     
