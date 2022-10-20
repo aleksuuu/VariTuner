@@ -65,7 +65,7 @@ class TunerConductor: ObservableObject {
         engine.output = tone
         tone.start()
         checkMicrophoneAuthorizationStatus()
-        setUpAudioSession()
+//        setUpAudioSession()
     }
 
     private func checkMicrophoneAuthorizationStatus() { // modified from ZenTuner
@@ -111,7 +111,7 @@ class TunerConductor: ObservableObject {
         do {
 //            Settings.bufferLength = .short
             let session = AVAudioSession.sharedInstance()
-            try session.setCategory(.playAndRecord, options: [.defaultToSpeaker, .allowBluetooth])
+            try session.setCategory(.playAndRecord, options: [.defaultToSpeaker, .mixWithOthers, .allowBluetooth])
 //            try session.setPreferredIOBufferDuration(Settings.bufferLength.duration)
 //            try session.setPreferredIOBufferDuration(4096)
 //            try session.overrideOutputAudioPort(.speaker)

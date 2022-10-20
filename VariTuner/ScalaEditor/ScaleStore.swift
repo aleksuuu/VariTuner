@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+
 // TODO: switch to Core Data?
 class ScaleStore: ObservableObject {
     let name: String

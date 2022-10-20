@@ -24,7 +24,7 @@ struct ScalesView: View {
     
     @State private var scrollTarget: String?
     
-    @State fileprivate var category = Category.starred
+    @State fileprivate var category = Category.recent
     
     @StateObject var alerter: Alerter = Alerter()
     
@@ -35,8 +35,8 @@ struct ScalesView: View {
         NavigationView {
             VStack {
                 Picker("Cents or Ratio", selection: $category) {
-                    Text("Recent").tag(Category.recent)
                     Text("Starred").tag(Category.starred)
+                    Text("Recent").tag(Category.recent)
                     Text("User").tag(Category.user)
                     Text("All").tag(Category.all)
                 }
@@ -127,30 +127,41 @@ struct ScalesView: View {
         }
     }
     
+    @ViewBuilder
     var scalesSection: some View {
-        ForEach(store.alphabet, id: \.self) { initial in
-            let scalesWithSameInitial = store.sortedAndFiltered[initial]
-            if let scales = scalesWithSameInitial, !scales.isEmpty {
-                Section {
-                    ForEach(scales) { scale in
+        if category == .recent {
+            Section {
+                ForEach(store.recentScaleIDs, id: \.self) { id in
+                    if let scale = (store.userScales + store.factoryScales).filter { $0.id == id }.first {
                         ScaleRow(scalesView: self, scale: scale)
                     }
-                    .onDelete { indexSet in
-                        deleteScale(indexSet: indexSet, scales: scales)
-                    }
-                    .sheet(item: $scaleToEdit) { scale in
-                        ScaleEditor(scale: $store.userScales[scale]) // this subscript works even if it's a factory scale because in UtilityExtensions, if a subscripted item can't be found in the array, the function returns the item itself
-                            .wrappedInNavigationViewToMakeDismissable {
-                                store.addToRecent(scale: scale)
-                                scaleToEdit = nil
-                                Task {
-                                    store.load(category: category)
+                }
+            }
+        } else {
+            ForEach(store.alphabet, id: \.self) { initial in
+                let scalesWithSameInitial = store.sortedAndFiltered[initial]
+                if let scales = scalesWithSameInitial, !scales.isEmpty {
+                    Section {
+                        ForEach(scales) { scale in
+                            ScaleRow(scalesView: self, scale: scale)
+                        }
+                        .onDelete { indexSet in
+                            deleteScale(indexSet: indexSet, scales: scales)
+                        }
+                        .sheet(item: $scaleToEdit) { scale in
+                            ScaleEditor(scale: $store.userScales[scale]) // this subscript works even if it's a factory scale because in UtilityExtensions, if a subscripted item can't be found in the array, the function returns the item itself
+                                .wrappedInNavigationViewToMakeDismissable {
+                                    store.addToRecent(scale: scale)
+                                    scaleToEdit = nil
+                                    Task {
+                                        store.load(category: category)
+                                    }
+                                    // TODO: implement scrollTarget
                                 }
-                                // TODO: implement scrollTarget
-                            }
+                        }
+                    } header: {
+                        Text(initial)
                     }
-                } header: {
-                    Text(initial)
                 }
             }
         }

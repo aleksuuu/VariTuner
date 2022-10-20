@@ -16,34 +16,17 @@ import AVFoundation
 @main
 struct VariTunerApp: App {
     @StateObject var scaleStore = ScaleStore(named: "Default")
-//    init() {
-//#if os(iOS)
-//        do {
-//            Settings.bufferLength = .short
-//            let session = AVAudioSession.sharedInstance()
-//            try session.setPreferredIOBufferDuration(Settings.bufferLength.duration)
-//            try session.setCategory(.playAndRecord,
-//                                                            options: [.defaultToSpeaker, .mixWithOthers, .allowBluetoothA2DP])
-//            try session.setActive(true)
-//        } catch let err {
-//            print(err)
-//        }
-//#endif
-//    }
-//    init() {
-//        do {
-//            let session = AVAudioSession.sharedInstance()
-////            Settings.bufferLength = .short
-//
-////            try session.setPreferredIOBufferDuration(4096)
-////            try session.setCategory(.playAndRecord, options: [.defaultToSpeaker, .allowBluetooth])
-//
-//            try session.overrideOutputAudioPort(.speaker)
-//
-//        } catch {
-//            fatalError("Failed to configure and activate session.")
-//        }
-//    }
+    init() {
+#if os(iOS)
+        do {
+            let session = AVAudioSession.sharedInstance()
+            try session.setCategory(.playAndRecord, options: [.defaultToSpeaker, .mixWithOthers, .allowBluetoothA2DP])
+            try session.setActive(true)
+        } catch let err {
+            print(err)
+        }
+#endif
+    }
     var body: some Scene {
         WindowGroup {
             ScalesView()
