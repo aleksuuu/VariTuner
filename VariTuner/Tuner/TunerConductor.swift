@@ -11,6 +11,8 @@ import Foundation
 import SoundpipeAudioKit
 import SporthAudioKit
 import AVFoundation
+//import MicrophonePitchDetector
+
 
 // TODO: Prevent an empty scale from crashing this view
 
@@ -20,17 +22,8 @@ class TunerConductor: ObservableObject {
     var scale: Scale
     
     private let engine = AudioEngine()
-//#if os(iOS)
-//    private let session = AVAudioSession.sharedInstance()
-//#endif
     private var hasMicrophoneAccess = false
     var showMicrophoneAccessAlert = false
-//    let initialDevice: Device
-
-//    let mic: AudioEngine.InputNode
-//    let tappableNodeA: Fader
-//    let tappableNodeB: Fader
-//    let tappableNodeC: Fader
     
 
     var tracker: PitchTap!
@@ -67,26 +60,12 @@ class TunerConductor: ObservableObject {
 
 
     init(scale: Scale) {
-//        guard let input = engine.input else { fatalError() }
-
-        //guard let device = engine.inputDevice else { fatalError() }
-
-//        initialDevice = device
-
         self.scale = scale
-        
-//        mic = input
-//        tappableNodeA = Fader(mic)
-//        tappableNodeB = Fader(tappableNodeA)
-//        tappableNodeC = Fader(tappableNodeB)
+//        setUpAudioSession()
         engine.output = tone
+        tone.start()
         checkMicrophoneAuthorizationStatus()
-
-//        tracker = PitchTap(mic) { pitch, amp in
-//            DispatchQueue.main.async {
-//                self.update(pitch[0], amp[0])
-//            }
-//        }
+        setUpAudioSession()
     }
 
     private func checkMicrophoneAuthorizationStatus() { // modified from ZenTuner
@@ -117,6 +96,7 @@ class TunerConductor: ObservableObject {
     
     private func setUpPitchTracking() {
         if let input = engine.input {
+            input.start()
             tracker = PitchTap(input) { pitch, amp in
                 DispatchQueue.main.async {
                     self.update(pitch[0], amp[0])
@@ -129,8 +109,10 @@ class TunerConductor: ObservableObject {
     
     private func setUpAudioSession() {
         do {
+//            Settings.bufferLength = .short
             let session = AVAudioSession.sharedInstance()
             try session.setCategory(.playAndRecord, options: [.defaultToSpeaker, .allowBluetooth])
+//            try session.setPreferredIOBufferDuration(Settings.bufferLength.duration)
 //            try session.setPreferredIOBufferDuration(4096)
 //            try session.overrideOutputAudioPort(.speaker)
             try session.setActive(true)
@@ -143,17 +125,9 @@ class TunerConductor: ObservableObject {
     func start() {
         guard hasMicrophoneAccess else { return }
         do {
+            
             try engine.start()
-//#if os(iOS)
-//        do {
-//            Settings.bufferLength = .short
-//            try AVAudioSession.sharedInstance().setPreferredIOBufferDuration(Settings.bufferLength.duration)
-//            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, options: [.defaultToSpeaker, .mixWithOthers, .allowBluetoothA2DP])
-//            try AVAudioSession.sharedInstance().setActive(true)
-//        } catch let err {
-//            print(err)
-//        }
-//#endif
+//            setUpAudioSession()
             tracker.start()
         } catch let err {
             print(err)
@@ -162,13 +136,6 @@ class TunerConductor: ObservableObject {
     
     func stop() {
         engine.stop()
-//#if os(iOS)
-//        do {
-//            try AVAudioSession.sharedInstance().setActive(false)
-//        } catch {
-//            // TODO: Handle error
-//        }
-//#endif
     }
     
     

@@ -35,9 +35,9 @@ struct ScalesView: View {
         NavigationView {
             VStack {
                 Picker("Cents or Ratio", selection: $category) {
+                    Text("Recent").tag(Category.recent)
                     Text("Starred").tag(Category.starred)
                     Text("User").tag(Category.user)
-                    Text("Recent").tag(Category.recent)
                     Text("All").tag(Category.all)
                 }
                 .pickerStyle(.segmented)

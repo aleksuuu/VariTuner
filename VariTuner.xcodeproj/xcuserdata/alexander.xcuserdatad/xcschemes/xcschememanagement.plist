@@ -9,7 +9,7 @@
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>11</integer>
+			<integer>3</integer>
 		</dict>
 		<key>AudioKit (Playground) 10.xcscheme</key>
 		<dict>
@@ -86,7 +86,7 @@
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>12</integer>
+			<integer>4</integer>
 		</dict>
 		<key>AudioKit (Playground) 20.xcscheme</key>
 		<dict>
@@ -121,7 +121,7 @@
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>16</integer>
+			<integer>15</integer>
 		</dict>
 		<key>AudioKit (Playground) 4.xcscheme</key>
 		<dict>
@@ -170,7 +170,7 @@
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>10</integer>
+			<integer>2</integer>
 		</dict>
 		<key>Controls (Playground) 1.xcscheme</key>
 		<dict>
@@ -345,7 +345,7 @@
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>8</integer>
+			<integer>6</integer>
 		</dict>
 		<key>SoundpipeAudioKit (Playground) 10.xcscheme</key>
 		<dict>
@@ -422,7 +422,7 @@
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>9</integer>
+			<integer>7</integer>
 		</dict>
 		<key>SoundpipeAudioKit (Playground) 20.xcscheme</key>
 		<dict>
@@ -457,21 +457,21 @@
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>13</integer>
+			<integer>16</integer>
 		</dict>
 		<key>SoundpipeAudioKit (Playground) 4.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>14</integer>
+			<integer>19</integer>
 		</dict>
 		<key>SoundpipeAudioKit (Playground) 5.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>15</integer>
+			<integer>20</integer>
 		</dict>
 		<key>SoundpipeAudioKit (Playground) 6.xcscheme</key>
 		<dict>
@@ -506,14 +506,14 @@
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>7</integer>
+			<integer>5</integer>
 		</dict>
 		<key>SporthAudioKit (Playground) 1.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>2</integer>
+			<integer>8</integer>
 		</dict>
 		<key>SporthAudioKit (Playground) 10.xcscheme</key>
 		<dict>
@@ -590,7 +590,7 @@
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>3</integer>
+			<integer>9</integer>
 		</dict>
 		<key>SporthAudioKit (Playground) 20.xcscheme</key>
 		<dict>
@@ -625,21 +625,21 @@
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>22</integer>
+			<integer>12</integer>
 		</dict>
 		<key>SporthAudioKit (Playground) 4.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>23</integer>
+			<integer>13</integer>
 		</dict>
 		<key>SporthAudioKit (Playground) 5.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>24</integer>
+			<integer>14</integer>
 		</dict>
 		<key>SporthAudioKit (Playground) 6.xcscheme</key>
 		<dict>

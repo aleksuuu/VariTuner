@@ -8,8 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		1107558C28CE305C00842049 /* TunerConductor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1107558B28CE305C00842049 /* TunerConductor.swift */; };
-		1107558F28CE30FD00842049 /* AudioKitEX in Frameworks */ = {isa = PBXBuildFile; productRef = 1107558E28CE30FD00842049 /* AudioKitEX */; };
 		1107559528CE316400842049 /* SoundpipeAudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1107559428CE316400842049 /* SoundpipeAudioKit */; };
+		110D0CEC2901897A00A7599B /* AudioKitEX in Frameworks */ = {isa = PBXBuildFile; productRef = 110D0CEB2901897A00A7599B /* AudioKitEX */; };
+		110D0CEF290189C700A7599B /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 110D0CEE290189C700A7599B /* AudioKit */; };
 		111A2E5428BFF86C00E04DC1 /* UtilityExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A2E5328BFF86C00E04DC1 /* UtilityExtensions.swift */; };
 		1122966628C2B8A700BD48CC /* ScalesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1122966528C2B8A700BD48CC /* ScalesView.swift */; };
 		1124DF9928E93AD00030CF9F /* BravuraText.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1124DF9828E936520030CF9F /* BravuraText.otf */; };
@@ -23,7 +24,6 @@
 		117AD58528BFDC0900F04CC8 /* ScaleStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117AD58428BFDC0900F04CC8 /* ScaleStore.swift */; };
 		11936DF628F8A8990081E255 /* factoryScales.json in Resources */ = {isa = PBXBuildFile; fileRef = 11936DF528F8A8990081E255 /* factoryScales.json */; };
 		1199278B28EF68AC006199D4 /* DrawingConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1199278A28EF68AC006199D4 /* DrawingConstants.swift */; };
-		11A252F528CD255900E8B66B /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 11A252F428CD255900E8B66B /* AudioKit */; };
 		11A5D4CF28EF3BC100469AB8 /* SporthAudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 11A5D4CE28EF3BC100469AB8 /* SporthAudioKit */; };
 		11A5D4D328EF59CA00469AB8 /* PitchScroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A5D4D228EF59CA00469AB8 /* PitchScroll.swift */; };
 		11B0318828FDE9AD0032742C /* Alerter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B0318728FDE9AD0032742C /* Alerter.swift */; };
@@ -60,9 +60,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				11A5D4CF28EF3BC100469AB8 /* SporthAudioKit in Frameworks */,
-				11A252F528CD255900E8B66B /* AudioKit in Frameworks */,
+				110D0CEC2901897A00A7599B /* AudioKitEX in Frameworks */,
+				110D0CEF290189C700A7599B /* AudioKit in Frameworks */,
 				1107559528CE316400842049 /* SoundpipeAudioKit in Frameworks */,
-				1107558F28CE30FD00842049 /* AudioKitEX in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -92,6 +92,13 @@
 			path = Tuner;
 			sourceTree = "<group>";
 		};
+		110D0CE42900B9ED00A7599B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		1124DF9728E936040030CF9F /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -105,6 +112,7 @@
 			children = (
 				117AD57528BFDB9A00F04CC8 /* VariTuner */,
 				117AD57428BFDB9A00F04CC8 /* Products */,
+				110D0CE42900B9ED00A7599B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -160,10 +168,10 @@
 			);
 			name = VariTuner;
 			packageProductDependencies = (
-				11A252F428CD255900E8B66B /* AudioKit */,
-				1107558E28CE30FD00842049 /* AudioKitEX */,
 				1107559428CE316400842049 /* SoundpipeAudioKit */,
 				11A5D4CE28EF3BC100469AB8 /* SporthAudioKit */,
+				110D0CEB2901897A00A7599B /* AudioKitEX */,
+				110D0CEE290189C700A7599B /* AudioKit */,
 			);
 			productName = "Scala Editor";
 			productReference = 117AD57328BFDB9A00F04CC8 /* VariTuner.app */;
@@ -194,10 +202,10 @@
 			);
 			mainGroup = 117AD56A28BFDB9A00F04CC8;
 			packageReferences = (
-				11A252F328CD255900E8B66B /* XCRemoteSwiftPackageReference "AudioKit" */,
-				1107558D28CE30FD00842049 /* XCRemoteSwiftPackageReference "AudioKitEX" */,
 				1107559328CE316400842049 /* XCRemoteSwiftPackageReference "SoundpipeAudioKit" */,
 				11A5D4CD28EF3BC100469AB8 /* XCRemoteSwiftPackageReference "SporthAudioKit" */,
+				110D0CEA2901897A00A7599B /* XCRemoteSwiftPackageReference "AudioKitEX" */,
+				110D0CED290189C700A7599B /* XCRemoteSwiftPackageReference "AudioKit" */,
 			);
 			productRefGroup = 117AD57428BFDB9A00F04CC8 /* Products */;
 			projectDirPath = "";
@@ -450,14 +458,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		1107558D28CE30FD00842049 /* XCRemoteSwiftPackageReference "AudioKitEX" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/AudioKit/AudioKitEX.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.0;
-			};
-		};
 		1107559328CE316400842049 /* XCRemoteSwiftPackageReference "SoundpipeAudioKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/AudioKit/SoundpipeAudioKit.git";
@@ -466,7 +466,15 @@
 				minimumVersion = 5.0.0;
 			};
 		};
-		11A252F328CD255900E8B66B /* XCRemoteSwiftPackageReference "AudioKit" */ = {
+		110D0CEA2901897A00A7599B /* XCRemoteSwiftPackageReference "AudioKitEX" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AudioKit/AudioKitEX.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		110D0CED290189C700A7599B /* XCRemoteSwiftPackageReference "AudioKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/AudioKit/AudioKit.git";
 			requirement = {
@@ -485,19 +493,19 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		1107558E28CE30FD00842049 /* AudioKitEX */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1107558D28CE30FD00842049 /* XCRemoteSwiftPackageReference "AudioKitEX" */;
-			productName = AudioKitEX;
-		};
 		1107559428CE316400842049 /* SoundpipeAudioKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 1107559328CE316400842049 /* XCRemoteSwiftPackageReference "SoundpipeAudioKit" */;
 			productName = SoundpipeAudioKit;
 		};
-		11A252F428CD255900E8B66B /* AudioKit */ = {
+		110D0CEB2901897A00A7599B /* AudioKitEX */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 11A252F328CD255900E8B66B /* XCRemoteSwiftPackageReference "AudioKit" */;
+			package = 110D0CEA2901897A00A7599B /* XCRemoteSwiftPackageReference "AudioKitEX" */;
+			productName = AudioKitEX;
+		};
+		110D0CEE290189C700A7599B /* AudioKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 110D0CED290189C700A7599B /* XCRemoteSwiftPackageReference "AudioKit" */;
 			productName = AudioKit;
 		};
 		11A5D4CE28EF3BC100469AB8 /* SporthAudioKit */ = {
