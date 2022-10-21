@@ -92,13 +92,6 @@
 			path = Tuner;
 			sourceTree = "<group>";
 		};
-		110D0CE42900B9ED00A7599B /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		1124DF9728E936040030CF9F /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -112,7 +105,6 @@
 			children = (
 				117AD57528BFDB9A00F04CC8 /* VariTuner */,
 				117AD57428BFDB9A00F04CC8 /* Products */,
-				110D0CE42900B9ED00A7599B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};

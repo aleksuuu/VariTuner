@@ -88,18 +88,8 @@ class ScaleStore: ObservableObject {
         }
     }
     
-//    private func loadFactoryScales() {
-//        let asset = NSDataAsset(name: "Data", bundle: Bundle.main)
-//        if let json = try? JSONSerialization.jsonObject(with: asset!.data, options: JSONSerialization.ReadingOptions.allowFragments),
-//           let decodedScales = json as? [Scale] {
-//            factoryScales = decodedScales
-//        } else {
-//            print("Parsing failed")
-//        }
-//    }
-    
     private func initRecentScales() {
-        //recentScaleIDs.append(factoryScales.filter { $0.name == "12-12_sharps" }.first!.id)
+        recentScaleIDs.append((factoryScales.first(where: { $0.name == "12-12_sharps" }) ?? factoryScales[0]).id)
     }
     private func loadTestScales() {
         userScales.insert(
@@ -159,10 +149,10 @@ class ScaleStore: ObservableObject {
         if factoryScales.isEmpty {
             loadFactoryScales()
         }
-        if recentScaleIDs.isEmpty {
+        restoreFromUserDefault()
+        if recentScaleIDs.isEmpty { // during first launch, add 12-tET to recentScaleIDs
             initRecentScales()
         }
-        restoreFromUserDefault()
         if userScales.isEmpty {
             loadTestScales()
             print("using built-in scales")
@@ -186,18 +176,6 @@ class ScaleStore: ObservableObject {
             }
             .receive(on: RunLoop.main) // switch back to uithread
             .assign(to: &$sortedAndFiltered)
-//        $category
-//            .receive(on: DispatchQueue.global())
-//            .map { [weak self] category in
-//                guard let self = self else { return [:] }
-//                Task { @MainActor in
-//                    self.load(category: category)
-//                }
-//
-//                return self.sorted
-//            }
-//            .receive(on: DispatchQueue.main)
-//            .assign(to: &$sortedAndFiltered)
     }
     
     func load(category: Category) {
@@ -227,12 +205,10 @@ class ScaleStore: ObservableObject {
     // MARK: - Intent(s)
     
     func addToRecent(scale: Scale) {
-        if !recentScaleIDs.contains(scale.id) {
-            recentScaleIDs.insert(scale.id, at: 0)
-            while recentScaleIDs.count > 15 {
-                recentScaleIDs.removeLast()
-            }
+        recentScaleIDs.remove(scale.id) // remove removes an element if it exists, otherwise it does nothing
+        recentScaleIDs.insert(scale.id, at: 0)
+        while recentScaleIDs.count > 15 {
+            recentScaleIDs.removeLast()
         }
     }
-    
 }

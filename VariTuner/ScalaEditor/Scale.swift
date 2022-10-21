@@ -51,7 +51,7 @@ struct Scale: Identifiable, Hashable, Codable, Comparable {
         }
         
         
-        struct Ratio: Hashable, Codable {
+        struct Ratio: Hashable, Codable { // TODO: is this necessary?
             var numerator: Int
             var denominator: Int
             
