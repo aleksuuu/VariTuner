@@ -27,28 +27,28 @@ class TunerConductor: ObservableObject {
     
     var tracker: PitchTap!
     var mixer: Mixer!
-//    let mixer = Mixer()
-//    var mic: AudioEngine.InputNode!
 
     @Published var currentFreq: Double? { // TODO: when two notes share the same frequency, currently the second note would stop the first note
         didSet {
             if let freq = currentFreq {
                 if freq == oldValue {
                     if tone.isStarted {
+                        tone.parameter1 = 0
                         tone.stop()
                     }
                     currentFreq = nil
                 } else {
                     switch freq {
                     case _ where freq > TuningConstants.highestFreq:
-                        tone.parameter1 = AUValue(TuningConstants.highestFreq)
+                        tone.parameter2 = AUValue(TuningConstants.highestFreq)
                     case _ where freq < TuningConstants.lowestFreq:
-                        tone.parameter1 = AUValue(TuningConstants.lowestFreq)
+                        tone.parameter2 = AUValue(TuningConstants.lowestFreq)
                     default:
-                        tone.parameter1 = AUValue(freq)
+                        tone.parameter2 = AUValue(freq)
                     }
                     if !tone.isStarted {
                         tone.start()
+                        tone.parameter1 = 1
                     }
                 }
             }
@@ -56,16 +56,14 @@ class TunerConductor: ObservableObject {
     }
 
     let tone = OperationGenerator {
-        let tone = Operation.sineWave(frequency: Operation.parameters[0], amplitude: 0.5)
-        return tone
+        let tone = Operation.sineWave(frequency: Operation.parameters[1], amplitude: 0.5)
+        let smoothTone = tone.triggeredWithEnvelope(trigger: Operation.parameters[0], attack: 0.01)
+        return smoothTone
     }
 
 
     init(scale: Scale) {
         self.scale = scale
-
-//        engine.output = tone
-//        tone.start()
 #if os(iOS)
         setUpAudioSession()
 #endif
@@ -75,14 +73,10 @@ class TunerConductor: ObservableObject {
     
     private func setUpAudioSession() {
         do {
-//            Settings.bufferLength = .short
             Settings.bufferLength = .medium
             let session = AVAudioSession.sharedInstance()
             try session.setPreferredIOBufferDuration(Settings.bufferLength.duration)
             try session.setCategory(.playAndRecord, options: [.defaultToSpeaker, .mixWithOthers, .allowBluetooth])
-//            try session.setPreferredIOBufferDuration(Settings.bufferLength.duration)
-//            try session.setPreferredIOBufferDuration(4096)
-//            try session.overrideOutputAudioPort(.speaker)
             try session.setActive(true)
             
         } catch {
@@ -118,46 +112,29 @@ class TunerConductor: ObservableObject {
     
     private func setUpPitchTracking() {
         if let input = engine.input {
-//            mic = input
-            // Add Fader to the mic input, a trick to get FFTTap to get audio signal from the mic input
-//            let fader = Fader(mic)
-//            mixer = Mixer([Fader(fader, gain: 0), tone])
-//            mixer = Mixer([Fader(mic, gain: 0)])
-//            mixer.addInput(Fader(mic, gain: 0))
-//            mixer.addInput(tone)
-//            mixer.addInput(Fader(fader, gain: 0))
             tracker = PitchTap(input) { pitch, amp in
                 DispatchQueue.main.async {
                     self.update(pitch[0], amp[0])
                 }
             }
-            mixer = Mixer([Fader(input, gain: 0), tone])
-//            mic.start()
-//            tracker?.remove()
-            
+            mixer = Mixer([Fader(input, gain: 0), tone]) // Use the mixer to attach input and output to audio engine
         }
         hasMicrophoneAccess = true
     }
     
     func start() {
         guard hasMicrophoneAccess else { return }
-//        mic.start()
-//        tone.start()
         
         engine.output = mixer
-//        engine.output = tone
         do {
             try engine.start()
         } catch let err {
             print(err)
         }
         tracker.start()
-        
     }
     
     func stop() {
-//        mic.stop()
-//        tracker.stop()
         engine.stop()
     }
     
@@ -198,7 +175,6 @@ class TunerConductor: ObservableObject {
         data.roundedFreq = closestFrequency * pow(2, Float(equave))
         data.noteName = "\(noteName)"
         data.equave = equave
-//        data.deviation = minDeviation * pow(2, Float(equave))
     }
 }
 
