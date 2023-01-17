@@ -35,14 +35,6 @@ class ScaleStore: ObservableObject {
     @Published var searchText = ""
     var sorted: [String: [Scale]] = [:]
     @Published var sortedAndFiltered: [String: [Scale]] = [:]
-//    @Published var category = Category.all
-//    {
-//        willSet {
-//            Task { @MainActor in
-//                load(category: category)
-//            }
-//        }
-//    }
     
     private var userDefaultsKey: String {
         "ScaleStore:" + name // prefix makes sure this key is unique

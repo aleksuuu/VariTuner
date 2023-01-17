@@ -25,8 +25,10 @@ class TunerConductor: ObservableObject {
     private var hasMicrophoneAccess = false
     var showMicrophoneAccessAlert = false
     
-
     var tracker: PitchTap!
+//    var mixer: Mixer!
+    let mixer = Mixer()
+    var mic: AudioEngine.InputNode!
 
     @Published var currentFreq: Double? { // TODO: when two notes share the same frequency, currently the second note would stop the first note
         didSet {
@@ -61,11 +63,30 @@ class TunerConductor: ObservableObject {
 
     init(scale: Scale) {
         self.scale = scale
-//        setUpAudioSession()
-        engine.output = tone
-        tone.start()
+#if os(iOS)
+        setUpAudioSession()
+#endif
+//        engine.output = tone
+//        tone.start()
+
         checkMicrophoneAuthorizationStatus()
-//        setUpAudioSession()
+    }
+    
+    private func setUpAudioSession() {
+        do {
+//            Settings.bufferLength = .short
+            Settings.bufferLength = .medium
+            let session = AVAudioSession.sharedInstance()
+            try session.setPreferredIOBufferDuration(Settings.bufferLength.duration)
+            try session.setCategory(.playAndRecord, options: [.defaultToSpeaker, .mixWithOthers, .allowBluetooth])
+//            try session.setPreferredIOBufferDuration(Settings.bufferLength.duration)
+//            try session.setPreferredIOBufferDuration(4096)
+//            try session.overrideOutputAudioPort(.speaker)
+            try session.setActive(true)
+            
+        } catch {
+            fatalError("Failed to configure and activate session.")
+        }
     }
 
     private func checkMicrophoneAuthorizationStatus() { // modified from ZenTuner
@@ -96,42 +117,41 @@ class TunerConductor: ObservableObject {
     
     private func setUpPitchTracking() {
         if let input = engine.input {
-            input.start()
-            tracker = PitchTap(input) { pitch, amp in
+            
+            mic = input
+            // Add Fader to the mic input, a trick to get FFTTap to get audio signal from the mic input
+            let fader = Fader(mic)
+//            mixer = Mixer([Fader(fader, gain: 0), tone])
+            mixer.addInput(tone)
+//            mixer.addInput(Fader(mic, gain: 0))
+//            mixer.addInput(Fader(fader, gain: 0))
+            tracker = PitchTap(fader) { pitch, amp in
                 DispatchQueue.main.async {
                     self.update(pitch[0], amp[0])
                 }
             }
+//            mic.start()
+//            tracker?.remove()
+            
         }
         hasMicrophoneAccess = true
         start()
     }
     
-    private func setUpAudioSession() {
-        do {
-//            Settings.bufferLength = .short
-            let session = AVAudioSession.sharedInstance()
-            try session.setCategory(.playAndRecord, options: [.defaultToSpeaker, .mixWithOthers, .allowBluetooth])
-//            try session.setPreferredIOBufferDuration(Settings.bufferLength.duration)
-//            try session.setPreferredIOBufferDuration(4096)
-//            try session.overrideOutputAudioPort(.speaker)
-            try session.setActive(true)
-            
-        } catch {
-            fatalError("Failed to configure and activate session.")
-        }
-    }
+   
     
     func start() {
         guard hasMicrophoneAccess else { return }
         do {
-            
+            mic.start()
+            tone.start()
+            engine.output = mixer
             try engine.start()
-//            setUpAudioSession()
             tracker.start()
         } catch let err {
             print(err)
         }
+        
     }
     
     func stop() {
