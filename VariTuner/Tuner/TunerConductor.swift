@@ -26,9 +26,9 @@ class TunerConductor: ObservableObject {
     var showMicrophoneAccessAlert = false
     
     var tracker: PitchTap!
-//    var mixer: Mixer!
-    let mixer = Mixer()
-    var mic: AudioEngine.InputNode!
+    var mixer: Mixer!
+//    let mixer = Mixer()
+//    var mic: AudioEngine.InputNode!
 
     @Published var currentFreq: Double? { // TODO: when two notes share the same frequency, currently the second note would stop the first note
         didSet {
@@ -55,7 +55,7 @@ class TunerConductor: ObservableObject {
         }
     }
 
-    let tone = OperationGenerator { _ in
+    let tone = OperationGenerator {
         let tone = Operation.sineWave(frequency: Operation.parameters[0], amplitude: 0.5)
         return tone
     }
@@ -63,13 +63,14 @@ class TunerConductor: ObservableObject {
 
     init(scale: Scale) {
         self.scale = scale
+
+//        engine.output = tone
+//        tone.start()
 #if os(iOS)
         setUpAudioSession()
 #endif
-//        engine.output = tone
-//        tone.start()
-
         checkMicrophoneAuthorizationStatus()
+
     }
     
     private func setUpAudioSession() {
@@ -117,44 +118,46 @@ class TunerConductor: ObservableObject {
     
     private func setUpPitchTracking() {
         if let input = engine.input {
-            
-            mic = input
+//            mic = input
             // Add Fader to the mic input, a trick to get FFTTap to get audio signal from the mic input
-            let fader = Fader(mic)
+//            let fader = Fader(mic)
 //            mixer = Mixer([Fader(fader, gain: 0), tone])
-            mixer.addInput(tone)
+//            mixer = Mixer([Fader(mic, gain: 0)])
 //            mixer.addInput(Fader(mic, gain: 0))
+//            mixer.addInput(tone)
 //            mixer.addInput(Fader(fader, gain: 0))
-            tracker = PitchTap(fader) { pitch, amp in
+            tracker = PitchTap(input) { pitch, amp in
                 DispatchQueue.main.async {
                     self.update(pitch[0], amp[0])
                 }
             }
+            mixer = Mixer([Fader(input, gain: 0), tone])
 //            mic.start()
 //            tracker?.remove()
             
         }
         hasMicrophoneAccess = true
-        start()
     }
-    
-   
     
     func start() {
         guard hasMicrophoneAccess else { return }
+//        mic.start()
+//        tone.start()
+        
+        engine.output = mixer
+//        engine.output = tone
         do {
-            mic.start()
-            tone.start()
-            engine.output = mixer
             try engine.start()
-            tracker.start()
         } catch let err {
             print(err)
         }
+        tracker.start()
         
     }
     
     func stop() {
+//        mic.stop()
+//        tracker.stop()
         engine.stop()
     }
     
