@@ -32,9 +32,8 @@ class TunerConductor: ObservableObject {
         didSet {
             if let freq = currentFreq {
                 if freq == oldValue {
-                    if tone.isStarted {
+                    if tone.parameter1 == 1 {
                         tone.parameter1 = 0
-                        tone.stop()
                     }
                     currentFreq = nil
                 } else {
@@ -46,8 +45,7 @@ class TunerConductor: ObservableObject {
                     default:
                         tone.parameter2 = AUValue(freq)
                     }
-                    if !tone.isStarted {
-                        tone.start()
+                    if tone.parameter1 == 0 {
                         tone.parameter1 = 1
                     }
                 }
@@ -57,7 +55,7 @@ class TunerConductor: ObservableObject {
 
     let tone = OperationGenerator {
         let tone = Operation.sineWave(frequency: Operation.parameters[1], amplitude: 0.5)
-        let smoothTone = tone.triggeredWithEnvelope(trigger: Operation.parameters[0], attack: 0.01)
+        let smoothTone = tone.triggeredWithEnvelope(trigger: Operation.parameters[0], attack: 0.05, hold: 0.01, release: 0.01)
         return smoothTone
     }
 
@@ -67,6 +65,7 @@ class TunerConductor: ObservableObject {
 #if os(iOS)
         setUpAudioSession()
 #endif
+        tone.start()
         checkMicrophoneAuthorizationStatus()
 
     }
