@@ -119,7 +119,7 @@ struct ScalesView: View {
     
     var emptyCategory: some View {
         Section {
-            Text("No \(String(describing: category)) scales.")
+            Text("No scales found.")
         }
     }
     
