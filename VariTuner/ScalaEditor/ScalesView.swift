@@ -7,12 +7,7 @@
 
 import SwiftUI
 
-enum Category {
-    case all
-    case user
-    case starred
-    case recent
-}
+
 
 // TODO: scrollbar swipe gesture; generate scale
 struct ScalesView: View {

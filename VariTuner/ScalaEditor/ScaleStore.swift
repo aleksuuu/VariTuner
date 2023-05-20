@@ -8,6 +8,12 @@
 import Foundation
 import Combine
 
+enum Category {
+    case all
+    case user
+    case starred
+    case recent
+}
 // TODO: switch to Core Data?
 class ScaleStore: ObservableObject {
     let name: String
