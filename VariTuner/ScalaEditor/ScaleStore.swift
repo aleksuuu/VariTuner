@@ -222,6 +222,7 @@ class ScaleStore: ObservableObject {
     }
     
     // MARK: - Intent(s)
+
     
     func addToRecent(scale: Scale) {
         recentScaleIDs.remove(scale.id) // remove removes an element if it exists, otherwise it does nothing
@@ -229,5 +230,23 @@ class ScaleStore: ObservableObject {
         while recentScaleIDs.count > 15 {
             recentScaleIDs.removeLast()
         }
+    }
+    
+    func duplicateScale(_ scale: Scale) {
+        let name = scale.name + "_dup"
+        userScales.insert(Scale(name: name, description: scale.description, notes: scale.notes), at: 0)
+    }
+    
+    func toggleStar(for scale: Scale) {
+        if starredScaleIDs.contains(scale.id) {
+            starredScaleIDs.remove(scale.id)
+        } else {
+            starredScaleIDs.insert(scale.id, at: 0)
+        }
+    }
+    func deleteScale(_ scale: Scale) {
+        userScales.remove(scale)
+        starredScaleIDs.remove(scale.id)
+        recentScaleIDs.remove(scale.id)
     }
 }

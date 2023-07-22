@@ -17,7 +17,7 @@ struct ScalesView: View {
     
     @State fileprivate var editMode: EditMode = .inactive
     
-    @State fileprivate var scaleToEdit: Scale?
+    @State fileprivate var scaleToEditOrInspect: Scale?
     
     @State fileprivate var alphabetScrollTarget: String?
     
@@ -104,11 +104,11 @@ struct ScalesView: View {
         Menu {
             AnimatedActionButton(title: "Create a New Scale", systemImage: "doc") {
                 addScale()
-                scaleToEdit = store.userScales[0]
+                scaleToEditOrInspect = store.userScales[0]
             }
             AnimatedActionButton(title: "Paste From Clipboard", systemImage: "doc.on.clipboard") {
                 pasteScala()
-                scaleToEdit = store.userScales[0]
+                scaleToEditOrInspect = store.userScales[0]
             }
         } label: {
             Label("New...", systemImage: "doc.badge.plus")
@@ -135,18 +135,6 @@ struct ScalesView: View {
     private func addScale() {
         store.userScales.insert(Scale(name: "untitled", description: "", notes: [Scale.Note(cents: 0)]), at: 0)
     }
-    fileprivate func starScale(_ scale: Scale) {
-        store.starredScaleIDs.insert(scale.id, at: 0)
-        Task {
-            store.load(category: category)
-        }
-    }
-    fileprivate func unstarScale(_ scale: Scale) {
-        store.starredScaleIDs.remove(scale.id)
-        Task {
-            store.load(category: category)
-        }
-    }
 }
 
 struct ScalesSection: View {
@@ -168,11 +156,11 @@ struct ScalesSection: View {
                 }
             }
         }
-        .sheet(item: scalesView.$scaleToEdit) { scale in
+        .sheet(item: scalesView.$scaleToEditOrInspect) { scale in
             ScaleEditor(scale: scalesView.$store.userScales[scale]) // this subscript works even if it's a factory scale because in UtilityExtensions, if a subscripted item can't be found in the array, the function returns the item itself
                 .wrappedInNavigationViewToMakeDismissable {
                     scalesView.store.addToRecent(scale: scale)
-                    scalesView.scaleToEdit = nil
+                    scalesView.scaleToEditOrInspect = nil
                     Task {
                         scalesView.store.load(category: scalesView.category)
                     }
@@ -218,11 +206,23 @@ struct ScalesSection: View {
             EmptyView()
         }
     }
+    
+    private var recentScales: some View {
+        List {
+            ForEach(scalesView.store.recentScaleIDs, id: \.self) { id in
+                if let scale = (scalesView.store.userScales + scalesView.store.factoryScales).first(where: { $0.id == id }) {
+                    ScaleRow(scalesView: scalesView, scale: scale)
+                }
+            }
+            .onDelete { indexSet in
+                deleteScaleInRecent(indexSet: indexSet)
+            }
+        }
+    }
+    
     private func deleteScale(indexSet: IndexSet, scales: [Scale]) {
         for index in indexSet {
-            scalesView.store.userScales.remove(scales[index])
-            scalesView.store.starredScaleIDs.remove(scales[index].id)
-            scalesView.store.recentScaleIDs.remove(scales[index].id)
+            scalesView.store.deleteScale(scales[index])
         }
         Task {
             await scalesView.store.load(category: scalesView.category)
@@ -239,18 +239,7 @@ struct ScalesSection: View {
         }
     }
     
-    private var recentScales: some View {
-        Section {
-            ForEach(scalesView.store.recentScaleIDs, id: \.self) { id in
-                if let scale = (scalesView.store.userScales + scalesView.store.factoryScales).first(where: { $0.id == id }) {
-                    ScaleRow(scalesView: scalesView, scale: scale)
-                }
-            }
-            .onDelete { indexSet in
-                deleteScaleInRecent(indexSet: indexSet)
-            }
-        }
-    }
+    
     
 
     
@@ -271,70 +260,67 @@ struct ScaleRow: View {
             }
             .lineLimit(1)
             .contextMenu {
-                AnimatedActionButton(title: "Duplicate", systemImage: "doc.on.doc.fill") {
-                    duplicateScale(scale)
-                    scalesView.scaleToEdit = scalesView.store.userScales[0]
-                }
-                if scalesView.store.starredScaleIDs.contains(scale.id) {
-                    AnimatedActionButton(title: "Unstar", systemImage: "star.slash.fill") {
-                        scalesView.unstarScale(scale)                    }
-                } else {
-                    AnimatedActionButton(title: "Star", systemImage: "star") {
-                        scalesView.starScale(scale)                    }
-                }
-                if scalesView.store.userScales.contains(scale) {
-                    AnimatedActionButton(title: "Edit", systemImage: "pencil") {
-                        scalesView.scaleToEdit = scalesView.store.userScales[scale]
-                    }
-                    Button(role: .destructive) {
-                        scalesView.store.userScales.remove(scalesView.store.userScales[scale])
-                        Task {
-                            scalesView.store.load(category: scalesView.category)
-                        }
-                    } label: {
-                        Label("Delete", systemImage: "trash")
-                    }
-                } else {
-                    AnimatedActionButton(title: "Inspect", systemImage: "eye") {
-                        scalesView.scaleToEdit = scalesView.store.userScales[scale]
-                    }
-                }
+                scaleContextMenu
             }
             .gesture(scalesView.editMode == .active ? getTap(for: scale) : nil)
             .foregroundColor(isUser ? .accentColor : .primary)
         }
         .deleteDisabled(!isUser)
         .swipeActions(edge: .leading) {
-            Button {
-                scalesView.scaleToEdit = scale
-            } label: {
-                if isUser {
-                    Label("Edit", systemImage: "pencil")
-                } else {
-                    Label("Inspect", systemImage: "eye")
-                }
-            }
-            .tint(.indigo)
-            Group {
-                if scalesView.store.starredScaleIDs.contains(scale.id) {
-                    Button {
-                        scalesView.unstarScale(scale)
-                    } label: {
-                            Label("Unstar", systemImage: "star.slash.fill")
-                        }
-                } else {
-                    Button {
-                        scalesView.starScale(scale)
-                    } label: {
-                        Label("Star", systemImage: "star")
-                    }
-                }
-            }.tint(.yellow)
+            starButton.tint(.yellow)
+            duplicateButton.tint(.teal)
+            editInspectButton.tint(.indigo)
         }
     }
+    
+    @ViewBuilder
+    var scaleContextMenu: some View {
+        duplicateButton
+        starButton
+        editInspectButton
+        if scalesView.store.userScales.contains(scale) { deleteButton }
+    }
+    
+    var duplicateButton: some View {
+        AnimatedActionButton(title: "Duplicate", systemImage: "doc.on.doc.fill") {
+            scalesView.store.duplicateScale(scale)
+            scalesView.scaleToEditOrInspect = scalesView.store.userScales[0]
+        }
+    }
+    
+    var starButton: some View {
+        let isStarred = scalesView.store.starredScaleIDs.contains(scale.id)
+        return AnimatedActionButton(title: isStarred ? "Unstar" : "Star",
+                             systemImage: isStarred ? "star.slash.fill" : "star") {
+            scalesView.store.toggleStar(for: scale)
+            Task {
+                await scalesView.store.load(category: scalesView.category)
+            }
+        }
+    }
+    
+    var editInspectButton: some View {
+        let isUser = scalesView.store.userScales.contains(scale)
+        return AnimatedActionButton(title: isUser ? "Edit" : "Inspect",
+                             systemImage: isUser ? "pencil" : "eye") {
+            scalesView.scaleToEditOrInspect = scale
+        }
+    }
+    
+    var deleteButton: some View {
+        Button(role: .destructive) {
+            scalesView.store.deleteScale(scale)
+            Task {
+                await scalesView.store.load(category: scalesView.category)
+            }
+        } label: {
+            Label("Delete", systemImage: "trash")
+        }
+    }
+    
     private func getTap(for scale: Scale) -> some Gesture {
         TapGesture().onEnded {
-            scalesView.scaleToEdit = scale
+            scalesView.scaleToEditOrInspect = scale
         }
     }
     
@@ -344,10 +330,7 @@ struct ScaleRow: View {
             .environmentObject(scalesView.alerter)
     }
     
-    private func duplicateScale(_ scale: Scale) {
-        let name = scale.name + "_dup"
-        scalesView.store.userScales.insert(Scale(name: name, description: scale.description, notes: scale.notes), at: 0)
-    }
+
 }
 
 
