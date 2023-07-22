@@ -14,27 +14,29 @@ enum Category {
     case starred
     case recent
 }
-// TODO: switch to Core Data?
+
 class ScaleStore: ObservableObject {
-    let name: String
+    let storeName: String
     var userScales = [Scale]() {
         didSet {
-            UserDefaults.standard.set(try? JSONEncoder().encode(userScales), forKey: userDefaultsKey + "user")
+//            UserDefaults.standard.set(try? JSONEncoder().encode(userScales), forKey: userDefaultsKey + "user")
+            saveToFile(fileName: "userScales", content: userScales)
         }
     }
-    
     let alphabet = ["#","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
     var factoryScales = [Scale]()
     
     var starredScaleIDs = [UUID]() {
         didSet {
-            UserDefaults.standard.set(try? JSONEncoder().encode(starredScaleIDs), forKey: userDefaultsKey + "starred")
+//            UserDefaults.standard.set(try? JSONEncoder().encode(starredScaleIDs), forKey: userDefaultsKey + "starred")
+            saveToFile(fileName: "starredScaleIDs", content: starredScaleIDs)
         }
     }
     
     var recentScaleIDs = [UUID]() {
         didSet {
-            UserDefaults.standard.set(try? JSONEncoder().encode(recentScaleIDs), forKey: userDefaultsKey + "recent")
+//            UserDefaults.standard.set(try? JSONEncoder().encode(recentScaleIDs), forKey: userDefaultsKey + "recent")
+            saveToFile(fileName: "recentScaleIDs", content: recentScaleIDs)
         }
     }
     
@@ -43,120 +45,139 @@ class ScaleStore: ObservableObject {
     @Published var sortedAndFiltered: [String: [Scale]] = [:]
     
     private var userDefaultsKey: String {
-        "ScaleStore:" + name // prefix makes sure this key is unique
+        "ScaleStore:" + storeName // prefix makes sure this key is unique
     }
     
-    
-    private func restoreFromUserDefault() {
-//        UserDefaults.standard.removeObject(forKey: userDefaultsKey + "user")
-//        UserDefaults.standard.removeObject(forKey: userDefaultsKey + "starred")
-        if let jsonData = UserDefaults.standard.data(forKey: userDefaultsKey + "user"),
-           let decodedScales = try? JSONDecoder().decode(Array<Scale>.self, from: jsonData) {
-            userScales = decodedScales
-        }
-        if let jsonData = UserDefaults.standard.data(forKey: userDefaultsKey + "starred"),
-           let decodedScales = try? JSONDecoder().decode(Array<UUID>.self, from: jsonData) {
-            starredScaleIDs = decodedScales
-        }
-        if let jsonData = UserDefaults.standard.data(forKey: userDefaultsKey + "recent"),
-           let decodedScales = try? JSONDecoder().decode(Array<UUID>.self, from: jsonData) {
-            recentScaleIDs = decodedScales
-        }
-    }
-    
-    private func readLocalFile(forName name: String) -> Data? {
+    private func getData(for fileName: String) -> Data? {
         do {
-            if let bundlePath = Bundle.main.path(forResource: name,
-                                                 ofType: "json"),
-                let jsonData = try String(contentsOfFile: bundlePath).data(using: .utf8) {
-                return jsonData
+            if let furl = getFurl(for: fileName) {
+                return try Data(contentsOf: furl)
             }
         } catch {
-            print(error)
+            print("Error getting data from file: \(error)")
         }
         return nil
     }
     
-    private func loadFactoryScales() {
-        if let localData = self.readLocalFile(forName: "factoryScales"),
-        let decodedScales = try? JSONDecoder().decode(Array<Scale>.self, from: localData) {
-            factoryScales = decodedScales
-        } else {
-            print("Parsing failed")
+    private func getFurl(for fileName: String) -> URL? {
+        do {
+             return try FileManager.default
+                .url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+                .appendingPathComponent(fileName)
+                .appendingPathExtension("json")
+        } catch {
+            print("Error getting file url: \(error)")
+        }
+        return nil
+    }
+    
+    private func readJsonInDocuments() {
+        if let data = getData(for: "userScales") {
+            userScales = decodeFromJson(data: data) ?? []
+        }
+        if let data = getData(for: "starredScalesID") {
+            starredScaleIDs = decodeFromJson(data: data) ?? []
+        }
+        if let data = getData(for: "recentScalesID") {
+            recentScaleIDs = decodeFromJson(data: data) ?? []
         }
     }
+    
+    private func saveToFile<T: Encodable>(fileName: String, content: [T]) {
+        do {
+            if let furl = getFurl(for: fileName) {
+                let data = try JSONEncoder().encode(content)
+                try data.write(to: furl)
+            }
+        } catch {
+            print("Error saving to file: \(error)")
+        }
+    }
+    
+//    private func readLocalFile(forName name: String) -> Data? {
+//        do {
+//            if let bundlePath = Bundle.main.path(forResource: name,
+//                                                 ofType: "json"),
+//                let jsonData = try String(contentsOfFile: bundlePath).data(using: .utf8) {
+//                return jsonData
+//            }
+//        } catch {
+//            print(error)
+//        }
+//        return nil
+//    }
+//
+//    private func loadFactoryScales() {
+//        if let localData = self.readLocalFile(forName: "factoryScales"),
+//        let decodedScales = try? JSONDecoder().decode(Array<Scale>.self, from: localData) {
+//            factoryScales = decodedScales
+//        } else {
+//            print("Parsing failed")
+//        }
+//    }
     
     private func initRecentScales() {
         recentScaleIDs.append((factoryScales.first(where: { $0.name == "12-12_sharps" }) ?? factoryScales[0]).id)
     }
-    private func loadTestScales() {
-        userScales.insert(
-            Scale(name: "12-12_sharps",
-                  description: "12 out of 12-tET, the most boring tuning (preferring sharps)",
-                  notes: [
-                    Scale.Note(name: "C", cents: 0),
-                    Scale.Note(name: "C \u{E262}", cents: 100),
-                    Scale.Note(name: "D", cents: 200),
-                    Scale.Note(name: "D \u{E262}", cents: 300),
-                    Scale.Note(name: "E", cents: 400),
-                    Scale.Note(name: "F", cents: 500),
-                    Scale.Note(name: "F \u{E262}", cents: 600),
-                    Scale.Note(name: "G", cents: 700),
-                    Scale.Note(name: "G \u{E262}", cents: 800),
-                    Scale.Note(name: "A", cents: 900),
-                    Scale.Note(name: "A \u{E262}", cents: 1000),
-                    Scale.Note(name: "B", cents: 1100),
-                    Scale.Note(name: "C", cents: 1200)
-                  ]), at: 0
-        )
-        userScales.insert(
-            Scale(name: "24-24_sharps",
-                  description: "24 out of 24-tET (preferring sharps)",
-                  notes: [
-                    Scale.Note(name: "C", cents: 0),
-                    Scale.Note(name: "C \u{E282}", cents: 50),
-                    Scale.Note(name: "C \u{E262}", cents: 100),
-                    Scale.Note(name: "C \u{E283}", cents: 150),
-                    Scale.Note(name: "D", cents: 200),
-                    Scale.Note(name: "D \u{E282}", cents: 250),
-                    Scale.Note(name: "D \u{E262}", cents: 300),
-                    Scale.Note(name: "D \u{E283}", cents: 350),
-                    Scale.Note(name: "E", cents: 400),
-                    Scale.Note(name: "E \u{E282}", cents: 450),
-                    Scale.Note(name: "F", cents: 500),
-                    Scale.Note(name: "F \u{E282}", cents: 550),
-                    Scale.Note(name: "F \u{E262}", cents: 600),
-                    Scale.Note(name: "F \u{E283}", cents: 650),
-                    Scale.Note(name: "G", cents: 700),
-                    Scale.Note(name: "G \u{E282}", cents: 750),
-                    Scale.Note(name: "G \u{E262}", cents: 800),
-                    Scale.Note(name: "G \u{E283}", cents: 850),
-                    Scale.Note(name: "A", cents: 900),
-                    Scale.Note(name: "A \u{E282}", cents: 950),
-                    Scale.Note(name: "A \u{E262}", cents: 1000),
-                    Scale.Note(name: "A \u{E283}", cents: 1050),
-                    Scale.Note(name: "B", cents: 1100),
-                    Scale.Note(name: "B \u{E282}", cents: 1150),
-                    Scale.Note(name: "C", cents: 1200)
-                  ]), at: 0
-        )
+    
+    
+//    private var destinationPath: String {
+//        let documents = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
+//        return documents + "/factoryScales.json"
+//    }
+    
+    private func decodeFromJson<T: Decodable>(data: Data) -> Array<T>? {
+        return try? JSONDecoder().decode(Array<T>.self, from: data)
+    }
+    
+    private func loadFromBundle(fileName: String) {
+        let fileManager = FileManager.default
+        
+        guard let file = Bundle.main.url(forResource: fileName, withExtension: "json")
+        else {
+            fatalError("Couldn't find \(fileName) in main bundle")
+        }
+        if let data = try? Data(contentsOf: file) {
+            factoryScales = decodeFromJson(data: data) ?? []
+        }
+    }
+    
+    // for testing
+    private func clearDocumentDir() {
+        let fileManager = FileManager.default
+        let documents = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
+        do {
+              let filePaths = try fileManager.contentsOfDirectory(atPath: documents)
+              for filePath in filePaths {
+                  try fileManager.removeItem(atPath: documents + "/" + filePath)
+              }
+          } catch {
+              print("Could not clear temp folder: \(error)")
+          }
     }
     
     init(named name: String) {
-        self.name = name
-        if factoryScales.isEmpty {
-            loadFactoryScales()
-        }
-        restoreFromUserDefault()
-        if recentScaleIDs.isEmpty { // during first launch, add 12-tET to recentScaleIDs
-            initRecentScales()
-        }
-        if userScales.isEmpty {
-            loadTestScales()
-            print("using built-in scales")
-        } else {
-            print("successfully loaded scales from UserDefaults")
-        }
+        
+        // Clear UserDefaults TODO: remove
+        let domain = Bundle.main.bundleIdentifier!
+        UserDefaults.standard.removePersistentDomain(forName: domain)
+        UserDefaults.standard.synchronize()
+        print(Array(UserDefaults.standard.dictionaryRepresentation().keys).count)
+        
+        
+        self.storeName = name
+        clearDocumentDir() // TODO: remove this after testing
+        loadFromBundle(fileName: "factoryScales")
+        readJsonInDocuments()
+//        if recentScaleIDs.isEmpty { // during first launch, add 12-tET to recentScaleIDs
+//            initRecentScales()
+//        }
+//        if userScales.isEmpty {
+//            loadTestScales()
+//            print("using built-in scales")
+//        } else {
+//            print("successfully loaded scales from UserDefaults")
+//        }
         $searchText
             .debounce(for: 0.4, scheduler: RunLoop.main) // wait for user to stop typing
             .receive(on: DispatchQueue.global()) // perform filter on background

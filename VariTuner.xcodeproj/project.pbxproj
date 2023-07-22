@@ -30,8 +30,6 @@
 		11C045C8294FD19400C14BB8 /* AKExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11C045C7294FD19400C14BB8 /* AKExtensions.swift */; };
 		11C6638D28EAA1A20081BA64 /* TunerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11C6638C28EAA1A20081BA64 /* TunerData.swift */; };
 		11C6638F28EAA1CA0081BA64 /* TunerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11C6638E28EAA1CA0081BA64 /* TunerView.swift */; };
-		11F7A6F22A6BBDC900991194 /* CoreDataTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F7A6F12A6BBDC900991194 /* CoreDataTest.swift */; };
-		11F7A6F52A6BBE8000991194 /* ScalesContainer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 11F7A6F32A6BBE8000991194 /* ScalesContainer.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,8 +54,6 @@
 		11C045C7294FD19400C14BB8 /* AKExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKExtensions.swift; sourceTree = "<group>"; };
 		11C6638C28EAA1A20081BA64 /* TunerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunerData.swift; sourceTree = "<group>"; };
 		11C6638E28EAA1CA0081BA64 /* TunerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunerView.swift; sourceTree = "<group>"; };
-		11F7A6F12A6BBDC900991194 /* CoreDataTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CoreDataTest.swift; path = VariTuner/CoreDataTest.swift; sourceTree = SOURCE_ROOT; };
-		11F7A6F42A6BBE8000991194 /* ScalesContainer.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ScalesContainer.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,7 +89,6 @@
 				11731EB328F71DCE001B1807 /* TuningConstants.swift */,
 				11A5D4D228EF59CA00469AB8 /* PitchScroll.swift */,
 				1107558B28CE305C00842049 /* TunerConductor.swift */,
-				11F7A6F12A6BBDC900991194 /* CoreDataTest.swift */,
 				11C6638E28EAA1CA0081BA64 /* TunerView.swift */,
 				11C6638C28EAA1A20081BA64 /* TunerData.swift */,
 			);
@@ -127,7 +122,6 @@
 		117AD57528BFDB9A00F04CC8 /* VariTuner */ = {
 			isa = PBXGroup;
 			children = (
-				11F7A6F32A6BBE8000991194 /* ScalesContainer.xcdatamodeld */,
 				1199278A28EF68AC006199D4 /* DrawingConstants.swift */,
 				11B0318728FDE9AD0032742C /* Alerter.swift */,
 				11936DF528F8A8990081E255 /* factoryScales.json */,
@@ -236,8 +230,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11F7A6F52A6BBE8000991194 /* ScalesContainer.xcdatamodeld in Sources */,
-				11F7A6F22A6BBDC900991194 /* CoreDataTest.swift in Sources */,
 				11C6638D28EAA1A20081BA64 /* TunerData.swift in Sources */,
 				117AD57928BFDB9A00F04CC8 /* ScaleEditor.swift in Sources */,
 				1107558C28CE305C00842049 /* TunerConductor.swift in Sources */,
@@ -518,20 +510,6 @@
 			productName = SporthAudioKit;
 		};
 /* End XCSwiftPackageProductDependency section */
-
-/* Begin XCVersionGroup section */
-		11F7A6F32A6BBE8000991194 /* ScalesContainer.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				11F7A6F42A6BBE8000991194 /* ScalesContainer.xcdatamodel */,
-			);
-			currentVersion = 11F7A6F42A6BBE8000991194 /* ScalesContainer.xcdatamodel */;
-			name = ScalesContainer.xcdatamodeld;
-			path = Tuner/ScalesContainer.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 117AD56B28BFDB9A00F04CC8 /* Project object */;
 }
