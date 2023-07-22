@@ -13,11 +13,13 @@ import SwiftUI
 struct ScalesView: View {
     @EnvironmentObject var store: ScaleStore
     
+    @Environment(\.isSearching) private var isSearching
+    
     @State fileprivate var editMode: EditMode = .inactive
     
     @State fileprivate var scaleToEdit: Scale?
     
-    @State private var alphabetScrollTarget: String?
+    @State fileprivate var alphabetScrollTarget: String?
     
     @State fileprivate var category = Category.recent
     
@@ -33,88 +35,84 @@ struct ScalesView: View {
     }
     
     var body: some View {
-        NavigationView {
-            VStack {
-                Picker("Cents or Ratio", selection: $category) {
-                    Text("Starred").tag(Category.starred)
-                    Text("Recent").tag(Category.recent)
-                    Text("User").tag(Category.user)
-                    Text("All").tag(Category.all)
-                }
-                .pickerStyle(.segmented)
-                .onChange(of: category) { category in
+        scalesNavigationStack
+            .alert(alerter.title, isPresented: $alerter.isPresented) {
+            } message: {
+                Text(alerter.message)
+            }
+            .onAppear {
+                if store.sorted.isEmpty {
                     Task {
                         store.load(category: category)
                     }
                 }
-                ZStack {
-                    GeometryReader { geometryProxy in
-                        ScrollView {
-                            ScrollViewReader { scrollViewProxy in
-                                let noScales = store.sortedAndFiltered.values.allSatisfy { $0.isEmpty }
-                                List {
-                                    if noScales { emptyCategory }
-                                    else { scalesSection }
+            }
+    }
+    
+    var scalesNavigationStack: some View {
+        NavigationStack {
+            VStack {
+                ScrollViewReader { proxy in
+                    ScalesSection(scalesView: self)
+    //                    .id(iOS16CrashAvoidingViewId)
+                        .onChange(of: alphabetScrollTarget) { target in
+                            if let t = target {
+                                alphabetScrollTarget = nil
+                                withAnimation {
+                                    proxy.scrollTo(t, anchor: .center)
                                 }
-                                .id(iOS16CrashAvoidingViewId)
-                                .onChange(of: alphabetScrollTarget) { target in
-                                    if !noScales {
-                                        if let target = target {
-                                            alphabetScrollTarget = nil
-                                            withAnimation {
-                                                scrollViewProxy.scrollTo(target, anchor: .center)
-                                            }
-                                        }
-                                    }
-                                }
-                                .navigationBarTitleDisplayMode(.inline)
-                                .listStyle(.plain)
-                                .searchable(text: $store.searchText, prompt: "Search scale names and descriptions")
-                                .disableAutocorrection(true)
-                                .textInputAutocapitalization(.never)
-                                .navigationTitle("Scales")
-                                .toolbar {
-                                    ToolbarItem {
-                                        EditButton()
-                                    }
-                                    ToolbarItem(placement: .navigationBarLeading) {
-                                        Menu {
-                                            AnimatedActionButton(title: "Create a New Scale", systemImage: "doc") {
-                                                addScale()
-                                                scaleToEdit = store.userScales[0]
-                                            }
-                                            AnimatedActionButton(title: "Paste From Clipboard", systemImage: "doc.on.clipboard") {
-                                                pasteScala()
-                                                scaleToEdit = store.userScales[0]
-                                            }
-                                        } label: {
-                                            Label("New...", systemImage: "doc.badge.plus")
-                                        }
-                                    }
-                                }
-                                .environment(\.editMode, $editMode)
-                                .frame(minHeight: geometryProxy.size.height)
                             }
                         }
-                    }
-                    if category != .recent { scrollBar }
+                        .navigationBarTitleDisplayMode(.inline)
+                        .searchable(text: $store.searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search scale names and descriptions")
+                        .disableAutocorrection(true)
+                        .textInputAutocapitalization(.never)
+                        .navigationTitle("Scales")
+                        .toolbar {
+                            ToolbarItem {
+                                EditButton()
+                            }
+                            ToolbarItem(placement: .navigationBarLeading) {
+                                toolbarMenu
+                            }
+                        }
+                        .environment(\.editMode, $editMode)
                 }
-                .navigationViewStyle(StackNavigationViewStyle())
-                .alert(alerter.title, isPresented: $alerter.isPresented) {
-                } message: {
-                    Text(alerter.message)
-                }
+                Spacer()
+                categoriesSection
             }
         }
-        .navigationViewStyle(StackNavigationViewStyle())
-        .onAppear {
-            if store.sorted.isEmpty {
-                Task {
-                    store.load(category: category)
-                }
+    }
+    
+
+    var categoriesSection: some View {
+        Picker("Cents or Ratio", selection: $category) {
+            Text("Starred").tag(Category.starred)
+            Text("Recent").tag(Category.recent)
+            Text("User").tag(Category.user)
+            Text("All").tag(Category.all)
+        }
+        .pickerStyle(.segmented)
+        .onChange(of: category) { category in
+            Task {
+                store.load(category: category)
             }
         }
-        
+    }
+    
+    var toolbarMenu: some View {
+        Menu {
+            AnimatedActionButton(title: "Create a New Scale", systemImage: "doc") {
+                addScale()
+                scaleToEdit = store.userScales[0]
+            }
+            AnimatedActionButton(title: "Paste From Clipboard", systemImage: "doc.on.clipboard") {
+                pasteScala()
+                scaleToEdit = store.userScales[0]
+            }
+        } label: {
+            Label("New...", systemImage: "doc.badge.plus")
+        }
     }
     
     var emptyCategory: some View {
@@ -123,98 +121,6 @@ struct ScalesView: View {
         }
     }
     
-    @ViewBuilder
-    var scalesSection: some View {
-        if category == .recent {
-            Section {
-                ForEach(store.recentScaleIDs, id: \.self) { id in
-                    if let scale = (store.userScales + store.factoryScales).first(where: { $0.id == id }) {
-                        ScaleRow(scalesView: self, scale: scale)
-                    }
-                }
-                .onDelete { indexSet in
-                    deleteScaleInRecent(indexSet: indexSet)
-                }
-                .sheet(item: $scaleToEdit) { scale in
-                    ScaleEditor(scale: $store.userScales[scale])
-                        .wrappedInNavigationViewToMakeDismissable {
-                            store.addToRecent(scale: scale)
-                            scaleToEdit = nil
-                            Task {
-                                store.load(category: category)
-                            }
-                        }
-                }
-            }
-        } else {
-            ForEach(store.alphabet, id: \.self) { initial in
-                let scalesWithSameInitial = store.sortedAndFiltered[initial]
-                if let scales = scalesWithSameInitial, !scales.isEmpty {
-                    Section {
-                        ForEach(scales) { scale in
-                            ScaleRow(scalesView: self, scale: scale)
-                        }
-                        .onDelete { indexSet in
-                            deleteScale(indexSet: indexSet, scales: scales)
-                        }
-                        .sheet(item: $scaleToEdit) { scale in
-                            ScaleEditor(scale: $store.userScales[scale]) // this subscript works even if it's a factory scale because in UtilityExtensions, if a subscripted item can't be found in the array, the function returns the item itself
-                                .wrappedInNavigationViewToMakeDismissable {
-                                    store.addToRecent(scale: scale)
-                                    scaleToEdit = nil
-//                                    alphabetScrollTarget = scale.name.first?.isLetter ?? false ? String(scale.name.first!) : "#" // seems like a bad a idea to change scroll target here
-                                    Task {
-                                        store.load(category: category)
-                                    }
-                                }
-                        }
-                    } header: {
-                        Text(initial)
-                    }
-                }
-            }
-        }
-    }
-    
-    
-    private func deleteScale(indexSet: IndexSet, scales: [Scale]) {
-        for index in indexSet {
-            store.userScales.remove(scales[index])
-            store.starredScaleIDs.remove(scales[index].id)
-            store.recentScaleIDs.remove(scales[index].id)
-        }
-        Task {
-            store.load(category: category)
-        }
-    }
-    
-    private func deleteScaleInRecent(indexSet: IndexSet) { // because recent scales are implemented without the alphabet scroll
-        for index in indexSet {
-            let scaleID = store.recentScaleIDs[index]
-            store.starredScaleIDs.remove(scaleID)
-            if let scale = store.userScales.first(where: { $0.id == scaleID }) {
-                store.userScales.remove(scale)
-            }
-        }
-    }
-    
-    var scrollBar: some View {
-        HStack {
-            Spacer()
-            VStack {
-                Spacer()
-                ForEach(store.alphabet, id: \.self) { letter in
-                    Button {
-                        alphabetScrollTarget = letter
-                    } label: {
-                        Text(letter)
-                            .font(.caption)
-                    }
-                }
-                Spacer()
-            }
-        }
-    }
     
     private func pasteScala() {
         if let scl = UIPasteboard.general.string, let scale = scl.scale {
@@ -241,6 +147,113 @@ struct ScalesView: View {
             store.load(category: category)
         }
     }
+}
+
+struct ScalesSection: View {
+    var scalesView: ScalesView
+    @Environment(\.isSearching) private var isSearching // has to be a separate struct for this environment var to work
+    
+    var body: some View {
+        Group {
+            if scalesView.category == .recent {
+                recentScales
+            } else {
+                List(scalesView.store.alphabet, id: \.self) { initial in
+                    makeScalesByInitial(initial: initial)
+                }
+                .overlay {
+                    if !isSearching && scalesView.category != .recent {
+                        scrollBar
+                    }
+                }
+            }
+        }
+        .sheet(item: scalesView.$scaleToEdit) { scale in
+            ScaleEditor(scale: scalesView.$store.userScales[scale]) // this subscript works even if it's a factory scale because in UtilityExtensions, if a subscripted item can't be found in the array, the function returns the item itself
+                .wrappedInNavigationViewToMakeDismissable {
+                    scalesView.store.addToRecent(scale: scale)
+                    scalesView.scaleToEdit = nil
+                    Task {
+                        scalesView.store.load(category: scalesView.category)
+                    }
+                }
+        }
+    }
+    
+    var scrollBar: some View {
+        HStack {
+            Spacer()
+            VStack {
+                Spacer()
+                ForEach(scalesView.store.alphabet, id: \.self) { letter in
+                    Button {
+                        scalesView.alphabetScrollTarget = letter
+                    } label: {
+                        Text(letter)
+                            .font(.body)
+                            .frame(width: 15)
+                    }
+                }
+                Spacer()
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private func makeScalesByInitial(initial: String) -> some View {
+        let scalesWithSameInitial = scalesView.store.sortedAndFiltered[initial]
+//        let _ = print(scalesWithSameInitial?.count)
+        if let scales = scalesWithSameInitial, !scales.isEmpty {
+            Section {
+                ForEach(scales) { scale in
+                    ScaleRow(scalesView: scalesView, scale: scale)
+                }
+                .onDelete { indexSet in
+                    deleteScale(indexSet: indexSet, scales: scales)
+                }
+            } header: {
+                Text(initial)
+            }
+        } else {
+            EmptyView()
+        }
+    }
+    private func deleteScale(indexSet: IndexSet, scales: [Scale]) {
+        for index in indexSet {
+            scalesView.store.userScales.remove(scales[index])
+            scalesView.store.starredScaleIDs.remove(scales[index].id)
+            scalesView.store.recentScaleIDs.remove(scales[index].id)
+        }
+        Task {
+            await scalesView.store.load(category: scalesView.category)
+        }
+    }
+    
+    private func deleteScaleInRecent(indexSet: IndexSet) { // because recent scales are implemented without the alphabet scroll
+        for index in indexSet {
+            let scaleID = scalesView.store.recentScaleIDs[index]
+            scalesView.store.starredScaleIDs.remove(scaleID)
+            if let scale = scalesView.store.userScales.first(where: { $0.id == scaleID }) {
+                scalesView.store.userScales.remove(scale)
+            }
+        }
+    }
+    
+    private var recentScales: some View {
+        Section {
+            ForEach(scalesView.store.recentScaleIDs, id: \.self) { id in
+                if let scale = (scalesView.store.userScales + scalesView.store.factoryScales).first(where: { $0.id == id }) {
+                    ScaleRow(scalesView: scalesView, scale: scale)
+                }
+            }
+            .onDelete { indexSet in
+                deleteScaleInRecent(indexSet: indexSet)
+            }
+        }
+    }
+    
+
+    
 }
 
 struct ScaleRow: View {

@@ -131,8 +131,6 @@ class ScaleStore: ObservableObject {
     }
     
     private func loadFromBundle(fileName: String) {
-        let fileManager = FileManager.default
-        
         guard let file = Bundle.main.url(forResource: fileName, withExtension: "json")
         else {
             fatalError("Couldn't find \(fileName) in main bundle")
@@ -166,7 +164,7 @@ class ScaleStore: ObservableObject {
         
         
         self.storeName = name
-        clearDocumentDir() // TODO: remove this after testing
+//        clearDocumentDir() // TODO: remove this after testing
         loadFromBundle(fileName: "factoryScales")
         readJsonInDocuments()
 //        if recentScaleIDs.isEmpty { // during first launch, add 12-tET to recentScaleIDs
@@ -178,6 +176,8 @@ class ScaleStore: ObservableObject {
 //        } else {
 //            print("successfully loaded scales from UserDefaults")
 //        }
+        
+//        print(factoryScales.count)
         $searchText
             .debounce(for: 0.4, scheduler: RunLoop.main) // wait for user to stop typing
             .receive(on: DispatchQueue.global()) // perform filter on background
