@@ -21,8 +21,9 @@ struct VariTunerApp: App {
     @StateObject var scaleStore = ScaleStore(named: "Default")
     var body: some Scene {
         WindowGroup {
-            ScalesView(selectedID: scaleStore.recentScaleIDs.first)
-                .environmentObject(scaleStore)
+//            ScalesView(selectedID: scaleStore.recentScaleIDs.first)
+//                .environmentObject(scaleStore)
+            CoreDataTest()
         }
     }
 }

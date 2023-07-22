@@ -305,7 +305,8 @@ struct ScaleRow: View {
             Group {
                 if scalesView.store.starredScaleIDs.contains(scale.id) {
                     Button {
-                        scalesView.unstarScale(scale)                    } label: {
+                        scalesView.unstarScale(scale)
+                    } label: {
                             Label("Unstar", systemImage: "star.slash.fill")
                         }
                 } else {
