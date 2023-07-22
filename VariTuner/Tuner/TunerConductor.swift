@@ -134,6 +134,10 @@ class TunerConductor: ObservableObject {
     }
     
     func stop() {
+        tone.parameter1 = 0; // note off before turning off the engine to prevent clicking
+        Task {
+            try await Task.sleep(for: .seconds(2))
+        }
         engine.stop()
     }
     

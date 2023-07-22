@@ -19,7 +19,6 @@ class ScaleStore: ObservableObject {
     let storeName: String
     var userScales = [Scale]() {
         didSet {
-//            UserDefaults.standard.set(try? JSONEncoder().encode(userScales), forKey: userDefaultsKey + "user")
             saveToFile(fileName: "userScales", content: userScales)
         }
     }
@@ -28,14 +27,12 @@ class ScaleStore: ObservableObject {
     
     var starredScaleIDs = [UUID]() {
         didSet {
-//            UserDefaults.standard.set(try? JSONEncoder().encode(starredScaleIDs), forKey: userDefaultsKey + "starred")
             saveToFile(fileName: "starredScaleIDs", content: starredScaleIDs)
         }
     }
     
     var recentScaleIDs = [UUID]() {
         didSet {
-//            UserDefaults.standard.set(try? JSONEncoder().encode(recentScaleIDs), forKey: userDefaultsKey + "recent")
             saveToFile(fileName: "recentScaleIDs", content: recentScaleIDs)
         }
     }
@@ -49,12 +46,8 @@ class ScaleStore: ObservableObject {
     }
     
     private func getData(for fileName: String) -> Data? {
-        do {
-            if let furl = getFurl(for: fileName) {
-                return try Data(contentsOf: furl)
-            }
-        } catch {
-            print("Error getting data from file: \(error)")
+        if let furl = getFurl(for: fileName) {
+            return try? Data(contentsOf: furl)
         }
         return nil
     }
@@ -71,14 +64,14 @@ class ScaleStore: ObservableObject {
         return nil
     }
     
-    private func readJsonInDocuments() {
+    private func loadFromDocuments() {
         if let data = getData(for: "userScales") {
             userScales = decodeFromJson(data: data) ?? []
         }
-        if let data = getData(for: "starredScalesID") {
+        if let data = getData(for: "starredScaleIDs") {
             starredScaleIDs = decodeFromJson(data: data) ?? []
         }
-        if let data = getData(for: "recentScalesID") {
+        if let data = getData(for: "recentScaleIDs") {
             recentScaleIDs = decodeFromJson(data: data) ?? []
         }
     }
@@ -94,37 +87,9 @@ class ScaleStore: ObservableObject {
         }
     }
     
-//    private func readLocalFile(forName name: String) -> Data? {
-//        do {
-//            if let bundlePath = Bundle.main.path(forResource: name,
-//                                                 ofType: "json"),
-//                let jsonData = try String(contentsOfFile: bundlePath).data(using: .utf8) {
-//                return jsonData
-//            }
-//        } catch {
-//            print(error)
-//        }
-//        return nil
-//    }
-//
-//    private func loadFactoryScales() {
-//        if let localData = self.readLocalFile(forName: "factoryScales"),
-//        let decodedScales = try? JSONDecoder().decode(Array<Scale>.self, from: localData) {
-//            factoryScales = decodedScales
-//        } else {
-//            print("Parsing failed")
-//        }
-//    }
-    
     private func initRecentScales() {
         recentScaleIDs.append((factoryScales.first(where: { $0.name == "12-12_sharps" }) ?? factoryScales[0]).id)
     }
-    
-    
-//    private var destinationPath: String {
-//        let documents = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
-//        return documents + "/factoryScales.json"
-//    }
     
     private func decodeFromJson<T: Decodable>(data: Data) -> Array<T>? {
         return try? JSONDecoder().decode(Array<T>.self, from: data)
@@ -155,31 +120,12 @@ class ScaleStore: ObservableObject {
     }
     
     init(named name: String) {
-        
-        // Clear UserDefaults TODO: remove
-        let domain = Bundle.main.bundleIdentifier!
-        UserDefaults.standard.removePersistentDomain(forName: domain)
-        UserDefaults.standard.synchronize()
-        print(Array(UserDefaults.standard.dictionaryRepresentation().keys).count)
-        
-        
         self.storeName = name
 //        clearDocumentDir() // TODO: remove this after testing
         loadFromBundle(fileName: "factoryScales")
-        readJsonInDocuments()
-//        if recentScaleIDs.isEmpty { // during first launch, add 12-tET to recentScaleIDs
-//            initRecentScales()
-//        }
-//        if userScales.isEmpty {
-//            loadTestScales()
-//            print("using built-in scales")
-//        } else {
-//            print("successfully loaded scales from UserDefaults")
-//        }
-        
-//        print(factoryScales.count)
+        loadFromDocuments()
         $searchText
-            .debounce(for: 0.4, scheduler: RunLoop.main) // wait for user to stop typing
+            .debounce(for: 0.1, scheduler: RunLoop.main) // wait for user to stop typing
             .receive(on: DispatchQueue.global()) // perform filter on background
             .map { [weak self] filterString in
                 guard let self = self else {

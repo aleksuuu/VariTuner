@@ -25,7 +25,7 @@ struct ScalesView: View {
     
     @StateObject var alerter: Alerter = Alerter()
     
-    @State var selectedID: UUID?
+//    @State var selectedID: UUID?
     
     private var iOS16CrashAvoidingViewId: String { // from jimt's forum post on https://developer.apple.com/forums/thread/712510
         guard #available(iOS 16, *) else { return "-view" }
@@ -42,9 +42,7 @@ struct ScalesView: View {
             }
             .onAppear {
                 if store.sorted.isEmpty {
-                    Task {
-                        store.load(category: category)
-                    }
+                    store.load(category: category)
                 }
             }
     }
@@ -94,9 +92,7 @@ struct ScalesView: View {
         }
         .pickerStyle(.segmented)
         .onChange(of: category) { category in
-            Task {
-                store.load(category: category)
-            }
+            store.load(category: category)
         }
     }
     
@@ -161,9 +157,7 @@ struct ScalesSection: View {
                 .wrappedInNavigationViewToMakeDismissable {
                     scalesView.store.addToRecent(scale: scale)
                     scalesView.scaleToEditOrInspect = nil
-                    Task {
-                        scalesView.store.load(category: scalesView.category)
-                    }
+                    scalesView.store.load(category: scalesView.category)
                 }
         }
     }
@@ -224,9 +218,7 @@ struct ScalesSection: View {
         for index in indexSet {
             scalesView.store.deleteScale(scales[index])
         }
-        Task {
-            await scalesView.store.load(category: scalesView.category)
-        }
+        scalesView.store.load(category: scalesView.category)
     }
     
     private func deleteScaleInRecent(indexSet: IndexSet) { // because recent scales are implemented without the alphabet scroll
@@ -248,22 +240,15 @@ struct ScalesSection: View {
 struct ScaleRow: View {
     var scalesView: ScalesView
     var scale: Scale
+    var isUser: Bool {
+        scalesView.store.userScales.contains(scale)
+    }
+    var isStarred: Bool {
+        scalesView.store.starredScaleIDs.contains(scale.id)
+    }
     var body: some View {
-        let isUser = scalesView.store.userScales.contains(scale)
-        let isStarred = scalesView.store.starredScaleIDs.contains(scale.id)
-        NavigationLink(destination: getDestination(for: scale), tag: scale.id, selection: scalesView.$selectedID) {
-            VStack(alignment: .leading) {
-                Text(scale.name)
-                    .fontWeight(isStarred ? .semibold : .regular)
-                Text(scale.description)
-                    .font(.caption)
-            }
-            .lineLimit(1)
-            .contextMenu {
-                scaleContextMenu
-            }
-            .gesture(scalesView.editMode == .active ? getTap(for: scale) : nil)
-            .foregroundColor(isUser ? .accentColor : .primary)
+        NavigationLink(destination: getDestination(for: scale)) {
+            navigationLabel
         }
         .deleteDisabled(!isUser)
         .swipeActions(edge: .leading) {
@@ -271,6 +256,21 @@ struct ScaleRow: View {
             duplicateButton.tint(.teal)
             editInspectButton.tint(.indigo)
         }
+    }
+    
+    var navigationLabel: some View {
+        VStack(alignment: .leading) {
+            Text(scale.name)
+                .fontWeight(isStarred ? .semibold : .regular)
+            Text(scale.description)
+                .font(.caption)
+        }
+        .lineLimit(1)
+        .contextMenu {
+            scaleContextMenu
+        }
+        .gesture(scalesView.editMode == .active ? getTap(for: scale) : nil)
+        .foregroundColor(isUser ? .accentColor : .primary)
     }
     
     @ViewBuilder
@@ -293,9 +293,7 @@ struct ScaleRow: View {
         return AnimatedActionButton(title: isStarred ? "Unstar" : "Star",
                              systemImage: isStarred ? "star.slash.fill" : "star") {
             scalesView.store.toggleStar(for: scale)
-            Task {
-                await scalesView.store.load(category: scalesView.category)
-            }
+            scalesView.store.load(category: scalesView.category)
         }
     }
     
@@ -310,9 +308,7 @@ struct ScaleRow: View {
     var deleteButton: some View {
         Button(role: .destructive) {
             scalesView.store.deleteScale(scale)
-            Task {
-                await scalesView.store.load(category: scalesView.category)
-            }
+            scalesView.store.load(category: scalesView.category)
         } label: {
             Label("Delete", systemImage: "trash")
         }
