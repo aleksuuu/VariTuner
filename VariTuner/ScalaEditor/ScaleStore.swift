@@ -84,10 +84,6 @@ class ScaleStore: ObservableObject {
         }
     }
     
-    private func initRecentScales() {
-        recentScaleIDs.append((factoryScales.first(where: { $0.name == "12-12_sharps" }) ?? factoryScales[0]).id)
-    }
-    
     private func decodeFromJson<T: Decodable>(data: Data) -> Array<T>? {
         return try? JSONDecoder().decode(Array<T>.self, from: data)
     }

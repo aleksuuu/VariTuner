@@ -202,8 +202,6 @@ struct ScaleEditor: View {
                 }
                 AnimatedActionButton(title: "Add new note", systemImage: "plus.circle.fill") {
                     scale.addPlaceholderNote()
-                    store.refresh()
-                    // TODO: ability to focus on the new textfield and sort scale when a new note is added (without sorting the new note until the user clicks away from the new note)
                 }
             }
             .disabled(viewOnly)

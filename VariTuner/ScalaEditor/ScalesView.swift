@@ -103,8 +103,7 @@ struct ScalesView: View {
                 scaleToEditOrInspect = store.userScales[0]
             }
             AnimatedActionButton(title: "Paste From Clipboard", systemImage: "doc.on.clipboard") {
-                pasteScala()
-                scaleToEditOrInspect = store.userScales[0]
+                if pasteScala() { scaleToEditOrInspect = store.userScales[0] }
             }
         } label: {
             Label("New...", systemImage: "doc.badge.plus")
@@ -118,13 +117,16 @@ struct ScalesView: View {
     }
     
     
-    private func pasteScala() {
+    private func pasteScala() -> Bool {
         if let scl = UIPasteboard.general.string, let scale = scl.scale {
+            print(scale)
             store.userScales.insert(scale, at: 0)
+            return true
         } else {
             alerter.title = "Paste Scala"
-            alerter.message = "There is no Scala text currently on the clipboard."
+            alerter.message = "There is no Scala text on the clipboard."
             alerter.isPresented = true
+            return false
         }
     }
     

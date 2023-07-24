@@ -67,25 +67,25 @@ extension String {
         
         for line in arrayByLine {
             if !numOfNotesHasBeenSet {
-                if notes.isEmpty {
-                    if description == nil  { // only look for a name and description when description and notes are both not set yet
-                        if name == "", let n = line.sclName {
-                            name = n
-                            continue
-                        } else if line.first != "!" { // description is neither a cent/ratio nor a comment
-                            description = line.trimmingCharacters(in: .whitespaces)
-                            continue
-                        }
-                    } else {
-                        numOfNotesHasBeenSet = true
-                    }
+                guard notes.isEmpty else { continue }
+                guard description == nil else {
+                    numOfNotesHasBeenSet = true
+                    continue
+                }
+                // only look for a name and description when description and notes are both not set yet
+                if name == "", let n = line.sclName {
+                    name = n
+                    continue
+                } else if line.first != "!" { // description is neither a cent/ratio nor a comment
+                    description = line.trimmingCharacters(in: .whitespaces)
+                    continue
                 }
             } else { // if the number of notes has been set, that means we're in the pitch values section
                 let ratioNumbers = line.components(separatedBy: "/")
-                let num = ratioNumbers[0].trimmingCharacters(in: .whitespaces)
-                let denom = ratioNumbers[1].trimmingCharacters(in: .whitespaces)
 
                 if ratioNumbers.count == 2 { // if a ratio exists on this line
+                    let num = ratioNumbers[0].trimmingCharacters(in: .whitespaces)
+                    let denom = ratioNumbers[1].trimmingCharacters(in: .whitespaces)
                     if let cents = UtilityFuncs.getCentsFromRatio(numerator: num, denominator: denom) {
                         let index = notes.firstIndex(where: { $0.cents > cents }) ?? notes.endIndex
                         let note = Scale.Note(cents: cents, numerator: num, denominator: denom, showCents: false)

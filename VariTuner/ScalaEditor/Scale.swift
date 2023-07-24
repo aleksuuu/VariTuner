@@ -40,13 +40,13 @@ struct Scale: Identifiable, Hashable, Codable, Comparable {
         var id = UUID()
     }
     
-    var name: String = ""
+    var name: String = "Untitled"
     var description: String = ""
     var notes: [Note]
     var fundamental: Double = 16.35
     var id = UUID()
     
-    init(name: String = "", description: String = "", notes: [Note] = [Note()], fundamental: Double = 16.35, id: UUID = UUID()) {
+    init(name: String = "Untitled", description: String = "", notes: [Note] = [Note()], fundamental: Double = 16.35, id: UUID = UUID()) {
         self.name = name
         self.description = description
         self.notes = notes
