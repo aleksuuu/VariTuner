@@ -24,66 +24,35 @@ struct Scale: Identifiable, Hashable, Codable, Comparable {
             lhs.id == rhs.id
         }
         
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
+        }
+        
         static func < (lhs: Scale.Note, rhs: Scale.Note) -> Bool {
             lhs.cents < rhs.cents
         }
         
-        var ratioMode = false
         var name: String = ""
-        var cents: Double
+        var cents: Double = 0.0
         var numerator = ""
         var denominator = ""
-        var ratio: Ratio? {
-            try? Ratio(numerator: numerator, denominator: denominator)
-        }
+        var showCents = true
         var id = UUID()
-        
-        init(name: String = "", cents: Double) {
-            self.name = name
-            self.cents = cents
-        }
-        init(name: String = "", ratio: Ratio) throws {
-            self.name = name
-            self.cents = ratio.cents
-            self.numerator = String(ratio.numerator)
-            self.denominator = String(ratio.denominator)
-            self.ratioMode = true
-        }
-        
-        
-        struct Ratio: Hashable, Codable { // TODO: is this necessary?
-            var numerator: Int
-            var denominator: Int
-            
-            init(numerator: Int, denominator: Int) throws {
-                if denominator == 0 {
-                    throw RatioError.zeroDenominator
-                }
-                if Double(numerator) / Double(denominator) <= 1 {
-                    throw RatioError.negativeRatio
-                }
-                self.numerator = numerator
-                self.denominator = denominator
-            }
-            
-            init(numerator: String, denominator: String) throws {
-                if let num = Int(numerator), let denom = Int(denominator) {
-                    self = try Ratio(numerator: num, denominator: denom)
-                } else {
-                    throw RatioError.invalidString
-                }
-            }
-            var cents: Double {
-                1200 * log2(Double(numerator) / Double(denominator))
-            }
-        }
     }
     
-    var id = UUID()
-    var name: String
-    var description: String
+    var name: String = ""
+    var description: String = ""
     var notes: [Note]
     var fundamental: Double = 16.35
+    var id = UUID()
+    
+    init(name: String = "", description: String = "", notes: [Note] = [Note()], fundamental: Double = 16.35, id: UUID = UUID()) {
+        self.name = name
+        self.description = description
+        self.notes = notes
+        self.fundamental = fundamental
+        self.id = id
+    }
     
     var lowestFrequencies: [Double] {
         var freqs = [fundamental]

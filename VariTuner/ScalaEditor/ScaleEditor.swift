@@ -21,15 +21,18 @@ struct ScaleEditor: View {
     
     @EnvironmentObject var store: ScaleStore
     
+    @State fileprivate var notesWithInvalidRatios: Set<Scale.Note> = []
     
-    var viewOnly: Bool {
+    fileprivate var viewOnly: Bool {
         !store.userScales.contains(scale)
     }
     
     
     enum Field: Hashable {
         case noteName(UUID)
-        case pitchValue(UUID)
+        case cents(UUID)
+        case numerator(UUID)
+        case denominator(UUID)
         case centsRatioOptions(UUID)
         case anotherTextField
     }
@@ -118,6 +121,7 @@ struct ScaleEditor: View {
             }
             Spacer()
             Button("Done") {
+                commitCentsOrRatio()
                 focusField = nil
             }
         }
@@ -151,6 +155,10 @@ struct ScaleEditor: View {
                 .focused($focusField, equals: .anotherTextField)
         } header: {
             Text("Name")
+        } // the reason why .onChange is here is because for .onChange to detect a change in focusField it has to be attached to something that has a focusField binding, and attaching it to this TextField prevents .onChange to fire more than once as it would happen if it were attached to every NoteRow
+        .onChange(of: focusField) { newField in
+            //            if let last = scale.notes.last, newField != .noteName(last.id), newField != .cents(last.id), newField != .numerator(last.id), newField != .denominator(last.id) {
+            commitCentsOrRatio()
         }
     }
     var descriptionSection: some View {
@@ -181,6 +189,8 @@ struct ScaleEditor: View {
         }
     }
     
+    @State private var showCentsForAll = true
+    
     var notesSection: some View {
         Section {
             List {
@@ -192,6 +202,7 @@ struct ScaleEditor: View {
                 }
                 AnimatedActionButton(title: "Add new note", systemImage: "plus.circle.fill") {
                     scale.addPlaceholderNote()
+                    store.refresh()
                     // TODO: ability to focus on the new textfield and sort scale when a new note is added (without sorting the new note until the user clicks away from the new note)
                 }
             }
@@ -205,15 +216,16 @@ struct ScaleEditor: View {
                     Text("Pitch Values")
                         .frame(width: geometry.size.width * DrawingConstants.pitchColWidthFactor, alignment: .leading)
                     Spacer()
-                    Picker("Cents or Ratio", selection: $globalRatioMode) {
-                        Text("¢").tag(false)
-                        Text(":").tag(true)
+                    Picker("Cents or Ratio", selection: $showCentsForAll) {
+                        Text("¢").tag(true)
+                        Text(":").tag(false)
                     }
+                    .disabled(viewOnly)
                     .pickerStyle(SegmentedPickerStyle())
-                    .onChange(of: globalRatioMode) { newRatioMode in
+                    .onChange(of: showCentsForAll) { newShowCentsForAll in
                         withAnimation {
                             for note in scale.notes {
-                                scale.notes[note].ratioMode = newRatioMode
+                                scale.notes[note].showCents = newShowCentsForAll
                             }
                         }
                     }
@@ -223,30 +235,55 @@ struct ScaleEditor: View {
         } footer: {
             Text("Learn more about the .scl file format at https://www.huygens-fokker.org/scala/scl_format.html.")
         }
-        
-        
     }
     
-    @State private var globalRatioMode = false
     
-    //    struct DrawingConstants {
-    //        static let notesPadding: CGFloat = 2.0
-    //        static let borderWidth: CGFloat = 0.25
-    //        static let noteNameColWidthFactor: CGFloat = 0.35
-    //        static let pitchColWidthFactor: CGFloat = 0.35
-    //        static let accidentalFontSize: CGFloat = 28
-    //        static let editorNoteNameFontSize: CGFloat = 18
-    //    }
+    fileprivate func commitCents(for note: Scale.Note) {
+        sortAndRemoveError(for: note)
+        scale.notes[note].denominator = ""
+        scale.notes[note].numerator = ""
+    }
     
+    fileprivate func commitRatio(for note: Scale.Note) {
+        if let cents = UtilityFuncs.getCentsFromRatio(numerator: note.numerator, denominator: note.denominator) {
+            scale.notes[note].cents = cents
+            sortAndRemoveError(for: note)
+        } else {
+            notesWithInvalidRatios.insert(note)
+        }
+    }
+    
+    private func sortAndRemoveError(for note: Scale.Note) {
+        withAnimation {
+            scale.notes.sort()
+            notesWithInvalidRatios.remove(note)
+        }
+    }
+    
+    private func commitCentsOrRatio() {
+        switch focusField {
+        case .cents(let id):
+            if let note = scale.notes.first(where: { $0.id == id }) {
+                commitCents(for: note)
+            }
+        case .numerator(let id), .denominator(let id):
+            if let note = scale.notes.first(where: { $0.id == id }) {
+                commitRatio(for: note)
+            }
+        default:
+            break
+        }
+    }
 }
 
 struct NoteRow: View {
     var scaleEditor: ScaleEditor
     var note: Scale.Note
-    //    var width: CGFloat
     
-    @State private var ratioMode = false
-    @State private var inputRatioIsValid = true
+    @State private var showCents = true
+    private var inputRatioIsValid: Bool {
+        !scaleEditor.notesWithInvalidRatios.contains(note)
+    }
     
     private var index: Int? {
         scaleEditor.scale.notes.index(matching: note)
@@ -255,64 +292,53 @@ struct NoteRow: View {
     var body: some View {
         GeometryReader { geometry in
             HStack {
-                if let index = index {
-                    TextField("\(index)̂", text: scaleEditor.$scale.notes[note].name)
-                        .font(.custom("BravuraText", size: DrawingConstants.editorNoteNameFontSize, relativeTo: .body))
-                        .disableAutocorrection(true)
-                        .foregroundColor(.accentColor)
-                        .frame(width: geometry.size.width * DrawingConstants.noteNameColWidthFactor)
-                        .focused(scaleEditor.$focusField, equals: .noteName(note.id))
-                    Spacer()
-                    if !note.ratioMode {
-                        TextField("Cents", value: scaleEditor.$scale.notes[note].cents, formatter: numberFormatter)
-                            .foregroundColor(index == 0 ? .secondary : .accentColor)
+                Group {
+                    if let index = index {
+                        TextField("\(index)̂", text: scaleEditor.$scale.notes[note].name)
+                            .font(.custom("BravuraText", size: DrawingConstants.editorNoteNameFontSize, relativeTo: .body))
+                            .disableAutocorrection(true)
+                            .foregroundColor(.accentColor)
+                            .frame(width: geometry.size.width * DrawingConstants.noteNameColWidthFactor)
+                            .focused(scaleEditor.$focusField, equals: .noteName(note.id))
+                        Spacer()
+                        if note.showCents {
+                            TextField("Cents", value: scaleEditor.$scale.notes[note].cents, formatter: numberFormatter)
+                                .foregroundColor(index == 0 ? .secondary : .accentColor)
+                                .disabled(index == 0 ? true : false)
+                                .keyboardType(.decimalPad)
+                                .frame(width: geometry.size.width * DrawingConstants.pitchColWidthFactor)
+                                .focused(scaleEditor.$focusField, equals: .cents(note.id))
+                                .onSubmit {
+                                    scaleEditor.commitCents(for: note)
+                                }
+                        } else {
+                            HStack {
+                                TextField("", text: scaleEditor.$scale.notes[note].numerator)
+                                    .focused(scaleEditor.$focusField, equals: .numerator(note.id))
+                                    .border(inputRatioIsValid ? .clear : .red)
+                                    .onSubmit {
+                                        scaleEditor.commitRatio(for: note)
+                                    }
+                                Text(":")
+                                TextField("", text: scaleEditor.$scale.notes[note].denominator)
+                                    .focused(scaleEditor.$focusField, equals: .denominator(note.id))
+                                    .border(inputRatioIsValid ? .clear : .red)
+                                    .onSubmit {
+                                        scaleEditor.commitRatio(for: note)
+                                    }
+                            }
+                            .foregroundColor(index == 0 ? .secondary : (inputRatioIsValid ? .accentColor : Color.red))
                             .disabled(index == 0 ? true : false)
                             .keyboardType(.decimalPad)
                             .frame(width: geometry.size.width * DrawingConstants.pitchColWidthFactor)
-                            .onChange(of: scaleEditor.focusField) { newField in
-                                if let last = scaleEditor.scale.notes.last, newField != .noteName(last.id), newField != .pitchValue(last.id) {
-                                    commitCents(for: note)
-                                }
-                            }
-                            .focused(scaleEditor.$focusField, equals: .pitchValue(note.id))
-                    } else {
-                        HStack {
-                            TextField("", text: scaleEditor.$scale.notes[note].numerator)
-                                .onChange(of: scaleEditor.focusField) { newField in
-                                    if let last = scaleEditor.scale.notes.last, newField != .noteName(last.id), newField != .pitchValue(last.id), !scaleEditor.scale.notes[note].denominator.isEmpty {
-                                        commitRatio(for: note)
-                                    }
-                                }
-                                .focused(scaleEditor.$focusField, equals: .pitchValue(note.id))
-                                .border(inputRatioIsValid ? .clear : .red)
-                            Text(":")
-                            TextField("", text: scaleEditor.$scale.notes[note].denominator)
-                                .onChange(of: scaleEditor.focusField) { newField in
-                                    if let last = scaleEditor.scale.notes.last, newField != .noteName(last.id), newField != .pitchValue(last.id), !scaleEditor.scale.notes[note].numerator.isEmpty {
-                                        commitRatio(for: note)
-                                    }
-                                }
-                                .focused(scaleEditor.$focusField, equals: .pitchValue(note.id))
-                                .border(inputRatioIsValid ? .clear : .red)
                         }
-                        .foregroundColor(index == 0 ? .secondary : (inputRatioIsValid ? .accentColor : Color.red))
+                        Spacer()
+                        Picker("Cents or Ratio", selection: scaleEditor.$scale.notes[note].showCents) {
+                            Text("¢").tag(true)
+                            Text(":").tag(false)
+                        }
+                        .pickerStyle(SegmentedPickerStyle())
                         .disabled(index == 0 ? true : false)
-                        .keyboardType(.decimalPad)
-                        .frame(width: geometry.size.width * DrawingConstants.pitchColWidthFactor)
-                    }
-                    Spacer()
-                    Picker("Cents or Ratio", selection: scaleEditor.$scale.notes[note].ratioMode) {
-                        Text("¢").tag(false)
-                        Text(":").tag(true)
-                    }
-                    .pickerStyle(SegmentedPickerStyle())
-                    .disabled(index == 0 ? true : false)
-                    .onChange(of: ratioMode) { newRatioMode in // TODO: is this doing anything??
-                        if newRatioMode {
-                            commitCents(for: note)
-                        } else {
-                            commitRatio(for: note)
-                        }
                     }
                 }
             }
@@ -320,27 +346,7 @@ struct NoteRow: View {
         }
         .deleteDisabled(scaleEditor.viewOnly || index == 0)
     }
-    private func commitCents(for note: Scale.Note) {
-        withAnimation { // TODO: currently not working; possibly because UserScales is no longer published?
-            scaleEditor.scale.notes.sort()
-        }
-        scaleEditor.scale.notes[note].denominator = ""
-        scaleEditor.scale.notes[note].numerator = ""
-        inputRatioIsValid = true
-    }
-    
-    private func commitRatio(for note: Scale.Note) {
-        if let ratio = scaleEditor.scale.notes[note].ratio {
-            withAnimation {
-                inputRatioIsValid = true
-                scaleEditor.scale.notes[note].cents = ratio.cents
-            }
-        } else {
-            inputRatioIsValid = false
-        }
-    }
 }
-
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

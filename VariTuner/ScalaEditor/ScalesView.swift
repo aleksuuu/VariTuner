@@ -129,7 +129,7 @@ struct ScalesView: View {
     }
     
     private func addScale() {
-        store.userScales.insert(Scale(name: "untitled", description: "", notes: [Scale.Note(cents: 0)]), at: 0)
+        store.userScales.insert(Scale(), at: 0)
     }
 }
 
@@ -184,7 +184,6 @@ struct ScalesSection: View {
     @ViewBuilder
     private func makeScalesByInitial(initial: String) -> some View {
         let scalesWithSameInitial = scalesView.store.sortedAndFiltered[initial]
-//        let _ = print(scalesWithSameInitial?.count)
         if let scales = scalesWithSameInitial, !scales.isEmpty {
             Section {
                 ForEach(scales) { scale in

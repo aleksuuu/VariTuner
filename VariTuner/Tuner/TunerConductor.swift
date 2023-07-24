@@ -11,8 +11,6 @@ import Foundation
 import SoundpipeAudioKit
 import SporthAudioKit
 import AVFoundation
-//import MicrophonePitchDetector
-
 
 // TODO: Prevent an empty scale from crashing this view
 
@@ -136,9 +134,9 @@ class TunerConductor: ObservableObject {
     func stop() {
         tone.parameter1 = 0; // note off before turning off the engine to prevent clicking
         Task {
-            try await Task.sleep(for: .seconds(2))
+            try await Task.sleep(for: .seconds(0.5)) // make sure tone is turned off first
+            engine.stop()
         }
-        engine.stop()
     }
     
     

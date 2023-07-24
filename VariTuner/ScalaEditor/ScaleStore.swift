@@ -17,7 +17,7 @@ enum Category {
 
 class ScaleStore: ObservableObject {
     let storeName: String
-    var userScales = [Scale]() {
+    @Published var userScales = [Scale]() {
         didSet {
             saveToFile(fileName: "userScales", content: userScales)
         }
@@ -41,9 +41,6 @@ class ScaleStore: ObservableObject {
     var sorted: [String: [Scale]] = [:]
     @Published var sortedAndFiltered: [String: [Scale]] = [:]
     
-    private var userDefaultsKey: String {
-        "ScaleStore:" + storeName // prefix makes sure this key is unique
-    }
     
     private func getData(for fileName: String) -> Data? {
         if let furl = getFurl(for: fileName) {
@@ -115,13 +112,13 @@ class ScaleStore: ObservableObject {
                   try fileManager.removeItem(atPath: documents + "/" + filePath)
               }
           } catch {
-              print("Could not clear temp folder: \(error)")
+              print("Could not clear document folder: \(error)")
           }
     }
     
     init(named name: String) {
         self.storeName = name
-//        clearDocumentDir() // TODO: remove this after testing
+        clearDocumentDir() // TODO: remove this after testing
         loadFromBundle(fileName: "factoryScales")
         loadFromDocuments()
         $searchText
@@ -180,7 +177,11 @@ class ScaleStore: ObservableObject {
     
     func duplicateScale(_ scale: Scale) {
         let name = scale.name + "_dup"
-        userScales.insert(Scale(name: name, description: scale.description, notes: scale.notes), at: 0)
+        var newNotes = [Scale.Note]()
+        for note in scale.notes {
+            newNotes.append(Scale.Note(name: note.name, cents: note.cents, numerator: note.numerator, denominator: note.denominator, showCents: note.showCents))
+        }
+        userScales.insert(Scale(name: name, description: scale.description, notes: newNotes), at: 0)
     }
     
     func toggleStar(for scale: Scale) {
@@ -195,4 +196,8 @@ class ScaleStore: ObservableObject {
         starredScaleIDs.remove(scale.id)
         recentScaleIDs.remove(scale.id)
     }
+    func refresh() {
+        searchText = searchText
+    }
+    
 }

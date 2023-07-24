@@ -82,19 +82,23 @@ extension String {
                 }
             } else { // if the number of notes has been set, that means we're in the pitch values section
                 let ratioNumbers = line.components(separatedBy: "/")
+                let num = ratioNumbers[0].trimmingCharacters(in: .whitespaces)
+                let denom = ratioNumbers[1].trimmingCharacters(in: .whitespaces)
+
                 if ratioNumbers.count == 2 { // if a ratio exists on this line
-                    if let ratio = try? Scale.Note.Ratio(numerator: ratioNumbers[0].trimmingCharacters(in: .whitespaces), denominator: ratioNumbers[1].trimmingCharacters(in: .whitespaces)) {
-                        if let note = try? Scale.Note(ratio: ratio) {
-                            let index = notes.firstIndex(where: { $0.cents > note.cents }) ?? notes.endIndex
-                            notes.insert(note, at: index)
-                        }
+                    if let cents = UtilityFuncs.getCentsFromRatio(numerator: num, denominator: denom) {
+                        let index = notes.firstIndex(where: { $0.cents > cents }) ?? notes.endIndex
+                        let note = Scale.Note(cents: cents, numerator: num, denominator: denom, showCents: false)
+                        notes.insert(note, at: index)
                     }
                 } else {
                     if let cents = line.sclCents {
                         let index = notes.firstIndex(where: { $0.cents > cents }) ?? notes.endIndex
-                        notes.insert(Scale.Note(cents: cents), at: index)
+                        let note = Scale.Note(cents: cents)
+                        notes.insert(note, at: index)
                     }
                 }
+                
             }
         }
         if notes.isEmpty {

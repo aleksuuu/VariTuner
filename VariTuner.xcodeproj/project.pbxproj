@@ -22,13 +22,14 @@
 		117AD57B28BFDB9B00F04CC8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 117AD57A28BFDB9B00F04CC8 /* Assets.xcassets */; };
 		117AD57E28BFDB9B00F04CC8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 117AD57D28BFDB9B00F04CC8 /* Preview Assets.xcassets */; };
 		117AD58528BFDC0900F04CC8 /* ScaleStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117AD58428BFDC0900F04CC8 /* ScaleStore.swift */; };
-		11936DF628F8A8990081E255 /* factoryScales.json in Resources */ = {isa = PBXBuildFile; fileRef = 11936DF528F8A8990081E255 /* factoryScales.json */; };
 		1199278B28EF68AC006199D4 /* DrawingConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1199278A28EF68AC006199D4 /* DrawingConstants.swift */; };
 		11A5D4CF28EF3BC100469AB8 /* SporthAudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 11A5D4CE28EF3BC100469AB8 /* SporthAudioKit */; };
 		11A5D4D328EF59CA00469AB8 /* PitchScroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A5D4D228EF59CA00469AB8 /* PitchScroll.swift */; };
 		11B0318828FDE9AD0032742C /* Alerter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B0318728FDE9AD0032742C /* Alerter.swift */; };
 		11C6638D28EAA1A20081BA64 /* TunerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11C6638C28EAA1A20081BA64 /* TunerData.swift */; };
 		11C6638F28EAA1CA0081BA64 /* TunerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11C6638E28EAA1CA0081BA64 /* TunerView.swift */; };
+		11ED54F62A6CDE6C005D27F8 /* UtilityFuncs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11ED54F52A6CDE6C005D27F8 /* UtilityFuncs.swift */; };
+		11ED54FA2A6CE783005D27F8 /* factoryScales.json in Resources */ = {isa = PBXBuildFile; fileRef = 11ED54F92A6CE783005D27F8 /* factoryScales.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,12 +47,13 @@
 		117AD57A28BFDB9B00F04CC8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		117AD57D28BFDB9B00F04CC8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		117AD58428BFDC0900F04CC8 /* ScaleStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleStore.swift; sourceTree = "<group>"; };
-		11936DF528F8A8990081E255 /* factoryScales.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = factoryScales.json; sourceTree = "<group>"; };
 		1199278A28EF68AC006199D4 /* DrawingConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingConstants.swift; sourceTree = "<group>"; };
 		11A5D4D228EF59CA00469AB8 /* PitchScroll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PitchScroll.swift; sourceTree = "<group>"; };
 		11B0318728FDE9AD0032742C /* Alerter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Alerter.swift; path = VariTuner/Alerter.swift; sourceTree = SOURCE_ROOT; };
 		11C6638C28EAA1A20081BA64 /* TunerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunerData.swift; sourceTree = "<group>"; };
 		11C6638E28EAA1CA0081BA64 /* TunerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunerView.swift; sourceTree = "<group>"; };
+		11ED54F52A6CDE6C005D27F8 /* UtilityFuncs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityFuncs.swift; sourceTree = "<group>"; };
+		11ED54F92A6CE783005D27F8 /* factoryScales.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = factoryScales.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,15 +121,16 @@
 		117AD57528BFDB9A00F04CC8 /* VariTuner */ = {
 			isa = PBXGroup;
 			children = (
+				11ED54F92A6CE783005D27F8 /* factoryScales.json */,
 				1199278A28EF68AC006199D4 /* DrawingConstants.swift */,
 				11B0318728FDE9AD0032742C /* Alerter.swift */,
-				11936DF528F8A8990081E255 /* factoryScales.json */,
 				1124DF9728E936040030CF9F /* Fonts */,
 				1124201528CA65F4002C4FC0 /* Info.plist */,
 				1107558928CE2F8A00842049 /* ScalaEditor */,
 				111A2E5328BFF86C00E04DC1 /* UtilityExtensions.swift */,
-				117AD57628BFDB9A00F04CC8 /* VariTunerApp.swift */,
+				11ED54F52A6CDE6C005D27F8 /* UtilityFuncs.swift */,
 				115AC17028C4012300D8224F /* UtilityViews.swift */,
+				117AD57628BFDB9A00F04CC8 /* VariTunerApp.swift */,
 				1107558A28CE301D00842049 /* Tuner */,
 				117AD57A28BFDB9B00F04CC8 /* Assets.xcassets */,
 				117AD57C28BFDB9B00F04CC8 /* Preview Content */,
@@ -214,7 +217,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				117AD57E28BFDB9B00F04CC8 /* Preview Assets.xcassets in Resources */,
-				11936DF628F8A8990081E255 /* factoryScales.json in Resources */,
+				11ED54FA2A6CE783005D27F8 /* factoryScales.json in Resources */,
 				1124DF9928E93AD00030CF9F /* BravuraText.otf in Resources */,
 				117AD57B28BFDB9B00F04CC8 /* Assets.xcassets in Resources */,
 			);
@@ -233,6 +236,7 @@
 				1122966628C2B8A700BD48CC /* ScalesView.swift in Sources */,
 				11A5D4D328EF59CA00469AB8 /* PitchScroll.swift in Sources */,
 				11731EB428F71DCE001B1807 /* TuningConstants.swift in Sources */,
+				11ED54F62A6CDE6C005D27F8 /* UtilityFuncs.swift in Sources */,
 				11C6638F28EAA1CA0081BA64 /* TunerView.swift in Sources */,
 				11B0318828FDE9AD0032742C /* Alerter.swift in Sources */,
 				117AD57728BFDB9A00F04CC8 /* VariTunerApp.swift in Sources */,
