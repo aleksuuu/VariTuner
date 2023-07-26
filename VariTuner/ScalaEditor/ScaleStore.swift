@@ -112,11 +112,27 @@ class ScaleStore: ObservableObject {
           }
     }
     
+    private func addCustomScalesToRecentIfEmpty() {
+        if recentScaleIDs.isEmpty {
+            addToRecentByName(name: "12-12_flats")
+            addToRecentByName(name: "12-12_sharps")
+            addToRecentByName(name: "17-17")
+            addToRecentByName(name: "24-24_sharps")
+        }
+    }
+    
+    private func addToRecentByName(name: String) {
+        if let id = factoryScales.first(where: { $0.name == name })?.id {
+            recentScaleIDs.append(id)
+        }
+    }
+    
     init(named name: String) {
         self.storeName = name
         clearDocumentDir() // TODO: remove this after testing
         loadFromBundle(fileName: "factoryScales")
         loadFromDocuments()
+        addCustomScalesToRecentIfEmpty()
         $searchText
             .debounce(for: 0.1, scheduler: RunLoop.main) // wait for user to stop typing
             .receive(on: DispatchQueue.global()) // perform filter on background
