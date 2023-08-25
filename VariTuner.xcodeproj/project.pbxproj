@@ -378,6 +378,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VariTuner/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = VariTuner;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We use the microphone as an input device to the tuner.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -410,6 +411,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VariTuner/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = VariTuner;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We use the microphone as an input device to the tuner.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
